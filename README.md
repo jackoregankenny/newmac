@@ -1,0 +1,247 @@
+# newmac — a fresh Apple Silicon Mac, your way
+
+A reproducible, Homebrew-driven Mac setup with an **interactive picker**: run one
+script, tick the tools you want (terminals, AI coding agents, menu bars, tiling
+desktop, apps), and it installs and configures everything. Selections are saved, so
+re-runs are non-interactive and the whole thing is idempotent.
+
+Built for developer machines with a Linux-rice sensibility: Ghostty/Rio + Zellij,
+Starship + Nerd Font, AeroSpace tiling + SketchyBar (or barik), JankyBorders,
+proper ⌥-Tab window switching, Caps→⌘/Esc, battery tuning.
+
+## Quick start (on the fresh Mac)
+
+One line, nothing pre-installed (winutil-style — after you push this repo, put your
+GitHub owner into `get.sh`):
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/OWNER/newmac/main/get.sh)"
+```
+
+Or clone it yourself:
+
+```sh
+git clone <your-repo-url> ~/newmac && cd ~/newmac
+bash bootstrap.sh
+```
+
+That's it. Bootstrap installs Xcode CLT → Homebrew, then opens the picker — starting
+with a choice of ready-made stacks:
+
+| Preset | What you get |
+|---|---|
+| **Balanced** | The author's daily setup — agents, tiling desktop, the works |
+| **Minimal** | Rio + Zellij + Claude + 1Password; no rice, no extras |
+| **Web dev** | Bun, Node, containers, VS Code, Chrome, Figma; no rice |
+| **AI power user** | Every coding agent, agent terminals, full tiling desktop |
+| **Full rice** | Tiling, bar, borders, DockDoor, all the Nerd Fonts |
+
+Pick one, then fine-tune each category:
+
+```
+ ◆ Terminals  ·  step 1/13  3/8 selected
+   ↑/↓ move · space toggle · a all · n none · enter continue
+ ❯ ● Ghostty            Fast native GPU terminal — themed config included
+   ● Rio                Light GPU terminal, RetroArch shaders
+   ● cmux               Agent terminal for multi-agent work (libghostty)
+   ○ WezTerm            GPU terminal configured in Lua
+   ○ Warp               AI-native terminal (account required)
+   …
+```
+
+The picker is pure bash (runs on the stock macOS shell, zero dependencies) and walks
+through: **Terminals · Multiplexers · AI coding agents · Menu bar · Tiling & window
+management · Dev runtimes · Apps · Fonts**, then asks about the tiling-desktop
+configs, macOS UX defaults, power tuning, and weekly auto-updates.
+
+Other modes:
+
+```sh
+bash bootstrap.sh --defaults        # no questions — sensible defaults
+bash bootstrap.sh --preset webdev   # a ready-made stack, no questions
+bash bootstrap.sh --reconfigure     # change selections, then install the diff
+bash scripts/install.sh --dry-run   # preview exactly what would be installed
+```
+
+## What's on the menu
+
+| Category | Options (✓ = default) |
+|---|---|
+| **AI coding agents** | ✓ Claude Code · ✓ Codex · ✓ Factory Droid · ✓ opencode · Amp · Kimi Code · Crush · Goose · Cursor CLI · Copilot CLI · Aider · Qwen Code · Gemini CLI |
+| **Terminals** | ✓ Ghostty · ✓ Rio · WezTerm · Alacritty · kitty · Warp · iTerm2 |
+| **Agent workbenches** | ✓ Orca · ✓ cmux · Conductor · Nimbalyst (+ Superconductor by direct download) |
+| **Multiplexers** | ✓ Zellij · ✓ tmux |
+| **Menu bar** | ✓ SketchyBar · ✓ Stats · barik (modern SwiftUI bar) · Ice (hide/manage icons) |
+| **Tiling / windows** | ✓ AeroSpace · ✓ JankyBorders · ✓ AltTab · ✓ Karabiner · ✓ Raycast · DockDoor · yabai · Amethyst · Rectangle · Loop |
+| **Runtimes** | ✓ Bun · ✓ Node (fnm) · ✓ uv · ✓ Go · ✓ Rust (rustup) · ✓ Docker+Colima · OrbStack |
+| **Dev apps** | ✓ VS Code · Cursor · Zed · GitHub Desktop · TablePlus · Bruno · Postman · UTM · Xcode (App Store) |
+| **Browsers** | ✓ Dia · Arc · Chrome · Firefox · Brave · Zen |
+| **Productivity** | ✓ 1Password + `op` CLI · ✓ WARP · ✓ coconutBattery · Obsidian · Notion · Figma · Linear · Todoist · Keka · Shottr · Amphetamine (App Store) |
+| **Comms & media** | Slack · Discord · Zoom · WhatsApp · Telegram · Spotify · IINA · VLC |
+| **Maintenance** | ✓ Mole (`mo`) · ✓ mas · ✓ dust · ✓ duf · Topgrade · Pearcleaner · OnyX |
+| **Fonts** | ✓ JetBrains Mono NF · ✓ Symbols NF · Fira Code NF · Meslo NF · Monaspace |
+
+Core shell tooling is always installed: starship, zoxide, fzf, eza, bat, ripgrep, fd,
+delta, zsh plugins, git/gh, jq/yq, btop, macmon.
+
+## Themes
+
+The whole rice — terminal, bar, borders, prompt — is themed from one palette. Pick in
+the TUI (last step) or switch any time:
+
+```sh
+bash scripts/theme.sh rosepine     # tokyonight (default) · rosepine · nord · gruvbox · catppuccin
+```
+
+Themes live in `config/themes/*.sh` (10 colour variables each); adding one file adds
+it to the picker. `theme.sh` regenerates `~/.config/newmac/theme.sh`, points Ghostty at
+the matching built-in theme, updates the starship palette, and reloads
+sketchybar/borders live.
+
+## How it works
+
+- **`scripts/catalog.sh`** — single source of truth. Every installable item is one
+  line: `id|category|kind|default|payload|name|description`. Kinds: `brew`, `cask`
+  (taps auto-derived), `curl` (vendor script), `npm` (via bun), `uv`, `rustup`.
+  **Adding a tool for everyone = adding one line here.**
+- **`scripts/tui.sh`** — dependency-free checkbox picker (arrow keys, space, works on
+  bash 3.2 so it runs before anything is installed).
+- **`scripts/configure.sh`** — walks the catalog, writes **`newmac.conf`**
+  (git-ignored; your machine's selection lives there and re-runs pre-select from it).
+- **`scripts/install.sh`** — generates a Brewfile from your selection, runs
+  `brew bundle`, then handles rustup / npm / uv / vendor installers. Idempotent.
+
+## Keep it up to date
+
+```sh
+bash update.sh                    # brew + casks + rust + bun + node + agents
+bash scripts/schedule-updates.sh  # weekly LaunchAgent (Mondays 10:00), logs to ~/Library/Logs
+bash scripts/status.sh            # green ●/red ○ for every tool + versions  (alias: status)
+```
+
+`update.sh` also re-runs `install.sh`, so **newly selected tools get installed on the
+next update** — edit `newmac.conf` (or `bootstrap.sh --reconfigure`) and update.
+Greedy cask upgrades only run interactively, so the scheduled run never hangs on a
+password prompt.
+
+## Post-install checklist
+
+- **1Password**: sign in to the app, then `op signin`; enable shell plugins
+  (`op plugin init gh`). The CLI also does SSH-agent + biometric unlock in the terminal.
+- **Agents**: run each once to authenticate — `claude`, `codex`, `droid`, `amp`, `kimi`…
+- **Battery**: System Settings → Battery → Charging → **Charge Limit = 80%** (native
+  on Tahoe 26.4+; keep Optimized Charging on).
+- **Tiling desktop**: grant Accessibility to AeroSpace, AltTab, Karabiner, sketchybar
+  (System Settings → Privacy & Security → Accessibility).
+- **Superconductor** (parallel agents in worktrees): separate download from
+  [super.engineering](https://super.engineering) — not in brew.
+
+## The tiling desktop
+
+Set up by `scripts/ricing.sh` when you enable it in the picker. **AeroSpace**
+(i3-like, no SIP disable — the current unixporn favourite) + **SketchyBar** +
+**JankyBorders** + **AltTab** + **Karabiner** (Caps → ⌘ held / Esc tapped).
+Modifier is **⌥ (Option)**.
+
+Inspired by [Omarchy](https://omarchy.org/), the setup is built to be *learnable*,
+not just riced:
+
+- **⌥⇧/ pops up the hotkey cheat-sheet** any time (also: `keys` in a terminal).
+- **Floating is a first-class citizen** — System Settings, Zoom, FaceTime,
+  Calculator, 1Password and Calendar float automatically, and **⌥⇧space**
+  floats/re-tiles any window. Tiling for deep work, floating for exec work.
+- Prefer a different philosophy entirely? The picker offers **yabai** (max power,
+  needs SIP disable), **Amethyst** (auto-tiling, native feel), or light-touch
+  snappers (**Rectangle**, **Loop**) instead of AeroSpace — pick one WM, not several.
+
+Prefer a batteries-included bar? Pick **barik** in the menu-bar category instead —
+it's AeroSpace-aware, configured via `~/.config/barik/config.toml`, and needs no
+scripting. **Ice** is there too if you keep the native bar but want Bartender-style
+icon management. **DockDoor** adds Windows-style dock previews and another alt-tab.
+
+Workspaces: **1** Agents · **2** Browser · **3** Editor · **4** Comms · **5** Spare
+(auto-assignment in `config/aerospace/aerospace.toml` — verify bundle ids with
+`aerospace list-apps`).
+
+| Keys | Action |
+|---|---|
+| `⌥1`–`⌥5` | switch workspace |
+| `⌥h/j/k/l` | focus window (vim dirs) |
+| `⌥⇧h/j/k/l` | move window |
+| `⌥⇧1`–`⌥⇧5` | send window to workspace + follow |
+| `⌥-` / `⌥=` | resize |
+| `⌥/` · `⌥,` | tiles split · accordion |
+| `⌥f` | fullscreen |
+| `⌥b` | previous workspace |
+| `⌥⇧space` | float / un-float window |
+| `⌥⇧/` | **hotkey cheat-sheet popup** |
+| `⌥⇧;` | service mode (`r` reset, `esc` reload) |
+| `⌥Tab` | AltTab window switcher |
+
+Manual one-time steps (macOS blocks scripting them): Accessibility permissions,
+AltTab shortcut → `⌥Tab` with "all spaces", Reduce Motion on.
+
+## Customising
+
+- **Add a tool to the catalog**: one line in `scripts/catalog.sh` — it appears in the
+  picker for everyone. PRs welcome.
+- **Add a preset**: a name + three case entries in `scripts/presets.sh` (title, id
+  list, toggles). Unknown ids are caught and warned about at configure time.
+- **Change your selection**: `bash bootstrap.sh --reconfigure`, or edit `newmac.conf`.
+- **Prompt theme**: `config/starship.toml`. **Terminal look**: `config/ghostty/config`.
+- **Machine-specific shell tweaks**: `~/.zshrc.local` (auto-sourced, git-ignored —
+  bootstrap also records the repo path there so the `status`/`macup` aliases work).
+- **git + delta**: after install set identity + pager:
+  ```sh
+  git config --global user.name "Your Name"
+  git config --global user.email "you@example.com"
+  git config --global core.pager delta
+  git config --global delta.navigate true
+  ```
+
+## Notes / gotchas
+
+- **App Store items** (Xcode, Amphetamine) install via `mas` inside `brew bundle` and
+  need you to be signed in to the App Store first; if you aren't, that line fails
+  gracefully and everything else proceeds.
+- **Names drift.** If a brew line fails, the run keeps going and reports it; fix with
+  `brew search <thing>` and update `scripts/catalog.sh`. Verified July 2026: Amp
+  installs from `ampcode.com/install.sh`, Kimi Code from
+  `code.kimi.com/kimi-code/install.sh`, Crush is `charmbracelet/tap/crush`, Goose is
+  `block-goose-cli`, barik is `mocki-toki/formulae/barik`, Ice is `jordanbaird-ice`.
+  `gemini-cli` is deprecated in brew (disabled 2026-12-18; successor `antigravity-cli`).
+- **No Docker Desktop**: `docker` CLI + Colima (`colima start`), or pick OrbStack in
+  the picker.
+- **Line endings**: authored cross-platform; `.gitattributes` forces LF so scripts
+  survive a Windows checkout.
+
+## Layout
+
+```
+newmac/
+├── get.sh                   # curl-able one-liner entry point
+├── bootstrap.sh             # one-shot setup (TUI picker → install → configure)
+├── update.sh                # keep everything current (LaunchAgent-safe)
+├── newmac.conf              # your saved selections (git-ignored, generated)
+├── scripts/
+│   ├── catalog.sh           # ← every installable tool, one line each
+│   ├── presets.sh           # ready-made stacks (minimal / webdev / ai / rice)
+│   ├── tui.sh               # pure-bash checkbox + radio picker (bash 3.2, zero deps)
+│   ├── configure.sh         # picker → newmac.conf
+│   ├── install.sh           # newmac.conf → Brewfile + curl/npm/uv installs
+│   ├── theme.sh             # apply/switch the colour theme everywhere
+│   ├── lib.sh               # styling, PATH, link/copy helpers
+│   ├── status.sh            # everything installed + versions  (alias: status)
+│   ├── ricing.sh            # tiling desktop wiring
+│   ├── macos-defaults.sh    # keyboard / Finder / Dock / screenshots
+│   ├── power.sh             # pmset battery profile
+│   └── schedule-updates.sh  # weekly auto-update LaunchAgent
+└── config/
+    ├── zshrc, aliases.zsh, starship.toml, tmux.conf
+    ├── themes/              # one palette file per theme (tokyonight default)
+    ├── ghostty/             # -> ~/.config/ghostty/
+    ├── aerospace/           # -> ~/.config/aerospace/
+    ├── sketchybar/          # -> ~/.config/sketchybar/
+    ├── borders/             # -> ~/.config/borders/
+    └── karabiner/           # -> ~/.config/karabiner/ (copied, not linked)
+```

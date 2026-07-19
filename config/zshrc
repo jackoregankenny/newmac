@@ -1,0 +1,51 @@
+# ~/.zshrc — managed by newmac (mac-setup repo). Symlinked by bootstrap.sh.
+
+# --- Homebrew ---------------------------------------------------------------
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+BREW_PREFIX="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
+
+# --- PATH -------------------------------------------------------------------
+# ~/.local/bin holds curl-installed agents (claude, droid); cargo + bun too
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.bun/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+export NEWMAC="${NEWMAC:-$HOME/newmac}"   # where you cloned this repo
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+# --- History ----------------------------------------------------------------
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt INC_APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_REDUCE_BLANKS HIST_VERIFY
+setopt AUTO_CD INTERACTIVE_COMMENTS NO_BEEP
+
+# --- Completions ------------------------------------------------------------
+autoload -Uz compinit
+compinit -d "$HOME/.zcompdump"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
+
+# --- Plugins (Homebrew) -----------------------------------------------------
+source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" 2>/dev/null
+source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" 2>/dev/null
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+
+# --- Tools ------------------------------------------------------------------
+command -v starship >/dev/null && eval "$(starship init zsh)"
+command -v zoxide   >/dev/null && eval "$(zoxide init zsh)"      # `z <dir>` smart cd
+command -v fnm      >/dev/null && eval "$(fnm env --use-on-cd)"
+command -v fzf      >/dev/null && source <(fzf --zsh) 2>/dev/null
+
+# --- fzf defaults -----------------------------------------------------------
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
+
+# --- 1Password CLI shell plugins (op plugin init <app>) ---------------------
+[[ -f "$HOME/.config/op/plugins.sh" ]] && source "$HOME/.config/op/plugins.sh"
+
+# --- Aliases ----------------------------------------------------------------
+[[ -f "$HOME/.config/zsh/aliases.zsh" ]] && source "$HOME/.config/zsh/aliases.zsh"
+
+# --- Local, machine-specific overrides (not tracked) ------------------------
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"

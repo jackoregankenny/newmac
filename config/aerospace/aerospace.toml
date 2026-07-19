@@ -1,0 +1,145 @@
+# ~/.config/aerospace/aerospace.toml — i3-style tiling for macOS
+# Modifier is Option (⌥) because Caps Lock is remapped to Command.
+# Docs / full reference: https://nikitabobko.github.io/AeroSpace/guide
+
+start-at-login = true
+
+# Keep the window tree tidy
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Move the mouse to the centre of the newly focused monitor
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Tell sketchybar which workspace is focused (so the bar can highlight it)
+exec-on-workspace-change = [
+  '/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+# Gaps — the Linux-WM look
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.bottom     = 8
+outer.top        = 8
+outer.right      = 8
+
+# ============================================================
+#  MAIN MODE  (⌥ = mod)
+# ============================================================
+[mode.main.binding]
+
+# --- Focus (vim hjkl) ---
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# --- Move window ---
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# --- Resize ---
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# --- Layouts ---
+alt-slash = 'layout tiles horizontal vertical'   # toggle split orientation
+alt-comma = 'layout accordion horizontal vertical'
+alt-f     = 'fullscreen'                          # AeroSpace fullscreen (not native)
+alt-shift-space = 'layout floating tiling'        # float / unfloat a window
+
+# --- Workspaces:  1 Agents · 2 Browser · 3 Editor · 4 Comms · 5 Spare ---
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-b = 'workspace-back-and-forth'                # jump to previous workspace
+# (⌥-Tab is left free for the AltTab app to do window-level switching)
+
+# --- Send window to workspace and follow it ---
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+
+# --- Help: hotkey cheat-sheet popup (Omarchy-style) ---
+alt-shift-slash = 'exec-and-forget bash "$HOME/.config/newmac/keys.sh" --dialog'
+
+# --- Enter service mode for the heavier commands ---
+alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+esc       = ['reload-config', 'mode main']
+r         = ['flatten-workspace-tree', 'mode main']   # reset layout
+backspace = ['close-all-windows-but-current', 'mode main']
+# Join with neighbours
+alt-shift-h = ['join-with left',  'mode main']
+alt-shift-j = ['join-with down',  'mode main']
+alt-shift-k = ['join-with up',    'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+
+# ============================================================
+#  FLOAT THE "EXECUTIVE" APPS
+#  Settings panels, calls, calendars and quick utilities work
+#  better as floating windows — tiling them helps nobody.
+#  ⌥⇧space re-tiles (or floats) any window manually.
+# ============================================================
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'   # System Settings
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.FaceTime'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'                   # Zoom
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.iCal'                # Calendar
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+# ============================================================
+#  AUTO-ASSIGN APPS TO WORKSPACES
+#  Find an app's id while it's open:  aerospace list-apps
+#  (Bundle ids below are best-guesses — verify and tweak.)
+# ============================================================
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.dia'        # Dia  (verify with: aerospace list-apps)
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'          # VS Code
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'     # Slack
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'         # Ghostty -> Agents workspace
+run = 'move-node-to-workspace 1'

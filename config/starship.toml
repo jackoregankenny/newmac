@@ -1,0 +1,154 @@
+# ~/.config/starship.toml — themed prompt (palette switched by scripts/theme.sh)
+# Needs a Nerd Font (JetBrainsMono Nerd Font is installed by the Brewfile).
+#
+# Colours are semantic names resolved through [palettes.<id>] below.
+# scripts/theme.sh rewrites the `palette = "…"` selector line — do not
+# rename it or add another line starting with `palette = `.
+
+add_newline = true
+command_timeout = 1000
+
+format = """
+[](surface)\
+$os\
+$username\
+[](bg:accent fg:surface)\
+$directory\
+[](fg:accent bg:green)\
+$git_branch\
+$git_status\
+[](fg:green bg:accent2)\
+$nodejs\
+$rust\
+$golang\
+$bun\
+[](fg:accent2 bg:surface)\
+$cmd_duration\
+[ ](fg:surface)\
+$line_break\
+$character"""
+
+palette = "tokyonight"
+
+[os]
+disabled = false
+style = "bg:surface fg:text"
+
+[os.symbols]
+Macos = "󰀵 "
+
+[username]
+show_always = false
+style_user = "bg:surface fg:text"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:base bg:accent"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Code" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:green"
+format = '[[ $symbol $branch ](fg:base bg:green)]($style)'
+
+[git_status]
+style = "bg:green"
+format = '[[($all_status$ahead_behind )](fg:base bg:green)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:accent2"
+format = '[[ $symbol( $version) ](fg:base bg:accent2)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:accent2"
+format = '[[ $symbol( $version) ](fg:base bg:accent2)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:accent2"
+format = '[[ $symbol( $version) ](fg:base bg:accent2)]($style)'
+
+[bun]
+symbol = "🥟"
+style = "bg:accent2"
+format = '[[ $symbol( $version) ](fg:base bg:accent2)]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "fg:text bg:surface"
+format = '[  $duration ]($style)'
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+
+# --- Palettes (one per theme id in config/themes/) -------------
+
+[palettes.tokyonight]
+base    = "#1a1b26"
+surface = "#24283b"
+text    = "#c0caf5"
+subtext = "#a9b1d6"
+accent  = "#bb9af7"
+accent2 = "#7aa2f7"
+red     = "#f7768e"
+green   = "#9ece6a"
+yellow  = "#e0af68"
+blue    = "#7aa2f7"
+
+[palettes.rosepine]
+base    = "#191724"
+surface = "#26233a"
+text    = "#e0def4"
+subtext = "#908caa"
+accent  = "#c4a7e7"
+accent2 = "#9ccfd8"
+red     = "#eb6f92"
+green   = "#31748f"
+yellow  = "#f6c177"
+blue    = "#9ccfd8"
+
+[palettes.nord]
+base    = "#2e3440"
+surface = "#3b4252"
+text    = "#eceff4"
+subtext = "#d8dee9"
+accent  = "#88c0d0"
+accent2 = "#81a1c1"
+red     = "#bf616a"
+green   = "#a3be8c"
+yellow  = "#ebcb8b"
+blue    = "#81a1c1"
+
+[palettes.gruvbox]
+base    = "#282828"
+surface = "#3c3836"
+text    = "#ebdbb2"
+subtext = "#bdae93"
+accent  = "#fe8019"
+accent2 = "#83a598"
+red     = "#fb4934"
+green   = "#b8bb26"
+yellow  = "#fabd2f"
+blue    = "#83a598"
+
+[palettes.catppuccin]
+base    = "#1e1e2e"
+surface = "#313244"
+text    = "#cdd6f4"
+subtext = "#a6adc8"
+accent  = "#cba6f7"
+accent2 = "#89b4fa"
+red     = "#f38ba8"
+green   = "#a6e3a1"
+yellow  = "#f9e2af"
+blue    = "#89b4fa"

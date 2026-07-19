@@ -1,0 +1,8 @@
+# Force LF so shell scripts and configs run correctly on macOS,
+# even though this repo is authored on Windows.
+* text=auto eol=lf
+*.sh   text eol=lf
+*.toml text eol=lf
+*.zsh  text eol=lf
+Brewfile text eol=lf
+config/ghostty/config text eol=lf
