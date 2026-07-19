@@ -11,11 +11,11 @@ proper ⌥-Tab window switching, Caps→⌘/Esc, battery tuning.
 
 ## Quick start (on the fresh Mac)
 
-One line, nothing pre-installed (winutil-style — after you push this repo, put your
-GitHub owner into `get.sh`):
+One line, nothing pre-installed (winutil-style; needs the repo to be public, or
+`gh auth login` first while it's private):
 
 ```sh
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/OWNER/newmac/main/get.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/get.sh)"
 ```
 
 Or clone it yourself:
@@ -39,7 +39,7 @@ with a choice of ready-made stacks:
 Pick one, then fine-tune each category:
 
 ```
- ◆ Terminals  ·  step 1/13  3/8 selected
+ ◆ Terminals  ·  step 1/17  2/7 selected
    ↑/↓ move · space toggle · a all · n none · enter continue
  ❯ ● Ghostty            Fast native GPU terminal — themed config included
    ● Rio                Light GPU terminal, RetroArch shaders
@@ -75,14 +75,21 @@ bash scripts/install.sh --dry-run   # preview exactly what would be installed
 | **Tiling / windows** | ✓ AeroSpace · ✓ JankyBorders · ✓ AltTab · ✓ Karabiner · ✓ Raycast · DockDoor · yabai · Amethyst · Rectangle · Loop |
 | **Runtimes** | ✓ Bun · ✓ Node (fnm) · ✓ uv · ✓ Go · ✓ Rust (rustup) · ✓ Docker+Colima · OrbStack |
 | **Dev apps** | ✓ VS Code · Cursor · Zed · GitHub Desktop · TablePlus · Bruno · Postman · UTM · Xcode (App Store) |
-| **Browsers** | ✓ Dia · Arc · Chrome · Firefox · Brave · Zen |
-| **Productivity** | ✓ 1Password + `op` CLI · ✓ WARP · ✓ coconutBattery · Obsidian · Notion · Figma · Linear · Todoist · Keka · Shottr · Amphetamine (App Store) |
+| **Browsers** | ✓ Dia · Arc · Chrome · Firefox · Brave · Zen · Edge |
+| **Productivity** | ✓ 1Password + `op` CLI · ✓ coconutBattery · Obsidian · Notion · Figma · Linear · Todoist · Keka · Shottr · Amphetamine (App Store) |
+| **Office & work** | ✓ Teams · ✓ Outlook · ✓ Word · ✓ Excel · ✓ PowerPoint · OneDrive · LibreOffice · OnlyOffice |
 | **Comms & media** | Slack · Discord · Zoom · WhatsApp · Telegram · Spotify · IINA · VLC |
+| **Network & VPN** | ✓ Cloudflare WARP · ✓ Tailscale · Mullvad · Proton VPN · WireGuard tools |
+| **Local AI** | Ollama · LM Studio |
 | **Maintenance** | ✓ Mole (`mo`) · ✓ mas · ✓ dust · ✓ duf · Topgrade · Pearcleaner · OnyX |
 | **Fonts** | ✓ JetBrains Mono NF · ✓ Symbols NF · Fira Code NF · Meslo NF · Monaspace |
 
 Core shell tooling is always installed: starship, zoxide, fzf, eza, bat, ripgrep, fd,
 delta, zsh plugins, git/gh, jq/yq, btop, macmon.
+
+**The full index — every tool, its exact install command, every preset and theme —
+is auto-generated in [docs/CATALOG.md](docs/CATALOG.md).** Regenerate after editing
+the catalog: `bash scripts/docs.sh`.
 
 ## Themes
 

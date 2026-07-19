@@ -2,19 +2,16 @@
 # ============================================================
 #  get.sh — one-liner bootstrap for a brand-new Mac.
 #
-#    bash -c "$(curl -fsSL https://raw.githubusercontent.com/OWNER/newmac/main/get.sh)"
+#    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/get.sh)"
 #
 #  Installs Xcode CLT (for git), clones the repo to ~/newmac
 #  (override with NEWMAC_DIR), and hands off to bootstrap.sh.
 #  Pass bootstrap args through, e.g.:
 #    bash -c "$(curl -fsSL …/get.sh)" -- --preset webdev
-#
-#  NOTE: update OWNER above / NEWMAC_REPO below after pushing
-#  this repo to GitHub.
 # ============================================================
 set -uo pipefail
 
-REPO_URL="${NEWMAC_REPO:-https://github.com/OWNER/newmac.git}"
+REPO_URL="${NEWMAC_REPO:-https://github.com/jackoregankenny/newmac.git}"
 DEST="${NEWMAC_DIR:-$HOME/newmac}"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
