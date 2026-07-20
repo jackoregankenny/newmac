@@ -143,3 +143,7 @@ run = 'move-node-to-workspace 4'
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'         # Ghostty -> Agents workspace
 run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.raphamorim.rio'            # Rio (Jack's terminal) -> Agents workspace
+run = 'move-node-to-workspace 1'
