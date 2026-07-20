@@ -14,6 +14,7 @@
 #    newmac theme <id>      switch colour theme
 #    newmac dock            re-arrange the Dock to match selection
 #    newmac keys            hotkey cheat-sheet
+#    newmac tour            friendly walkthrough of the tiling desktop
 #    newmac doctor [--fix]  check PATH + tool resolution; --fix repairs it
 #    newmac docs            regenerate docs/CATALOG.md
 #  Most subcommands accept --dry-run.
@@ -29,7 +30,7 @@ SCRIPTS="$NEWMAC_DIR/scripts"
 MANIFEST="$HOME/.config/newmac/installed.list"
 
 usage() {
-  sed -n '3,20p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,2\}//'
+  sed -n '3,21p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,2\}//'
 }
 
 cmd="${1:-help}"
@@ -49,6 +50,7 @@ case "$cmd" in
       bash "$SCRIPTS/theme.sh" "$@"
     fi ;;
   keys)                  bash "$SCRIPTS/keys.sh" "$@" ;;
+  tour|welcome)          bash "$SCRIPTS/tour.sh" "$@" ;;
   dock)                  bash "$SCRIPTS/dock.sh" "$@" ;;
   remove|uninstall)      bash "$SCRIPTS/uninstall.sh" "$@" ;;
   docs)                  bash "$SCRIPTS/docs.sh" ;;

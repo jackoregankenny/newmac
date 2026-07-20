@@ -144,6 +144,7 @@ newmac nuke            # bulk-uninstall EVERYTHING newmac installed (great for t
 newmac theme rosepine  # switch the whole rice's colour theme
 newmac dock            # re-arrange the Dock to match your selection
 newmac keys            # hotkey cheat-sheet
+newmac tour            # friendly walkthrough of the tiling desktop
 ```
 
 The manifest only records what newmac *actually installed* (anything already on

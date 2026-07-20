@@ -66,6 +66,11 @@ macOS won't let scripts do these:
 
 ## 4. The desktop — learning the tiling workflow
 
+**New to tiling? Run `newmac tour`** — a paced, 2-minute walkthrough that teaches the
+whole model one idea at a time and offers to open the panels it mentions. The ricing
+step offers it automatically on first setup. Everything below is the same material as
+reference.
+
 The modifier is **⌥ (Option)**; Caps Lock became **⌘ held / Esc tapped**.
 
 **Press `⌥⇧/` any time for the hotkey cheat-sheet popup.** That's the one binding to
@@ -93,8 +98,8 @@ newmac theme            # lists all six with palette swatches + which is active
 newmac theme kanagawa   # applies one everywhere, live
 ```
 
-One command re-themes the terminal (Ghostty), the bar, the window borders, and the
-prompt together. The current lineup:
+One command re-themes both terminals (Ghostty *and* Rio), the bar, the window
+borders, and the prompt together. The current lineup:
 
 | Theme | Feel | Shape |
 |---|---|---|

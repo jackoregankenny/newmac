@@ -67,3 +67,10 @@ cat <<'EOF'
 ────────────────────────────────────────────
 EOF
 ok "Ricing setup complete."
+
+# New to tiling? Offer the friendly walkthrough.
+if [[ -t 0 ]] && ask "First time with a tiling desktop? Take the 2-minute tour?"; then
+  bash "$REPO_DIR/scripts/tour.sh"
+else
+  info "Take it any time with:  newmac tour"
+fi

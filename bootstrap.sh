@@ -80,6 +80,7 @@ newmac_link "$CONFIG_DIR/aliases.zsh"    "$HOME/.config/zsh/aliases.zsh"
 newmac_link "$CONFIG_DIR/starship.toml"  "$HOME/.config/starship.toml"
 newmac_link "$CONFIG_DIR/tmux.conf"      "$HOME/.tmux.conf"
 newmac_selected ghostty && newmac_link "$CONFIG_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+newmac_selected rio     && newmac_link "$CONFIG_DIR/rio/config.toml" "$HOME/.config/rio/config.toml"
 
 # Apply the chosen colour theme (terminal / bar / borders / prompt).
 if [[ -d "$CONFIG_DIR/themes" ]]; then

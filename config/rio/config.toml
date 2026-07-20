@@ -1,0 +1,18 @@
+# ~/.config/rio/config.toml — managed by newmac. Linked by bootstrap.sh.
+# Full reference: https://rioterm.com/docs/config
+# Colours: theme.sh writes ~/.config/rio/themes/newmac.toml and we point at it.
+# (Rio falls back to its built-in colours if that file isn't there yet.)
+theme = "newmac"
+
+[fonts]
+family = "JetBrainsMono Nerd Font"
+size = 13
+
+[window]
+opacity = 0.94
+blur = true
+padding-x = 8
+padding-y = 8
+
+[cursor]
+shape = "block"
