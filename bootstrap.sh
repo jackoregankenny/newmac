@@ -62,10 +62,18 @@ if [[ "$MODE" == "--defaults" ]]; then
   bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
 elif [[ "$MODE" == "--preset" ]]; then
   bash "$SCRIPTS_DIR/configure.sh" --preset "$PRESET" --defaults || { err "Configuration failed."; exit 1; }
-elif [[ "$MODE" == "--reconfigure" || ! -f "$REPO_DIR/newmac.conf" ]]; then
-  # Prefer the Rust picker: fetch a prebuilt binary (no cargo needed), and if
-  # it's available drive it against this clone's catalog/themes. Falls back to
-  # the pure-bash picker when there's no release yet or no binary.
+elif [[ ! -t 0 ]]; then
+  # No terminal to draw a picker on (rare — get.sh reattaches /dev/tty).
+  if [[ -f "$REPO_DIR/newmac.conf" ]]; then
+    ok "No terminal — keeping the existing newmac.conf."
+  else
+    warn "No terminal — configuring with catalog defaults."
+    bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
+  fi
+else
+  # Interactive: ALWAYS open the picker. If a newmac.conf already exists the
+  # Presets screen defaults to "Keep current", so a re-run is one keystroke —
+  # we never silently skip straight to installing.
   bash "$SCRIPTS_DIR/get-ui.sh" --quiet || true
   if ui_bin="$(newmac_ui_bin "$REPO_DIR")"; then
     NEWMAC="$REPO_DIR" "$ui_bin" \
@@ -77,8 +85,13 @@ elif [[ "$MODE" == "--reconfigure" || ! -f "$REPO_DIR/newmac.conf" ]]; then
   else
     bash "$SCRIPTS_DIR/configure.sh" || { err "Configuration aborted."; exit 1; }
   fi
-else
-  ok "Using existing newmac.conf (run with --reconfigure to change it)."
+fi
+
+# Safety net: if no conf was written (e.g. the picker was quit without saving),
+# don't install a random set — fall back to catalog defaults explicitly.
+if [[ ! -f "$REPO_DIR/newmac.conf" ]]; then
+  warn "No selection saved — using catalog defaults."
+  bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
 fi
 # shellcheck disable=SC1090
 source "$REPO_DIR/newmac.conf"
