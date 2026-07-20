@@ -23,6 +23,33 @@ CONF="$REPO_DIR/newmac.conf"
 
 source "$SCRIPTS_DIR/lib.sh"
 
+# --- List mode: swatches for every theme -----------------------
+if [[ "${1:-}" == "--list" || "${1:-}" == "list" ]]; then
+  CURRENT=""
+  [[ -f "$CONF" ]] && source "$CONF" && CURRENT="${NEWMAC_THEME:-}"
+  _swatch() {  # _swatch <hex> — truecolor block
+    printf '\033[48;2;%d;%d;%dm  \033[0m' \
+      "$((16#${1:0:2}))" "$((16#${1:2:2}))" "$((16#${1:4:2}))"
+  }
+  printf '\n'
+  for f in "$THEMES_DIR"/*.sh; do
+    [[ -f "$f" ]] || continue
+    (
+      source "$f"
+      id="$(basename "$f" .sh)"
+      mark=" "; [[ "$id" == "$CURRENT" ]] && mark="${c_green}●${c_reset}"
+      shape="rounded"; [[ "${T_RADIUS:-6}" == 0 ]] && shape="sharp"
+      printf ' %s %s%-12s%s ' "$mark" "$c_bold" "$id" "$c_reset"
+      for c in "$T_BASE" "$T_SURFACE" "$T_ACCENT" "$T_ACCENT2" "$T_RED" "$T_GREEN" "$T_YELLOW" "$T_BLUE"; do
+        _swatch "$c"
+      done
+      printf '  %s%s · %s%s\n' "$c_dim" "$THEME_TITLE" "$shape" "$c_reset"
+    )
+  done
+  printf '\n%sApply one:  newmac theme <id>   (or: bash scripts/theme.sh <id>)%s\n' "$c_dim" "$c_reset"
+  exit 0
+fi
+
 # --- Which theme? ----------------------------------------------
 THEME_ID="${1:-}"
 if [[ -z "$THEME_ID" ]]; then

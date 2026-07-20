@@ -40,7 +40,13 @@ case "$cmd" in
   bootstrap)             bash "$NEWMAC_DIR/bootstrap.sh" "$@" ;;
   update)                bash "$NEWMAC_DIR/update.sh" ;;
   status)                bash "$SCRIPTS/status.sh" ;;
-  theme)                 bash "$SCRIPTS/theme.sh" "$@" ;;
+  theme)
+    # Bare `newmac theme` shows the swatch list; with an id it applies.
+    if [[ $# -eq 0 ]]; then
+      bash "$SCRIPTS/theme.sh" --list
+    else
+      bash "$SCRIPTS/theme.sh" "$@"
+    fi ;;
   keys)                  bash "$SCRIPTS/keys.sh" "$@" ;;
   dock)                  bash "$SCRIPTS/dock.sh" "$@" ;;
   remove|uninstall)      bash "$SCRIPTS/uninstall.sh" "$@" ;;

@@ -38,7 +38,7 @@ with a choice of ready-made stacks:
 Pick one, then fine-tune each category:
 
 ```
- ◆ Terminals  ·  step 1/17  2/7 selected
+ ◆ Terminals  ·  step 1/18  2/7 selected
    ↑/↓ move · space toggle · a all · n none · enter continue
  ❯ ● Ghostty            Fast native GPU terminal — themed config included
    ● Rio                Light GPU terminal, RetroArch shaders
@@ -88,9 +88,10 @@ bash scripts/install.sh --dry-run   # preview exactly what would be installed
 Core shell tooling is always installed: starship, zoxide, fzf, eza, bat, ripgrep, fd,
 delta, zsh plugins, git/gh, jq/yq, btop, macmon.
 
-**The full index — every tool, its exact install command, every preset and theme —
-is auto-generated in [docs/CATALOG.md](docs/CATALOG.md).** Regenerate after editing
-the catalog: `bash scripts/docs.sh`.
+**New here? Read [the guide](docs/GUIDE.md)** — install to daily driving, the tiling
+workflow, themes, and troubleshooting. **The full index — every tool, its exact
+install command, every preset and theme — is auto-generated in
+[docs/CATALOG.md](docs/CATALOG.md)** (regenerate with `bash scripts/docs.sh`).
 
 ## Themes
 
