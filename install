@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# ============================================================
+#  install — fresh fetch-and-run into ~/Downloads.
+#
+#  This is the "always fresh" entry point: it does a clean git
+#  clone (which bypasses every CDN cache — you always get the
+#  latest main) into ~/Downloads/newmac and runs the picker.
+#
+#  Run it straight from the web:
+#    bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/install)"
+#
+#  Override the location with NEWMAC_DIR. Pass picker args after --:
+#    bash -c "$(curl -fsSL .../install)" -- --preset webdev
+# ============================================================
+set -o pipefail
+
+REPO_URL="${NEWMAC_REPO:-https://github.com/jackoregankenny/newmac.git}"
+DEST="${NEWMAC_DIR:-${HOME:-/tmp}/Downloads/newmac}"
+
+if [ "$(uname -s)" != "Darwin" ]; then
+  echo "xx  newmac is for macOS only." >&2; exit 1
+fi
+
+# Xcode Command Line Tools provide git (skipped if already installed).
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo "==> Installing Xcode Command Line Tools (a dialog will appear)..."
+  xcode-select --install || true
+  echo "==> Waiting for the CLT install to finish (Ctrl-C to abort)..."
+  until xcode-select -p >/dev/null 2>&1; do sleep 10; done
+fi
+
+echo "==> Fetching the latest newmac into $DEST ..."
+mkdir -p "$(dirname "$DEST")"
+if [ -d "$DEST/.git" ]; then
+  git -C "$DEST" fetch --quiet origin && git -C "$DEST" reset --hard --quiet origin/main \
+    || { echo "xx  Could not update $DEST." >&2; exit 1; }
+else
+  rm -rf "$DEST"
+  git clone --depth 1 "$REPO_URL" "$DEST" \
+    || { echo "xx  Clone failed — check the repo URL / your network." >&2; exit 1; }
+fi
+
+cd "$DEST" || { echo "xx  Could not cd into $DEST." >&2; exit 1; }
+echo "==> Running from $(pwd)"
+
+# Reattach a terminal when piped from curl, so the picker is interactive.
+if [ -t 0 ]; then
+  exec bash "$DEST/bootstrap.sh" "$@"
+elif [ -r /dev/tty ]; then
+  exec bash "$DEST/bootstrap.sh" "$@" < /dev/tty
+else
+  exec bash "$DEST/bootstrap.sh" --defaults
+fi

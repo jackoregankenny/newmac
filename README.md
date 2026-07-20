@@ -21,12 +21,31 @@ One line, nothing pre-installed (winutil-style):
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/get.sh)"
 ```
 
+That clones to `~/newmac` (the permanent home the `newmac` command points at) and runs
+the picker. To **always get the freshest `main` into `~/Downloads`** instead — a clean
+clone every time, no CDN in the way — use the `install` entry point:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/install)"
+```
+
 Or clone it yourself:
 
 ```sh
-git clone <your-repo-url> ~/newmac && cd ~/newmac
+git clone https://github.com/jackoregankenny/newmac.git ~/newmac && cd ~/newmac
 bash bootstrap.sh
 ```
+
+### Keeping the install URL fresh
+
+`git clone` (what `install` does) always fetches the latest `main` — there is no cache
+to fight. The `curl … | bash` path fetches `get.sh`/`install` through GitHub's raw CDN,
+which caches for ~5 minutes; append `?v=$(date +%s)` to force a fresh copy if you just
+pushed a change. **For a website install button**, don't link raw — this repo ships a
+GitHub Pages deploy (`.github/workflows/pages.yml`) that republishes the landing page
+and a fresh copy of `install` on every push (Pages purges its cache each deploy), giving
+you a stable, always-current URL like `https://jackoregankenny.github.io/newmac/install`.
+Enable it once under **Settings → Pages → Source: GitHub Actions**.
 
 That's it. Bootstrap installs Xcode CLT → Homebrew, then opens the picker — starting
 with a choice of ready-made stacks:

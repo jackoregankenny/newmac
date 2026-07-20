@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>newmac — your Mac, your way</title>
+<meta name="description" content="A configurable, riced macOS setup: one command, a TUI picker, switchable themes, tiling desktop, and every dev tool.">
+<style>
+  :root{
+    --base:#1a1b26; --surface:#24283b; --text:#c0caf5; --sub:#a9b1d6;
+    --accent:#bb9af7; --accent2:#7aa2f7; --green:#9ece6a; --red:#f7768e; --yellow:#e0af68;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--base); color:var(--text);
+    font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:64px 24px 96px}
+  h1{font-size:clamp(40px,9vw,72px);margin:0;font-weight:800;letter-spacing:-.03em}
+  .tag{color:var(--sub);font-size:18px;margin:8px 0 28px}
+  .dots{display:flex;gap:8px;margin:0 0 40px}
+  .dots i{width:14px;height:14px;border-radius:50%;display:block}
+  .cmd{
+    background:var(--surface);border-radius:12px;padding:18px 20px;
+    display:flex;align-items:center;gap:14px;overflow-x:auto;
+    border:1px solid #2f3450;
+  }
+  .cmd code{white-space:nowrap;font-size:15px;color:var(--text)}
+  .cmd .p{color:var(--green)}
+  button{
+    margin-left:auto;background:var(--accent);color:var(--base);border:0;
+    border-radius:8px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer;flex:none;
+  }
+  button:active{transform:translateY(1px)}
+  .hint{color:var(--sub);font-size:14px;margin:14px 2px 0}
+  h2{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);margin:52px 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  .card{background:var(--surface);border-radius:10px;padding:16px 18px;border:1px solid #2f3450}
+  .card b{color:var(--text)} .card span{color:var(--sub);font-size:14px}
+  .themes{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .theme{display:flex;align-items:center;gap:10px}
+  .theme .name{width:110px;color:var(--sub);font-size:14px}
+  .theme .sw{display:flex;gap:4px}
+  .theme .sw i{width:22px;height:22px;border-radius:5px;display:block}
+  .theme.sharp .sw i{border-radius:0}
+  a{color:var(--accent)}
+  footer{color:var(--sub);font-size:14px;margin-top:56px;border-top:1px solid #2f3450;padding-top:20px}
+  @media (prefers-color-scheme:light){
+    :root{--base:#e9e9ee;--surface:#fff;--text:#1a1b26;--sub:#565a6e}
+    .card,.cmd{border-color:#d5d5df}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>newmac</h1>
+  <p class="tag">Your Mac, your way — pick a stack, fine-tune, install.</p>
+  <div class="dots">
+    <i style="background:var(--accent)"></i><i style="background:var(--accent2)"></i>
+    <i style="background:var(--red)"></i><i style="background:var(--green)"></i>
+    <i style="background:var(--yellow)"></i>
+  </div>
+
+  <div class="cmd">
+    <code id="oneliner"><span class="p">$</span> bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/install)"</code>
+    <button onclick="navigator.clipboard.writeText(document.getElementById('oneliner').textContent.replace(/^\$\s*/,''));this.textContent='copied'">copy</button>
+  </div>
+  <p class="hint">Fresh Mac, nothing pre-installed. Installs the Command Line Tools, then opens an interactive picker. Re-runnable and idempotent.</p>
+
+  <h2>What you get</h2>
+  <div class="grid">
+    <div class="card"><b>Interactive picker</b><br><span>150+ tools across 18 categories, in a pure-bash TUI</span></div>
+    <div class="card"><b>AI coding agents</b><br><span>Claude, Codex, Droid, Amp, Kimi, Crush &amp; more</span></div>
+    <div class="card"><b>Tiling desktop</b><br><span>AeroSpace + SketchyBar, with a guided tour</span></div>
+    <div class="card"><b>Six themes</b><br><span>terminal, bar, borders &amp; prompt, switched as one</span></div>
+    <div class="card"><b>Presets</b><br><span>minimal · webdev · AI · full rice</span></div>
+    <div class="card"><b>A real command</b><br><span>newmac status / update / theme / doctor / nuke</span></div>
+  </div>
+
+  <h2>Themes</h2>
+  <div class="themes">
+    <div class="theme"><span class="name">tokyonight</span><span class="sw"><i style="background:#1a1b26"></i><i style="background:#24283b"></i><i style="background:#bb9af7"></i><i style="background:#7aa2f7"></i><i style="background:#f7768e"></i><i style="background:#9ece6a"></i><i style="background:#e0af68"></i></span></div>
+    <div class="theme sharp"><span class="name">kanagawa</span><span class="sw"><i style="background:#181616"></i><i style="background:#282727"></i><i style="background:#8ba4b0"></i><i style="background:#8992a7"></i><i style="background:#c4746e"></i><i style="background:#8a9a7b"></i><i style="background:#c4b28a"></i></span></div>
+    <div class="theme"><span class="name">rosepine</span><span class="sw"><i style="background:#191724"></i><i style="background:#26233a"></i><i style="background:#c4a7e7"></i><i style="background:#9ccfd8"></i><i style="background:#eb6f92"></i><i style="background:#31748f"></i><i style="background:#f6c177"></i></span></div>
+    <div class="theme"><span class="name">nord</span><span class="sw"><i style="background:#2e3440"></i><i style="background:#3b4252"></i><i style="background:#88c0d0"></i><i style="background:#81a1c1"></i><i style="background:#bf616a"></i><i style="background:#a3be8c"></i><i style="background:#ebcb8b"></i></span></div>
+    <div class="theme"><span class="name">gruvbox</span><span class="sw"><i style="background:#282828"></i><i style="background:#3c3836"></i><i style="background:#fe8019"></i><i style="background:#83a598"></i><i style="background:#fb4934"></i><i style="background:#b8bb26"></i><i style="background:#fabd2f"></i></span></div>
+    <div class="theme"><span class="name">catppuccin</span><span class="sw"><i style="background:#1e1e2e"></i><i style="background:#313244"></i><i style="background:#cba6f7"></i><i style="background:#89b4fa"></i><i style="background:#f38ba8"></i><i style="background:#a6e3a1"></i><i style="background:#f9e2af"></i></span></div>
+  </div>
+
+  <footer>
+    Open source ·
+    <a href="https://github.com/jackoregankenny/newmac">github.com/jackoregankenny/newmac</a> ·
+    <a href="https://github.com/jackoregankenny/newmac/blob/main/docs/GUIDE.md">guide</a>
+  </footer>
+</div>
+</body>
+</html>

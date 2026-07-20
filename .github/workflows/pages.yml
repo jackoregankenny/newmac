@@ -1,0 +1,45 @@
+name: Deploy site
+
+# Publishes the landing page + a fresh copy of the install scripts to
+# GitHub Pages on every push to main. Pages purges its CDN cache on each
+# deploy, so the URL is always the latest — point your website at it.
+# One-time: repo Settings → Pages → Source = "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+    paths: [site/**, install, get.sh, .github/workflows/pages.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble the site
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp site/index.html _site/index.html
+          # Serve the install scripts from the same origin as the page,
+          # so `curl <site>/install` is always the freshest main.
+          cp install _site/install
+          cp get.sh _site/get.sh
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
