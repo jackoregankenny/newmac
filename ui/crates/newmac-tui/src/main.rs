@@ -12,7 +12,7 @@
 
 use anyhow::{Context, Result};
 use newmac_core::{Catalog, Selection};
-use newmac_tui::app::{App, InstallOutcome, Key, Mouse};
+use newmac_tui::app::{App, InstallOutcome, Key, Mouse, Screen};
 use newmac_tui::{gensh, ui};
 use ratatui::crossterm::event::{
     self, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyEvent, KeyEventKind,
@@ -181,6 +181,13 @@ fn event_loop(terminal: &mut DefaultTerminal, app: &mut App) -> Result<()> {
         }
 
         if app.should_quit {
+            // Persist the selection on quit-from-picker, so picking a flavour and
+            // quitting doesn't silently drop it (the installer reads this conf).
+            // Quitting from the Presets screen means "didn't choose" — leave the
+            // conf untouched.
+            if app.screen == Screen::Picker && !app.saved {
+                let _ = app.save();
+            }
             return Ok(());
         }
     }
