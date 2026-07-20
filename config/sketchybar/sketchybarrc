@@ -12,6 +12,7 @@ PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 : "${C_SURFACE:=0xff24283b}"   # item backgrounds
 : "${C_TEXT:=0xffc0caf5}"      # primary text
 : "${C_ACCENT:=0xffbb9af7}"    # focus / highlights
+: "${C_RADIUS:=6}"             # item corner radius (sharp themes set 0)
 
 sketchybar --bar \
   height=36 \
@@ -30,7 +31,7 @@ default=(
   "icon.color=$C_TEXT"
   "label.color=$C_TEXT"
   "background.color=$C_SURFACE"
-  background.corner_radius=6
+  "background.corner_radius=$C_RADIUS"
   background.height=24
 )
 sketchybar --default "${default[@]}"

@@ -80,6 +80,10 @@ C_GREEN=0xff$T_GREEN
 C_YELLOW=0xff$T_YELLOW
 C_BLUE=0xff$T_BLUE
 C_BAR=0xf0$T_BASE
+
+# Shape (themes may set T_RADIUS / T_BORDER_STYLE; sharp themes use 0 / square)
+C_RADIUS=${T_RADIUS:-6}
+C_BORDER_STYLE=${T_BORDER_STYLE:-round}
 EOF
 ok "Wrote $NEWMAC_STATE_DIR/theme.sh"
 

@@ -81,7 +81,8 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 | | Tool | Install | Description |
 |---|---|---|---|
 | ✓ | **AeroSpace** (`aerospace`) | `brew install --cask nikitabobko/tap/aerospace` | i3-like tiling WM — no SIP disable (the unixporn favourite) |
-|  | **yabai** (`yabai`) | `brew install koekeishiya/formulae/yabai` | Most powerful tiling WM (full features need SIP disable) |
+|  | **yabai** (`yabai`) | `brew install koekeishiya/formulae/yabai` | Most powerful tiling WM (full features need SIP disable; pair with skhd) |
+|  | **skhd** (`skhd`) | `brew install koekeishiya/formulae/skhd` | Hotkey daemon for yabai (AeroSpace does not need it) |
 |  | **Amethyst** (`amethyst`) | `brew install --cask amethyst` | Auto-tiling with a native feel, zero config (no SIP disable) |
 |  | **Rectangle** (`rectangle`) | `brew install --cask rectangle` | Keyboard window snapping — light-touch, exec friendly |
 |  | **Loop** (`loop`) | `brew install --cask loop` | Radial window snapping — pretty, exec friendly |
@@ -110,6 +111,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 | | Tool | Install | Description |
 |---|---|---|---|
 | ✓ | **VS Code** (`vscode`) | `brew install --cask visual-studio-code` | Editor |
+|  | **Neovim** (`neovim`) | `brew install neovim` | Terminal editor — add NvChad/LazyVim yourself after |
 |  | **Cursor** (`cursor-ide`) | `brew install --cask cursor` | AI editor (the app; CLI agent is separate) |
 |  | **Zed** (`zed`) | `brew install --cask zed` | Fast collaborative editor |
 |  | **GitHub Desktop** (`github-desktop`) | `brew install --cask github` | Git GUI |
@@ -130,6 +132,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Brave** (`brave`) | `brew install --cask brave-browser` | Chromium + adblock |
 |  | **Zen** (`zen`) | `brew install --cask zen` | Firefox-based, Arc-style UI |
 |  | **Edge** (`edge`) | `brew install --cask microsoft-edge` | Microsoft (work-policy friendly) |
+|  | **qutebrowser** (`qutebrowser`) | `brew install --cask qutebrowser` | Keyboard-driven, vim-style browser |
 
 ## Essentials & productivity
 
@@ -171,6 +174,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Telegram** (`telegram`) | `brew install --cask telegram` | Messaging |
 |  | **Spotify** (`spotify`) | `brew install --cask spotify` | Music |
 |  | **spotify_player** (`spotify-player`) | `brew install spotify_player` | TUI Spotify client — rice-friendly (Premium required) |
+|  | **kew** (`kew`) | `brew install kew` | TUI music player for local files |
 |  | **IINA** (`iina`) | `brew install --cask iina` | Video player |
 |  | **VLC** (`vlc`) | `brew install --cask vlc` | Plays anything |
 
@@ -243,6 +247,7 @@ Ghostty, Rio, Zellij, tmux, Claude Code, Bun, fnm, uv, SketchyBar, Stats, AeroSp
 
 - **Catppuccin Mocha** (`catppuccin`)
 - **Gruvbox Dark** (`gruvbox`)
+- **Kanagawa Dragon** (`kanagawa`)
 - **Nord** (`nord`)
 - **Rosé Pine** (`rosepine`)
 - **Tokyo Night** (`tokyonight`)

@@ -88,7 +88,8 @@ stats|menubar|cask|on|stats|Stats|Menu-bar system monitor
 
 # --- Tiling & window management --------------------------------
 aerospace|tiling|cask|on|nikitabobko/tap/aerospace|AeroSpace|i3-like tiling WM — no SIP disable (the unixporn favourite)
-yabai|tiling|brew|off|koekeishiya/formulae/yabai|yabai|Most powerful tiling WM (full features need SIP disable)
+yabai|tiling|brew|off|koekeishiya/formulae/yabai|yabai|Most powerful tiling WM (full features need SIP disable; pair with skhd)
+skhd|tiling|brew|off|koekeishiya/formulae/skhd|skhd|Hotkey daemon for yabai (AeroSpace does not need it)
 amethyst|tiling|cask|off|amethyst|Amethyst|Auto-tiling with a native feel, zero config (no SIP disable)
 rectangle|tiling|cask|off|rectangle|Rectangle|Keyboard window snapping — light-touch, exec friendly
 loop|tiling|cask|off|loop|Loop|Radial window snapping — pretty, exec friendly
@@ -111,6 +112,7 @@ orbstack|runtimes|cask|off|orbstack|OrbStack|Fast Docker Desktop alternative (fr
 
 # --- Dev apps (GUI) --------------------------------------------
 vscode|devgui|cask|on|visual-studio-code|VS Code|Editor
+neovim|devgui|brew|off|neovim|Neovim|Terminal editor — add NvChad/LazyVim yourself after
 cursor-ide|devgui|cask|off|cursor|Cursor|AI editor (the app; CLI agent is separate)
 zed|devgui|cask|off|zed|Zed|Fast collaborative editor
 github-desktop|devgui|cask|off|github|GitHub Desktop|Git GUI
@@ -128,6 +130,7 @@ firefox|browsers|cask|off|firefox|Firefox|Mozilla
 brave|browsers|cask|off|brave-browser|Brave|Chromium + adblock
 zen|browsers|cask|off|zen|Zen|Firefox-based, Arc-style UI
 edge|browsers|cask|off|microsoft-edge|Edge|Microsoft (work-policy friendly)
+qutebrowser|browsers|cask|off|qutebrowser|qutebrowser|Keyboard-driven, vim-style browser
 
 # --- Essentials & productivity ---------------------------------
 1password|productivity|cask|on|1password|1Password|Password manager (app)
@@ -150,6 +153,7 @@ whatsapp|comms|cask|off|whatsapp|WhatsApp|Messaging
 telegram|comms|cask|off|telegram|Telegram|Messaging
 spotify|comms|cask|off|spotify|Spotify|Music
 spotify-player|comms|brew|off|spotify_player|spotify_player|TUI Spotify client — rice-friendly (Premium required)
+kew|comms|brew|off|kew|kew|TUI music player for local files
 iina|comms|cask|off|iina|IINA|Video player
 vlc|comms|cask|off|vlc|VLC|Plays anything
 
