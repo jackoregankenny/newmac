@@ -67,34 +67,16 @@ _banner() {
  |_| |_|\___| \_/\_/ |_| |_| |_|\__,_|\___|
 BANNER
   printf '%s' "$c_reset"
-  printf ' %syour Mac, your way — pick a stack, fine-tune, install%s\n\n' "$c_dim" "$c_reset"
+  printf ' %syour Mac, your way — tick exactly what you want in each category%s\n' "$c_dim" "$c_reset"
+  printf ' %sÀ la carte: everything starts at a sensible default; change anything.%s\n\n' "$c_dim" "$c_reset"
 }
 
+# No preset gate: interactive runs go straight to the category pickers,
+# seeded from your existing conf (re-run) or the catalog defaults (first
+# run). Presets remain available only as an explicit `--preset <name>`
+# shortcut for the one-liner installs.
 if [[ $USE_DEFAULTS -eq 0 ]]; then
   _banner
-
-  if [[ -z "$PRESET" ]]; then
-    TUI_TITLE="Start from"
-    TUI_ITEMS=(); TUI_DESCS=(); TUI_STATE=(); PRESET_MAP=()
-    if [[ $HAVE_CONF -eq 1 ]]; then
-      TUI_ITEMS[0]="Current setup"; TUI_DESCS[0]="Keep what newmac.conf already selects"; PRESET_MAP[0]="__conf__"
-    fi
-    for p in $NEWMAC_PRESETS; do
-      TUI_ITEMS[${#TUI_ITEMS[@]}]="$(newmac_preset_title "$p")"
-      TUI_DESCS[${#TUI_DESCS[@]}]="$(newmac_preset_desc "$p")"
-      PRESET_MAP[${#PRESET_MAP[@]}]="$p"
-    done
-    TUI_CHOICE=0
-    tui_select
-    choice="${PRESET_MAP[$TUI_CHOICE]}"
-    if [[ "$choice" == "__conf__" ]]; then
-      PRESEL="conf"
-    elif [[ "$choice" == "default" ]]; then
-      PRESEL="defaults"
-    else
-      PRESET="$choice"; PRESEL="preset"
-    fi
-  fi
 fi
 
 PRESET_IDS=""

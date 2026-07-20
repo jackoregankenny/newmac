@@ -33,15 +33,21 @@ Useful variants:
 
 ## 2. Your first run — what the picker asks
 
-1. **Start from** — pick a preset as your starting point (or *Current setup* on a
-   re-run). It just pre-ticks the boxes; nothing installs yet.
-2. **17 category screens** — Terminals, Shells, AI coding agents, Agent workbenches,
+It's à la carte — no bundle to choose, just tick what you want per category.
+
+1. **Category screens** — Terminals, Shells, AI coding agents, Agent workbenches,
    Menu bar, Tiling, Runtimes, Dev apps, Browsers, Office, VPNs, Maintenance, Fonts…
+   Each item starts at a sensible default (● on / ○ off); change any of them.
    Arrow keys move, **space** toggles, **a**/**n** select all/none, **enter** continues.
-3. **Theme** — six full-rice colour schemes (see §5). You can switch any time later.
-4. **Toggles** — tiling desktop configs, macOS UX defaults, battery/power tuning,
+2. **Theme** — six full-rice colour schemes (see §5). You can switch any time later.
+3. **Toggles** — tiling desktop configs, macOS UX defaults, battery/power tuning,
    weekly auto-updates, Dock arrangement.
-5. **Summary** — everything you picked, one confirm before anything is written.
+4. **Summary** — everything you picked, one confirm before anything is written.
+
+On a re-run the boxes pre-fill from your existing `newmac.conf`, so it doubles as an
+editor. Prefer to skip the questions? `bash bootstrap.sh --preset webdev` (or
+`minimal` / `ai` / `rice`) applies a ready-made selection non-interactively — handy
+for the one-liner, never forced on you in the picker.
 
 Selections save to `newmac.conf`. The install then runs: Homebrew packages, vendor
 installers (Claude Code, Amp, …), Rust/Node/Python toolchains, config symlinks, git

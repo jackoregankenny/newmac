@@ -47,29 +47,23 @@ and a fresh copy of `install` on every push (Pages purges its cache each deploy)
 you a stable, always-current URL like `https://jackoregankenny.github.io/newmac/install`.
 Enable it once under **Settings → Pages → Source: GitHub Actions**.
 
-That's it. Bootstrap installs Xcode CLT → Homebrew, then opens the picker — starting
-with a choice of ready-made stacks:
-
-| Preset | What you get |
-|---|---|
-| **Balanced** | The author's daily setup — agents, tiling desktop, the works |
-| **Minimal** | Rio + Zellij + Claude + 1Password; no rice, no extras |
-| **Web dev** | Bun, Node, containers, VS Code, Chrome, Figma; no rice |
-| **AI power user** | Every coding agent, agent terminals, full tiling desktop |
-| **Full rice** | Tiling, bar, borders, DockDoor, all the Nerd Fonts |
-
-Pick one, then fine-tune each category:
+That's it. Bootstrap installs Xcode CLT → Homebrew, then opens the picker. It's fully
+**à la carte** — you walk each category and tick exactly what you want. Everything
+starts at a sensible default (● on / ○ off); change anything, in any combination:
 
 ```
  ◆ Terminals  ·  step 1/18  2/7 selected
    ↑/↓ move · space toggle · a all · n none · enter continue
  ❯ ● Ghostty            Fast native GPU terminal — themed config included
    ● Rio                Light GPU terminal, RetroArch shaders
-   ● cmux               Agent terminal for multi-agent work (libghostty)
    ○ WezTerm            GPU terminal configured in Lua
    ○ Warp               AI-native terminal (account required)
    …
 ```
+
+No bundles to commit to — the categories *are* the mix-and-match. (If you'd rather
+skip the questions entirely, `--preset webdev` and friends still exist as one-shot
+shortcuts — see below — but the interactive picker never makes you pick a bundle.)
 
 The picker is pure bash (runs on the stock macOS shell, zero dependencies) and walks
 through: **Terminals · Multiplexers · AI coding agents · Menu bar · Tiling & window
