@@ -6,13 +6,19 @@ on:
     paths:
       - "ui/**"
       - "catalog.toml"
+      - "flavours/**"
       - "config/themes/**"
+      - "scripts/catalog.sh"
+      - "scripts/presets.sh"
       - ".github/workflows/rust.yml"
   pull_request:
     paths:
       - "ui/**"
       - "catalog.toml"
+      - "flavours/**"
       - "config/themes/**"
+      - "scripts/catalog.sh"
+      - "scripts/presets.sh"
       - ".github/workflows/rust.yml"
 
 defaults:
