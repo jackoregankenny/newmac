@@ -17,6 +17,8 @@
 #
 #  category `core` is always installed and never shown in the picker.
 #  Keep this file bash-3.2 compatible.
+#  IMPORTANT: the catalog below is one single-quoted string — no
+#  apostrophes (') anywhere in names/descriptions, or it breaks.
 # ============================================================
 
 NEWMAC_CATALOG='
