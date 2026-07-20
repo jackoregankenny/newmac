@@ -93,6 +93,11 @@ done
     fi
     i=$((i+1))
   done
+  # Custom packages added via the Rust picker (newmac-ui → browse/add).
+  # These live only in the conf, not the catalog, so `newmac nuke` won't
+  # track them — remove with `brew uninstall` if you no longer want them.
+  for e in ${NEWMAC_EXTRA_BREW:-}; do echo "brew \"$e\""; done
+  for e in ${NEWMAC_EXTRA_CASK:-}; do echo "cask \"$e\""; done
 } > "$BREWFILE"
 
 if [[ $DRY -eq 1 ]]; then

@@ -3,7 +3,8 @@
 #  newmac — the command. Installed to ~/.local/bin by bootstrap.
 #
 #    newmac                 status summary + help
-#    newmac configure       open the picker (edit selections)
+#    newmac configure       open the picker (Rust TUI if built, else bash)
+#    newmac ui              install the Rust picker (prebuilt; --build for source)
 #    newmac install         install everything selected
 #    newmac update          update everything
 #    newmac status          every tool + version
@@ -28,17 +29,40 @@ if [[ ! -f "$NEWMAC_DIR/bootstrap.sh" ]]; then
 fi
 SCRIPTS="$NEWMAC_DIR/scripts"
 MANIFEST="$HOME/.config/newmac/installed.list"
+# shellcheck source=scripts/lib.sh
+source "$SCRIPTS/lib.sh"   # colours, PATH, and newmac_ui_bin()
 
 usage() {
-  sed -n '3,21p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,2\}//'
+  sed -n '3,22p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,2\}//'
 }
 
 cmd="${1:-help}"
 [[ $# -gt 0 ]] && shift
 
 case "$cmd" in
-  configure|reconfigure) bash "$SCRIPTS/configure.sh" "$@" ;;
+  configure|reconfigure)
+    # The Rust TUI is the à-la-carte interactive picker (search, badges, live
+    # theme preview, browse Homebrew). Presets / --defaults stay in bash, and
+    # bash is the fallback when the binary isn't built. Pass the on-disk
+    # catalog/themes so a prebuilt binary reflects this exact clone.
+    use_bash=0
+    case " $* " in *" --defaults "*|*" --preset "*) use_bash=1 ;; esac
+    if [[ $use_bash -eq 0 ]] && ui="$(newmac_ui_bin "$NEWMAC_DIR")"; then
+      NEWMAC="$NEWMAC_DIR" "$ui" \
+        --conf "$NEWMAC_DIR/newmac.conf" \
+        --catalog "$NEWMAC_DIR/catalog.toml" \
+        --themes-dir "$NEWMAC_DIR/config/themes" "$@"
+    else
+      bash "$SCRIPTS/configure.sh" "$@"
+    fi ;;
   install)               bash "$SCRIPTS/install.sh" "$@" ;;
+  ui)
+    # `newmac ui` downloads the prebuilt binary; `newmac ui --build` compiles it.
+    case " $* " in
+      *" --build "*|*" --from-source "*) bash "$SCRIPTS/build-ui.sh" ;;
+      *)                                 bash "$SCRIPTS/get-ui.sh" "$@" ;;
+    esac ;;
+  build-ui)              bash "$SCRIPTS/build-ui.sh" "$@" ;;
   bootstrap)             bash "$NEWMAC_DIR/bootstrap.sh" "$@" ;;
   update)                bash "$NEWMAC_DIR/update.sh" ;;
   status)                bash "$SCRIPTS/status.sh" ;;

@@ -63,7 +63,19 @@ if [[ "$MODE" == "--defaults" ]]; then
 elif [[ "$MODE" == "--preset" ]]; then
   bash "$SCRIPTS_DIR/configure.sh" --preset "$PRESET" --defaults || { err "Configuration failed."; exit 1; }
 elif [[ "$MODE" == "--reconfigure" || ! -f "$REPO_DIR/newmac.conf" ]]; then
-  bash "$SCRIPTS_DIR/configure.sh" || { err "Configuration aborted."; exit 1; }
+  # Prefer the Rust picker: fetch a prebuilt binary (no cargo needed), and if
+  # it's available drive it against this clone's catalog/themes. Falls back to
+  # the pure-bash picker when there's no release yet or no binary.
+  bash "$SCRIPTS_DIR/get-ui.sh" --quiet || true
+  if ui_bin="$(newmac_ui_bin "$REPO_DIR")"; then
+    NEWMAC="$REPO_DIR" "$ui_bin" \
+      --conf "$REPO_DIR/newmac.conf" \
+      --catalog "$REPO_DIR/catalog.toml" \
+      --themes-dir "$REPO_DIR/config/themes" \
+      || { err "Configuration aborted."; exit 1; }
+  else
+    bash "$SCRIPTS_DIR/configure.sh" || { err "Configuration aborted."; exit 1; }
+  fi
 else
   ok "Using existing newmac.conf (run with --reconfigure to change it)."
 fi

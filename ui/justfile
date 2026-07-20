@@ -1,0 +1,49 @@
+# newmac-ui dev tasks. Run from the `ui/` dir:  just <recipe>
+# (Install `just` with: brew install just)
+
+set windows-shell := ["bash", "-uc"]
+
+# List recipes
+default:
+    @just --list
+
+# Build the release binary (what gets installed)
+build:
+    cargo build --release
+
+# Build the debug binary (fast, what tests use)
+dev:
+    cargo build
+
+# Run every test in the workspace
+test:
+    cargo test --workspace
+
+# Format, then lint with warnings-as-errors
+lint:
+    cargo fmt --all -- --check
+    cargo clippy --workspace --all-targets -- -D warnings
+
+# Auto-format
+fmt:
+    cargo fmt --all
+
+# Regenerate scripts/catalog.sh from catalog.toml (run after editing the catalog)
+gen-sh:
+    cargo run --release -- catalog gen-sh --out ../scripts/catalog.sh
+
+# Fail if scripts/catalog.sh is stale vs catalog.toml (used in CI)
+check-catalog:
+    cargo run --release -- catalog gen-sh --stdout > /tmp/catalog.check.sh
+    diff -u ../scripts/catalog.sh /tmp/catalog.check.sh && echo "catalog.sh is up to date"
+
+# Print the live popular-Homebrew list (needs network)
+brew-refresh:
+    cargo run --release -- brew refresh
+
+# Open the picker against a throwaway conf
+run:
+    cargo run --release -- --conf /tmp/newmac.demo.conf
+
+# Everything CI runs
+ci: lint test build check-catalog

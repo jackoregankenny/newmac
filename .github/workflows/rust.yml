@@ -1,0 +1,73 @@
+name: Rust UI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ui/**"
+      - "catalog.toml"
+      - "config/themes/**"
+      - ".github/workflows/rust.yml"
+  pull_request:
+    paths:
+      - "ui/**"
+      - "catalog.toml"
+      - "config/themes/**"
+      - ".github/workflows/rust.yml"
+
+defaults:
+  run:
+    working-directory: ui
+
+jobs:
+  lint:
+    name: fmt + clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ui
+      - name: rustfmt
+        run: cargo fmt --all -- --check
+      - name: clippy (warnings = errors)
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+  test:
+    name: test + build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ui
+      - name: test
+        run: cargo test --workspace
+      - name: release build
+        run: cargo build --release
+
+  catalog-in-sync:
+    name: catalog.sh matches catalog.toml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ui
+      - name: regenerate and diff
+        run: |
+          cargo run --quiet -- catalog gen-sh --stdout > /tmp/catalog.gen.sh
+          if ! diff -u ../scripts/catalog.sh /tmp/catalog.gen.sh; then
+            echo "::error::scripts/catalog.sh is stale. Run: cd ui && cargo run -- catalog gen-sh --out ../scripts/catalog.sh"
+            exit 1
+          fi
+          echo "scripts/catalog.sh is in sync with catalog.toml"

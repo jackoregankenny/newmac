@@ -1,0 +1,15 @@
+[package]
+name = "newmac-core"
+description = "Catalog model, fuzzy search, conf I/O and Homebrew data for the newmac TUI"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+anyhow.workspace = true
+nucleo-matcher.workspace = true

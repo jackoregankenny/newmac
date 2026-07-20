@@ -1,0 +1,64 @@
+name: Release newmac-ui
+
+# Tag a release to publish a prebuilt macOS binary:
+#   git tag v0.1.0 && git push origin v0.1.0
+# bootstrap.sh / scripts/get-ui.sh download it, so the Rust picker is the
+# first-run experience on a fresh Mac (no cargo needed).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  macos-universal:
+    name: Build universal macOS binary
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ui
+
+      - name: Build both arches
+        run: |
+          cargo build --release --target aarch64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
+
+      - name: Make universal binary
+        run: |
+          mkdir -p dist
+          lipo -create -output dist/newmac-ui \
+            target/aarch64-apple-darwin/release/newmac-ui \
+            target/x86_64-apple-darwin/release/newmac-ui
+          # Ad-hoc sign: Apple Silicon refuses to run unsigned binaries, and
+          # lipo strips the per-arch signatures. No Apple Developer cert needed.
+          codesign --sign - --force --timestamp=none dist/newmac-ui
+          lipo -info dist/newmac-ui
+          ./dist/newmac-ui --version
+
+      - name: Package + checksum
+        run: |
+          cd dist
+          tar -czf newmac-ui-macos-universal.tar.gz newmac-ui
+          shasum -a 256 newmac-ui-macos-universal.tar.gz > newmac-ui-macos-universal.tar.gz.sha256
+          cat newmac-ui-macos-universal.tar.gz.sha256
+
+      - name: Publish to the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ui/dist/newmac-ui-macos-universal.tar.gz
+            ui/dist/newmac-ui-macos-universal.tar.gz.sha256
+          generate_release_notes: true

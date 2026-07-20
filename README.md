@@ -72,6 +72,25 @@ configs, macOS UX defaults, power tuning, weekly auto-updates, and whether to
 arrange the Dock to match your picks (via `dockutil`). Bootstrap also sets your git
 identity (name/email + delta as pager) if it isn't configured yet.
 
+### Optional: the Rust picker (nicer, searchable)
+
+A compiled [ratatui](https://ratatui.rs) picker upgrades the bash checkbox screen with
+**fuzzy search across every tool**, inline **warning badges** (`paid` / `account` /
+`large` / `App Store`), a **live theme preview**, and a **browse / add popular
+Homebrew** screen (works offline, or `r`efresh live). It writes the exact same
+`newmac.conf`, so it's a drop-in — and on a fresh Mac `bootstrap.sh` downloads a
+prebuilt binary, so it's the **first-run** experience with no cargo needed.
+
+```sh
+newmac ui            # download the prebuilt binary → ~/.local/bin/newmac-ui
+newmac ui --build    # or compile from source (needs cargo)
+newmac configure     # opens the Rust picker; bash stays the fallback
+```
+
+The catalog is a canonical `catalog.toml`; `scripts/catalog.sh` is generated from it.
+See [`ui/README.md`](ui/README.md) for the architecture, dev tasks, and how releases
+are cut.
+
 Other modes:
 
 ```sh

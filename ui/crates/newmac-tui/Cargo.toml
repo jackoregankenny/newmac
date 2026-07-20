@@ -1,0 +1,17 @@
+[package]
+name = "newmac-tui"
+description = "Searchable, filterable ratatui picker for newmac — writes newmac.conf"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "newmac-ui"
+path = "src/main.rs"
+
+[dependencies]
+newmac-core = { path = "../newmac-core" }
+anyhow.workspace = true
+ratatui = "0.29"

@@ -69,6 +69,21 @@ newmac_is_installed() {  # newmac_is_installed <kind> <payload> <id>
   esac
 }
 
+# --- Rust picker (newmac-ui) -----------------------------------
+# Print the path to the compiled picker if it exists (PATH, the
+# ~/.local/bin symlink, or a local cargo build). Returns 1 if not found.
+newmac_ui_bin() {  # newmac_ui_bin [repo_dir]
+  local repo="${1:-${NEWMAC:-$HOME/newmac}}"
+  if command -v newmac-ui >/dev/null 2>&1; then command -v newmac-ui; return 0; fi
+  local p
+  for p in "$HOME/.local/bin/newmac-ui" \
+           "$repo/ui/target/release/newmac-ui" \
+           "$repo/ui/target/debug/newmac-ui"; do
+    [[ -x "$p" ]] && { echo "$p"; return 0; }
+  done
+  return 1
+}
+
 # --- Selection helpers (newmac.conf) ---------------------------
 # newmac.conf defines NEWMAC_SELECTED=" id1 id2 … " plus toggle vars.
 newmac_selected() {  # newmac_selected <id>  -> 0 if selected

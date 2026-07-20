@@ -3,3 +3,6 @@
 *.local
 Brewfile.lock.json
 newmac.conf
+
+# Rust build artefacts (Cargo.lock is committed on purpose)
+ui/target/

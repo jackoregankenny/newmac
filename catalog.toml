@@ -1,0 +1,1330 @@
+# ============================================================
+#  catalog.toml — CANONICAL catalog for newmac.
+#  Read by the Rust core crate (ui/crates/newmac-core).
+#  scripts/catalog.sh is GENERATED from this file:
+#      newmac-ui catalog gen-sh
+#  Edit here, then regenerate. Keep names apostrophe-free is no
+#  longer required (TOML quotes handle it) but the generated .sh
+#  still is, so avoid apostrophes to keep bash happy.
+# ============================================================
+
+schema = 1
+
+# --- Categories (display order) --------------------------------
+[[category]]
+id = "core"
+title = "Core shell & CLI"
+always = true
+
+[[category]]
+id = "terminals"
+title = "Terminals"
+
+[[category]]
+id = "multiplexers"
+title = "Multiplexers"
+
+[[category]]
+id = "shells"
+title = "Shells (zsh is the default)"
+
+[[category]]
+id = "agents"
+title = "AI coding agents"
+
+[[category]]
+id = "workbench"
+title = "Agent workbenches"
+
+[[category]]
+id = "localai"
+title = "Local AI"
+
+[[category]]
+id = "menubar"
+title = "Menu bar"
+
+[[category]]
+id = "tiling"
+title = "Tiling & window management"
+
+[[category]]
+id = "runtimes"
+title = "Dev runtimes & containers"
+
+[[category]]
+id = "devgui"
+title = "Dev apps"
+
+[[category]]
+id = "browsers"
+title = "Browsers"
+
+[[category]]
+id = "productivity"
+title = "Essentials & productivity"
+
+[[category]]
+id = "work"
+title = "Office & work"
+
+[[category]]
+id = "comms"
+title = "Comms & media"
+
+[[category]]
+id = "network"
+title = "Network & VPN"
+
+[[category]]
+id = "maintenance"
+title = "Maintenance & cleanup"
+
+[[category]]
+id = "fonts"
+title = "Fonts"
+
+# --- Items ------------------------------------------------------
+# flags: paid | account | large | appstore  (rendered as badges in the picker)
+
+[[item]]
+id = "starship"
+category = "core"
+kind = "brew"
+default = true
+payload = "starship"
+name = "starship"
+description = "Fast cross-shell prompt"
+
+[[item]]
+id = "zoxide"
+category = "core"
+kind = "brew"
+default = true
+payload = "zoxide"
+name = "zoxide"
+description = "Smarter cd — `z <dir>`"
+
+[[item]]
+id = "fzf"
+category = "core"
+kind = "brew"
+default = true
+payload = "fzf"
+name = "fzf"
+description = "Fuzzy finder"
+
+[[item]]
+id = "eza"
+category = "core"
+kind = "brew"
+default = true
+payload = "eza"
+name = "eza"
+description = "Modern ls"
+
+[[item]]
+id = "bat"
+category = "core"
+kind = "brew"
+default = true
+payload = "bat"
+name = "bat"
+description = "Modern cat with syntax highlighting"
+
+[[item]]
+id = "ripgrep"
+category = "core"
+kind = "brew"
+default = true
+payload = "ripgrep"
+name = "ripgrep"
+description = "Fast grep (rg)"
+
+[[item]]
+id = "fd"
+category = "core"
+kind = "brew"
+default = true
+payload = "fd"
+name = "fd"
+description = "Fast find"
+
+[[item]]
+id = "git-delta"
+category = "core"
+kind = "brew"
+default = true
+payload = "git-delta"
+name = "delta"
+description = "Beautiful git diffs"
+
+[[item]]
+id = "zsh-autosuggestions"
+category = "core"
+kind = "brew"
+default = true
+payload = "zsh-autosuggestions"
+name = "zsh-autosuggestions"
+description = "Fish-style suggestions"
+
+[[item]]
+id = "zsh-syntax-highlighting"
+category = "core"
+kind = "brew"
+default = true
+payload = "zsh-syntax-highlighting"
+name = "zsh-syntax-highlighting"
+description = "Command highlighting"
+
+[[item]]
+id = "git"
+category = "core"
+kind = "brew"
+default = true
+payload = "git"
+name = "git"
+description = "Version control"
+
+[[item]]
+id = "gh"
+category = "core"
+kind = "brew"
+default = true
+payload = "gh"
+name = "gh"
+description = "GitHub CLI"
+
+[[item]]
+id = "jq"
+category = "core"
+kind = "brew"
+default = true
+payload = "jq"
+name = "jq"
+description = "JSON processor"
+
+[[item]]
+id = "yq"
+category = "core"
+kind = "brew"
+default = true
+payload = "yq"
+name = "yq"
+description = "YAML processor"
+
+[[item]]
+id = "wget"
+category = "core"
+kind = "brew"
+default = true
+payload = "wget"
+name = "wget"
+description = "Downloader"
+
+[[item]]
+id = "tree"
+category = "core"
+kind = "brew"
+default = true
+payload = "tree"
+name = "tree"
+description = "Directory trees"
+
+[[item]]
+id = "btop"
+category = "core"
+kind = "brew"
+default = true
+payload = "btop"
+name = "btop"
+description = "Resource monitor"
+
+[[item]]
+id = "macmon"
+category = "core"
+kind = "brew"
+default = true
+payload = "macmon"
+name = "macmon"
+description = "Apple-silicon power/temp monitor"
+
+[[item]]
+id = "ghostty"
+category = "terminals"
+kind = "cask"
+default = true
+payload = "ghostty"
+name = "Ghostty"
+description = "Fast native GPU terminal — themed config included"
+
+[[item]]
+id = "rio"
+category = "terminals"
+kind = "cask"
+default = true
+payload = "rio"
+name = "Rio"
+description = "Light GPU terminal, RetroArch shaders"
+
+[[item]]
+id = "wezterm"
+category = "terminals"
+kind = "cask"
+default = false
+payload = "wezterm"
+name = "WezTerm"
+description = "GPU terminal configured in Lua"
+
+[[item]]
+id = "alacritty"
+category = "terminals"
+kind = "cask"
+default = false
+payload = "alacritty"
+name = "Alacritty"
+description = "Minimal fast GPU terminal"
+
+[[item]]
+id = "kitty"
+category = "terminals"
+kind = "cask"
+default = false
+payload = "kitty"
+name = "kitty"
+description = "Feature-rich GPU terminal"
+
+[[item]]
+id = "warp"
+category = "terminals"
+kind = "cask"
+default = false
+payload = "warp"
+name = "Warp"
+description = "AI-native terminal (account required)"
+flags = ["account"]
+
+[[item]]
+id = "iterm2"
+category = "terminals"
+kind = "cask"
+default = false
+payload = "iterm2"
+name = "iTerm2"
+description = "The classic macOS terminal"
+
+[[item]]
+id = "zellij"
+category = "multiplexers"
+kind = "brew"
+default = true
+payload = "zellij"
+name = "Zellij"
+description = "Modern multiplexer — sessions/splits/layouts"
+
+[[item]]
+id = "tmux"
+category = "multiplexers"
+kind = "brew"
+default = true
+payload = "tmux"
+name = "tmux"
+description = "Classic multiplexer (SSH ubiquity)"
+
+[[item]]
+id = "fish"
+category = "shells"
+kind = "brew"
+default = false
+payload = "fish"
+name = "fish"
+description = "Great defaults, but not POSIX — the newmac rice is zsh-wired"
+
+[[item]]
+id = "nushell"
+category = "shells"
+kind = "brew"
+default = false
+payload = "nushell"
+name = "Nushell"
+description = "Structured-data shell — pipelines of tables, not text"
+
+[[item]]
+id = "claude"
+category = "agents"
+kind = "curl"
+default = true
+payload = "https://claude.ai/install.sh"
+name = "Claude Code"
+description = "Anthropic agentic CLI"
+
+[[item]]
+id = "codex"
+category = "agents"
+kind = "cask"
+default = true
+payload = "codex"
+name = "Codex"
+description = "OpenAI Codex CLI"
+
+[[item]]
+id = "droid"
+category = "agents"
+kind = "curl"
+default = true
+payload = "https://app.factory.ai/cli"
+name = "Factory Droid"
+description = "Factory agentic CLI"
+
+[[item]]
+id = "opencode"
+category = "agents"
+kind = "brew"
+default = true
+payload = "sst/tap/opencode"
+name = "opencode"
+description = "Open-source agentic CLI (SST)"
+
+[[item]]
+id = "amp"
+category = "agents"
+kind = "curl"
+default = false
+payload = "https://ampcode.com/install.sh"
+name = "Amp"
+description = "Sourcegraph agentic CLI"
+
+[[item]]
+id = "kimi"
+category = "agents"
+kind = "curl"
+default = false
+payload = "https://code.kimi.com/kimi-code/install.sh"
+name = "Kimi Code"
+description = "Moonshot agentic CLI (K-series models)"
+
+[[item]]
+id = "crush"
+category = "agents"
+kind = "brew"
+default = false
+payload = "charmbracelet/tap/crush"
+name = "Crush"
+description = "Charm glamorous TUI coding agent"
+
+[[item]]
+id = "goose"
+category = "agents"
+kind = "brew"
+default = false
+payload = "block-goose-cli"
+name = "Goose"
+description = "Block/Linux Foundation open agent"
+
+[[item]]
+id = "cursor"
+category = "agents"
+kind = "curl"
+default = false
+payload = "https://cursor.com/install"
+name = "Cursor CLI"
+description = "Cursor agent in the terminal"
+
+[[item]]
+id = "copilot"
+category = "agents"
+kind = "npm"
+default = false
+payload = "@github/copilot"
+name = "Copilot CLI"
+description = "GitHub Copilot coding agent"
+
+[[item]]
+id = "aider"
+category = "agents"
+kind = "uv"
+default = false
+payload = "aider-chat"
+name = "Aider"
+description = "Open-source pair programmer"
+
+[[item]]
+id = "qwen"
+category = "agents"
+kind = "npm"
+default = false
+payload = "@qwen-code/qwen-code"
+name = "Qwen Code"
+description = "Alibaba Qwen coding CLI"
+
+[[item]]
+id = "gemini"
+category = "agents"
+kind = "brew"
+default = false
+payload = "gemini-cli"
+name = "Gemini CLI"
+description = "Google (deprecated in brew — successor: antigravity-cli)"
+
+[[item]]
+id = "orca"
+category = "workbench"
+kind = "cask"
+default = true
+payload = "stablyai/orca/orca"
+name = "Orca"
+description = "ADE — fleet of parallel agents in worktrees, browser + editor built in"
+
+[[item]]
+id = "cmux"
+category = "workbench"
+kind = "cask"
+default = true
+payload = "cmux"
+name = "cmux"
+description = "Agent terminal for multi-agent work (libghostty)"
+
+[[item]]
+id = "conductor"
+category = "workbench"
+kind = "cask"
+default = false
+payload = "conductor"
+name = "Conductor"
+description = "Parallel Claude/Codex/Cursor agents in worktrees (Melty Labs)"
+
+[[item]]
+id = "nimbalyst"
+category = "workbench"
+kind = "cask"
+default = false
+payload = "nimbalyst"
+name = "Nimbalyst"
+description = "Visual workspace for Claude Code + Codex (was Crystal)"
+
+[[item]]
+id = "sketchybar"
+category = "menubar"
+kind = "brew"
+default = true
+payload = "FelixKratz/formulae/sketchybar"
+name = "SketchyBar"
+description = "Scriptable status bar (configured by this repo)"
+
+[[item]]
+id = "barik"
+category = "menubar"
+kind = "cask"
+default = false
+payload = "mocki-toki/formulae/barik"
+name = "barik"
+description = "Modern SwiftUI menu bar — TOML config, AeroSpace-aware"
+
+[[item]]
+id = "ice"
+category = "menubar"
+kind = "cask"
+default = false
+payload = "jordanbaird-ice"
+name = "Ice"
+description = "Menu bar manager — hide/rearrange icons (Bartender alternative)"
+
+[[item]]
+id = "stats"
+category = "menubar"
+kind = "cask"
+default = true
+payload = "stats"
+name = "Stats"
+description = "Menu-bar system monitor"
+
+[[item]]
+id = "aerospace"
+category = "tiling"
+kind = "cask"
+default = true
+payload = "nikitabobko/tap/aerospace"
+name = "AeroSpace"
+description = "i3-like tiling WM — no SIP disable (the unixporn favourite)"
+
+[[item]]
+id = "yabai"
+category = "tiling"
+kind = "brew"
+default = false
+payload = "koekeishiya/formulae/yabai"
+name = "yabai"
+description = "Most powerful tiling WM (full features need SIP disable; pair with skhd)"
+
+[[item]]
+id = "skhd"
+category = "tiling"
+kind = "brew"
+default = false
+payload = "koekeishiya/formulae/skhd"
+name = "skhd"
+description = "Hotkey daemon for yabai (AeroSpace does not need it)"
+
+[[item]]
+id = "amethyst"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "amethyst"
+name = "Amethyst"
+description = "Auto-tiling with a native feel, zero config (no SIP disable)"
+
+[[item]]
+id = "rectangle"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "rectangle"
+name = "Rectangle"
+description = "Keyboard window snapping — light-touch, exec friendly"
+
+[[item]]
+id = "loop"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "loop"
+name = "Loop"
+description = "Radial window snapping — pretty, exec friendly"
+
+[[item]]
+id = "borders"
+category = "tiling"
+kind = "brew"
+default = true
+payload = "FelixKratz/formulae/borders"
+name = "JankyBorders"
+description = "Focused-window border"
+
+[[item]]
+id = "alt-tab"
+category = "tiling"
+kind = "cask"
+default = true
+payload = "alt-tab"
+name = "AltTab"
+description = "Windows-style window-level alt-tab"
+
+[[item]]
+id = "dockdoor"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "dockdoor"
+name = "DockDoor"
+description = "Dock hover previews + another alt-tab flavour"
+
+[[item]]
+id = "karabiner"
+category = "tiling"
+kind = "cask"
+default = true
+payload = "karabiner-elements"
+name = "Karabiner"
+description = "Keyboard remap (Caps → ⌘ held / Esc tapped)"
+
+[[item]]
+id = "raycast"
+category = "tiling"
+kind = "cask"
+default = true
+payload = "raycast"
+name = "Raycast"
+description = "Launcher / window management"
+
+[[item]]
+id = "bun"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "oven-sh/bun/bun"
+name = "Bun"
+description = "JS/TS runtime + package manager"
+
+[[item]]
+id = "fnm"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "fnm"
+name = "fnm"
+description = "Fast Node version manager (installs Node LTS)"
+
+[[item]]
+id = "uv"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "uv"
+name = "uv"
+description = "Python package/venv manager"
+
+[[item]]
+id = "go"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "go"
+name = "Go"
+description = "Go toolchain"
+
+[[item]]
+id = "rust"
+category = "runtimes"
+kind = "rustup"
+default = true
+payload = "rustup"
+name = "Rust"
+description = "rustup + stable toolchain (the canonical way)"
+
+[[item]]
+id = "docker"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "docker"
+name = "docker CLI"
+description = "Docker CLI (engine via Colima/OrbStack)"
+
+[[item]]
+id = "docker-compose"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "docker-compose"
+name = "docker-compose"
+description = "Compose v2"
+
+[[item]]
+id = "colima"
+category = "runtimes"
+kind = "brew"
+default = true
+payload = "colima"
+name = "Colima"
+description = "Free container runtime — no Docker Desktop licence"
+
+[[item]]
+id = "orbstack"
+category = "runtimes"
+kind = "cask"
+default = false
+payload = "orbstack"
+name = "OrbStack"
+description = "Fast Docker Desktop alternative (free for personal use)"
+
+[[item]]
+id = "vscode"
+category = "devgui"
+kind = "cask"
+default = true
+payload = "visual-studio-code"
+name = "VS Code"
+description = "Editor"
+
+[[item]]
+id = "neovim"
+category = "devgui"
+kind = "brew"
+default = false
+payload = "neovim"
+name = "Neovim"
+description = "Terminal editor — add NvChad/LazyVim yourself after"
+
+[[item]]
+id = "cursor-ide"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "cursor"
+name = "Cursor"
+description = "AI editor (the app; CLI agent is separate)"
+
+[[item]]
+id = "zed"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "zed"
+name = "Zed"
+description = "Fast collaborative editor"
+
+[[item]]
+id = "github-desktop"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "github"
+name = "GitHub Desktop"
+description = "Git GUI"
+
+[[item]]
+id = "tableplus"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "tableplus"
+name = "TablePlus"
+description = "Database GUI"
+
+[[item]]
+id = "bruno"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "bruno"
+name = "Bruno"
+description = "Open-source API client"
+
+[[item]]
+id = "postman"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "postman"
+name = "Postman"
+description = "API client"
+
+[[item]]
+id = "utm"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "utm"
+name = "UTM"
+description = "Virtual machines on Apple Silicon"
+flags = ["large"]
+
+[[item]]
+id = "xcode"
+category = "devgui"
+kind = "mas"
+default = false
+payload = "497799835:Xcode"
+name = "Xcode"
+description = "Full IDE + simulators (App Store, huge)"
+flags = ["appstore", "large"]
+
+[[item]]
+id = "dia"
+category = "browsers"
+kind = "cask"
+default = true
+payload = "thebrowsercompany-dia"
+name = "Dia"
+description = "The Browser Company"
+
+[[item]]
+id = "arc"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "arc"
+name = "Arc"
+description = "The Browser Company (classic)"
+
+[[item]]
+id = "chrome"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "google-chrome"
+name = "Chrome"
+description = "Google"
+
+[[item]]
+id = "firefox"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "firefox"
+name = "Firefox"
+description = "Mozilla"
+
+[[item]]
+id = "brave"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "brave-browser"
+name = "Brave"
+description = "Chromium + adblock"
+
+[[item]]
+id = "zen"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "zen"
+name = "Zen"
+description = "Firefox-based, Arc-style UI"
+
+[[item]]
+id = "edge"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "microsoft-edge"
+name = "Edge"
+description = "Microsoft (work-policy friendly)"
+
+[[item]]
+id = "qutebrowser"
+category = "browsers"
+kind = "cask"
+default = false
+payload = "qutebrowser"
+name = "qutebrowser"
+description = "Keyboard-driven, vim-style browser"
+
+[[item]]
+id = "1password"
+category = "productivity"
+kind = "cask"
+default = true
+payload = "1password"
+name = "1Password"
+description = "Password manager (app)"
+
+[[item]]
+id = "1password-cli"
+category = "productivity"
+kind = "cask"
+default = true
+payload = "1password-cli"
+name = "1Password CLI"
+description = "`op` — terminal + SSH agent + shell plugins"
+
+[[item]]
+id = "coconutbattery"
+category = "productivity"
+kind = "cask"
+default = true
+payload = "coconutbattery"
+name = "coconutBattery"
+description = "Battery health / cycle count"
+
+[[item]]
+id = "obsidian"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "obsidian"
+name = "Obsidian"
+description = "Markdown notes"
+
+[[item]]
+id = "notion"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "notion"
+name = "Notion"
+description = "Docs / wiki"
+
+[[item]]
+id = "figma"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "figma"
+name = "Figma"
+description = "Design"
+
+[[item]]
+id = "linear"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "linear-linear"
+name = "Linear"
+description = "Issue tracking"
+
+[[item]]
+id = "todoist"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "todoist"
+name = "Todoist"
+description = "Tasks"
+
+[[item]]
+id = "keka"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "keka"
+name = "Keka"
+description = "Archiver"
+
+[[item]]
+id = "shottr"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "shottr"
+name = "Shottr"
+description = "Screenshot annotation"
+
+[[item]]
+id = "amphetamine"
+category = "productivity"
+kind = "mas"
+default = false
+payload = "937984704:Amphetamine"
+name = "Amphetamine"
+description = "Keep the Mac awake (App Store)"
+flags = ["appstore"]
+
+[[item]]
+id = "slack"
+category = "comms"
+kind = "cask"
+default = false
+payload = "slack"
+name = "Slack"
+description = "Team chat"
+
+[[item]]
+id = "discord"
+category = "comms"
+kind = "cask"
+default = false
+payload = "discord"
+name = "Discord"
+description = "Chat"
+
+[[item]]
+id = "zoom"
+category = "comms"
+kind = "cask"
+default = false
+payload = "zoom"
+name = "Zoom"
+description = "Video calls"
+
+[[item]]
+id = "whatsapp"
+category = "comms"
+kind = "cask"
+default = false
+payload = "whatsapp"
+name = "WhatsApp"
+description = "Messaging"
+
+[[item]]
+id = "telegram"
+category = "comms"
+kind = "cask"
+default = false
+payload = "telegram"
+name = "Telegram"
+description = "Messaging"
+
+[[item]]
+id = "spotify"
+category = "comms"
+kind = "cask"
+default = false
+payload = "spotify"
+name = "Spotify"
+description = "Music"
+flags = ["account"]
+
+[[item]]
+id = "spotify-player"
+category = "comms"
+kind = "brew"
+default = false
+payload = "spotify_player"
+name = "spotify_player"
+description = "TUI Spotify client — rice-friendly (Premium required)"
+flags = ["account", "paid"]
+
+[[item]]
+id = "kew"
+category = "comms"
+kind = "brew"
+default = false
+payload = "kew"
+name = "kew"
+description = "TUI music player for local files"
+
+[[item]]
+id = "iina"
+category = "comms"
+kind = "cask"
+default = false
+payload = "iina"
+name = "IINA"
+description = "Video player"
+
+[[item]]
+id = "vlc"
+category = "comms"
+kind = "cask"
+default = false
+payload = "vlc"
+name = "VLC"
+description = "Plays anything"
+
+[[item]]
+id = "teams"
+category = "work"
+kind = "cask"
+default = true
+payload = "microsoft-teams"
+name = "Microsoft Teams"
+description = "Work chat & calls"
+
+[[item]]
+id = "outlook"
+category = "work"
+kind = "cask"
+default = true
+payload = "microsoft-outlook"
+name = "Outlook"
+description = "Work email & calendar"
+
+[[item]]
+id = "word"
+category = "work"
+kind = "cask"
+default = true
+payload = "microsoft-word"
+name = "Word"
+description = "Documents"
+
+[[item]]
+id = "excel"
+category = "work"
+kind = "cask"
+default = true
+payload = "microsoft-excel"
+name = "Excel"
+description = "Spreadsheets"
+
+[[item]]
+id = "powerpoint"
+category = "work"
+kind = "cask"
+default = true
+payload = "microsoft-powerpoint"
+name = "PowerPoint"
+description = "Slides"
+
+[[item]]
+id = "onedrive"
+category = "work"
+kind = "cask"
+default = false
+payload = "onedrive"
+name = "OneDrive"
+description = "Microsoft cloud storage"
+
+[[item]]
+id = "libreoffice"
+category = "work"
+kind = "cask"
+default = false
+payload = "libreoffice"
+name = "LibreOffice"
+description = "Free & open Office suite"
+
+[[item]]
+id = "onlyoffice"
+category = "work"
+kind = "cask"
+default = false
+payload = "onlyoffice"
+name = "OnlyOffice"
+description = "Best Office-format compatibility (open source)"
+
+[[item]]
+id = "cloudflare-warp"
+category = "network"
+kind = "cask"
+default = true
+payload = "cloudflare-warp"
+name = "Cloudflare WARP"
+description = "Encrypted DNS / VPN"
+
+[[item]]
+id = "tailscale"
+category = "network"
+kind = "cask"
+default = true
+payload = "tailscale-app"
+name = "Tailscale"
+description = "Zero-config WireGuard mesh — your devices, one network"
+
+[[item]]
+id = "mullvad"
+category = "network"
+kind = "cask"
+default = false
+payload = "mullvad-vpn"
+name = "Mullvad"
+description = "Privacy VPN (no account details)"
+
+[[item]]
+id = "protonvpn"
+category = "network"
+kind = "cask"
+default = false
+payload = "protonvpn"
+name = "Proton VPN"
+description = "Privacy VPN"
+
+[[item]]
+id = "wireguard"
+category = "network"
+kind = "brew"
+default = false
+payload = "wireguard-tools"
+name = "WireGuard tools"
+description = "wg / wg-quick CLI"
+
+[[item]]
+id = "ollama"
+category = "localai"
+kind = "brew"
+default = false
+payload = "ollama"
+name = "Ollama"
+description = "Run local LLMs from the terminal"
+flags = ["large"]
+
+[[item]]
+id = "lm-studio"
+category = "localai"
+kind = "cask"
+default = false
+payload = "lm-studio"
+name = "LM Studio"
+description = "Local LLM GUI — download & chat with open models"
+flags = ["large"]
+
+[[item]]
+id = "mole"
+category = "maintenance"
+kind = "brew"
+default = true
+payload = "mole"
+name = "Mole"
+description = "Clean/uninstall/analyze/monitor from the terminal (run: mo)"
+
+[[item]]
+id = "dockutil"
+category = "maintenance"
+kind = "brew"
+default = true
+payload = "dockutil"
+name = "dockutil"
+description = "Dock layout CLI — powers the Dock arranger"
+
+[[item]]
+id = "mas"
+category = "maintenance"
+kind = "brew"
+default = true
+payload = "mas"
+name = "mas"
+description = "Mac App Store CLI — script App Store installs"
+
+[[item]]
+id = "dust"
+category = "maintenance"
+kind = "brew"
+default = true
+payload = "dust"
+name = "dust"
+description = "Visual disk usage (better du)"
+
+[[item]]
+id = "duf"
+category = "maintenance"
+kind = "brew"
+default = true
+payload = "duf"
+name = "duf"
+description = "Pretty disk free (better df)"
+
+[[item]]
+id = "topgrade"
+category = "maintenance"
+kind = "brew"
+default = false
+payload = "topgrade"
+name = "Topgrade"
+description = "Upgrade everything in one command (overlaps update.sh)"
+
+[[item]]
+id = "pearcleaner"
+category = "maintenance"
+kind = "cask"
+default = false
+payload = "pearcleaner"
+name = "Pearcleaner"
+description = "Open-source app uninstaller (GUI)"
+
+[[item]]
+id = "onyx"
+category = "maintenance"
+kind = "cask"
+default = false
+payload = "onyx"
+name = "OnyX"
+description = "Veteran macOS maintenance & tweaks GUI"
+
+[[item]]
+id = "font-jetbrains"
+category = "fonts"
+kind = "cask"
+default = true
+payload = "font-jetbrains-mono-nerd-font"
+name = "JetBrains Mono NF"
+description = "Default terminal font"
+
+[[item]]
+id = "font-symbols"
+category = "fonts"
+kind = "cask"
+default = true
+payload = "font-symbols-only-nerd-font"
+name = "Symbols NF"
+description = "Icons for sketchybar etc."
+
+[[item]]
+id = "font-fira"
+category = "fonts"
+kind = "cask"
+default = false
+payload = "font-fira-code-nerd-font"
+name = "Fira Code NF"
+description = "Ligature classic"
+
+[[item]]
+id = "font-meslo"
+category = "fonts"
+kind = "cask"
+default = false
+payload = "font-meslo-lg-nerd-font"
+name = "Meslo LG NF"
+description = "Powerlevel-style font"
+
+[[item]]
+id = "font-monaspace"
+category = "fonts"
+kind = "cask"
+default = false
+payload = "font-monaspace"
+name = "Monaspace"
+description = "GitHub superfamily"
+
