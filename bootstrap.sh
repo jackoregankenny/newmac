@@ -57,6 +57,20 @@ fi
 ok "Homebrew ready: $(brew --version | head -n1)"
 brew update
 
+# Open the picker (Rust if available, else bash), seeded from this clone.
+open_picker() {
+  bash "$SCRIPTS_DIR/get-ui.sh" --quiet || true
+  if ui_bin="$(newmac_ui_bin "$REPO_DIR")"; then
+    NEWMAC="$REPO_DIR" "$ui_bin" \
+      --conf "$REPO_DIR/newmac.conf" \
+      --catalog "$REPO_DIR/catalog.toml" \
+      --themes-dir "$REPO_DIR/config/themes" \
+      --flavours-dir "$REPO_DIR/flavours"
+  else
+    bash "$SCRIPTS_DIR/configure.sh"
+  fi
+}
+
 # --- 3. Choose what to install ---------------------------------
 if [[ "$MODE" == "--defaults" ]]; then
   bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
@@ -71,20 +85,9 @@ elif [[ ! -t 0 ]]; then
     bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
   fi
 else
-  # Interactive: ALWAYS open the picker. If a newmac.conf already exists the
-  # Presets screen defaults to "Keep current", so a re-run is one keystroke —
-  # we never silently skip straight to installing.
-  bash "$SCRIPTS_DIR/get-ui.sh" --quiet || true
-  if ui_bin="$(newmac_ui_bin "$REPO_DIR")"; then
-    NEWMAC="$REPO_DIR" "$ui_bin" \
-      --conf "$REPO_DIR/newmac.conf" \
-      --catalog "$REPO_DIR/catalog.toml" \
-      --themes-dir "$REPO_DIR/config/themes" \
-      --flavours-dir "$REPO_DIR/flavours" \
-      || { err "Configuration aborted."; exit 1; }
-  else
-    bash "$SCRIPTS_DIR/configure.sh" || { err "Configuration aborted."; exit 1; }
-  fi
+  # Interactive: ALWAYS open the picker. An existing conf just makes the Presets
+  # screen default to "Keep current" — we never silently skip to installing.
+  open_picker || { err "Configuration aborted."; exit 1; }
 fi
 
 # Safety net: if no conf was written (e.g. the picker was quit without saving),
@@ -93,10 +96,34 @@ if [[ ! -f "$REPO_DIR/newmac.conf" ]]; then
   warn "No selection saved — using catalog defaults."
   bash "$SCRIPTS_DIR/configure.sh" --defaults || { err "Configuration failed."; exit 1; }
 fi
+
+# --- 3b. Confirm before installing -----------------------------
+# Never just barrel into an install: show what will happen and let the user
+# continue, revise (re-open the picker), or bail. Skipped for the explicitly
+# non-interactive --defaults/--preset paths and when there's no terminal.
+if [[ -t 0 && "$MODE" != "--defaults" && "$MODE" != "--preset" ]]; then
+  while true; do
+    # shellcheck disable=SC1090
+    source "$REPO_DIR/newmac.conf"
+    n=$(printf '%s' "${NEWMAC_SELECTED:-}" | wc -w | tr -d ' ')
+    printf '\n'
+    info "Ready to install: $n tools · theme=${NEWMAC_THEME:-?} · ricing=${NEWMAC_TOGGLE_RICING:-0} · glass=${NEWMAC_GLASS:-0}"
+    printf '  %s[Enter]%s install now   %s[r]%s revise selection   %s[q]%s quit%s\n' \
+      "$c_green" "$c_reset" "$c_yellow" "$c_reset" "$c_red" "$c_reset" "$c_reset"
+    IFS= read -rsn1 _ans || _ans=""
+    case "$_ans" in
+      ""|i|I|y|Y) break ;;
+      r|R)        open_picker || { err "Configuration aborted."; exit 1; } ;;
+      q|Q|$'\x1b') info "Aborted — nothing installed. Re-run any time."; exit 0 ;;
+      *)          ;;  # ignore other keys, redraw the prompt
+    esac
+  done
+fi
 # shellcheck disable=SC1090
 source "$REPO_DIR/newmac.conf"
 
 # --- 4. Install everything selected ----------------------------
+info "Installing — this streams brew/curl output so you can watch progress."
 bash "$SCRIPTS_DIR/install.sh"
 
 # --- 5. Dotfiles / config symlinks -----------------------------

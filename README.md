@@ -186,6 +186,22 @@ The manifest only records what newmac *actually installed* (anything already on
 the machine before a run is never claimed), so `newmac nuke` is safe to use on a
 machine that wasn't fresh — and `--dry-run` works on the destructive subcommands.
 
+### Reset / start over (one-liner)
+
+To pull everything newmac installed back off a Mac — great for testing the
+installer, or wiping the slate to try a different flavour — there's a `nuke`
+one-liner that mirrors the installer. It reads the manifest, asks first, and
+only removes what newmac added:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/nuke.sh)"
+# preview without removing anything:
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/nuke.sh)" -- --dry-run
+```
+
+Then re-run the [installer](#quick-start-on-the-fresh-mac) to rebuild from a
+different preset.
+
 `update.sh` also re-runs `install.sh`, so **newly selected tools get installed on the
 next update** — edit `newmac.conf` (or `bootstrap.sh --reconfigure`) and update.
 Greedy cask upgrades only run interactively, so the scheduled run never hangs on a
