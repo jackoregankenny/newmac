@@ -52,7 +52,9 @@ Pick one, then fine-tune each category:
 The picker is pure bash (runs on the stock macOS shell, zero dependencies) and walks
 through: **Terminals · Multiplexers · AI coding agents · Menu bar · Tiling & window
 management · Dev runtimes · Apps · Fonts**, then asks about the tiling-desktop
-configs, macOS UX defaults, power tuning, and weekly auto-updates.
+configs, macOS UX defaults, power tuning, weekly auto-updates, and whether to
+arrange the Dock to match your picks (via `dockutil`). Bootstrap also sets your git
+identity (name/email + delta as pager) if it isn't configured yet.
 
 Other modes:
 
@@ -124,6 +126,9 @@ sketchybar/borders live.
 bash update.sh                    # brew + casks + rust + bun + node + agents
 bash scripts/schedule-updates.sh  # weekly LaunchAgent (Mondays 10:00), logs to ~/Library/Logs
 bash scripts/status.sh            # green ●/red ○ for every tool + versions  (alias: status)
+bash scripts/uninstall.sh <id>    # remove a tool the same way it was installed
+bash scripts/uninstall.sh --unselected   # prune everything you deselected in the picker
+bash scripts/dock.sh              # re-arrange the Dock to match your selection (dockutil)
 ```
 
 `update.sh` also re-runs `install.sh`, so **newly selected tools get installed on the
@@ -194,17 +199,14 @@ AltTab shortcut → `⌥Tab` with "all spaces", Reduce Motion on.
   picker for everyone. PRs welcome.
 - **Add a preset**: a name + three case entries in `scripts/presets.sh` (title, id
   list, toggles). Unknown ids are caught and warned about at configure time.
+- **CI keeps it honest**: every push runs syntax checks, ShellCheck, a picker/installer
+  smoke test, a docs-drift check (`scripts/docs.sh`), and an LF line-ending check.
 - **Change your selection**: `bash bootstrap.sh --reconfigure`, or edit `newmac.conf`.
 - **Prompt theme**: `config/starship.toml`. **Terminal look**: `config/ghostty/config`.
 - **Machine-specific shell tweaks**: `~/.zshrc.local` (auto-sourced, git-ignored —
   bootstrap also records the repo path there so the `status`/`macup` aliases work).
-- **git + delta**: after install set identity + pager:
-  ```sh
-  git config --global user.name "Your Name"
-  git config --global user.email "you@example.com"
-  git config --global core.pager delta
-  git config --global delta.navigate true
-  ```
+- **git + delta**: bootstrap prompts for your identity and wires delta as the pager
+  automatically; rerun any time with `git config --global user.name/user.email`.
 
 ## Notes / gotchas
 

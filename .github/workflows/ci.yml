@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    name: Lint, smoke test, docs & line endings
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # All shell files in the repo: every tracked *.sh (this already covers
+      # bootstrap.sh, update.sh, get.sh, config/sketchybar/plugins/*.sh and
+      # config/themes/*.sh) plus sketchybarrc, which has no .sh extension.
+      - name: Collect shell files
+        run: |
+          set -euo pipefail
+          { git ls-files '*.sh'; echo 'config/sketchybar/sketchybarrc'; } > shell-files.txt
+          echo "Checking $(wc -l < shell-files.txt) shell files:"
+          cat shell-files.txt
+
+      - name: Syntax check (bash -n)
+        run: |
+          set -euo pipefail
+          fail=0
+          while IFS= read -r f; do
+            if ! bash -n "$f"; then
+              echo "::error file=$f::bash -n failed for $f"
+              fail=1
+            fi
+          done < shell-files.txt
+          exit "$fail"
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          shellcheck --version
+
+      # Warning severity only — info-level notes must not break the build.
+      # SC1090/SC1091 excluded: dynamic `source` of theme/conf files is deliberate.
+      # SC2154/SC2034 excluded: variables are assigned/consumed across those
+      # sourced files (lib.sh colours, catalog arrays, theme palettes).
+      - name: ShellCheck (warning+)
+        run: |
+          set -euo pipefail
+          xargs -a shell-files.txt shellcheck \
+            --shell=bash \
+            --severity=warning \
+            --exclude=SC1090,SC1091,SC2154,SC2034
+
+      - name: Smoke test - configure.sh --defaults
+        run: |
+          set -euo pipefail
+          bash scripts/configure.sh --defaults
+          test -f newmac.conf || { echo '::error::newmac.conf was not created'; exit 1; }
+          # shellcheck disable=SC1091
+          source ./newmac.conf
+          if [ -z "${NEWMAC_SELECTED// /}" ]; then
+            echo '::error::NEWMAC_SELECTED is empty in newmac.conf'
+            exit 1
+          fi
+          echo "NEWMAC_SELECTED has $(echo "$NEWMAC_SELECTED" | wc -w) entries"
+
+      - name: Smoke test - install.sh --dry-run generates a Brewfile
+        run: |
+          set -euo pipefail
+          out="$(bash scripts/install.sh --dry-run)"
+          printf '%s\n' "$out"
+          if ! printf '%s\n' "$out" | grep -q 'brew "'; then
+            echo '::error::install.sh --dry-run produced no brew "..." lines'
+            exit 1
+          fi
+
+      - name: Smoke test - theme.sh rosepine
+        run: |
+          set -euo pipefail
+          THEME_HOME="$(mktemp -d)"
+          HOME="$THEME_HOME" bash scripts/theme.sh rosepine
+          test -f "$THEME_HOME/.config/newmac/theme.sh" || {
+            echo '::error::theme.sh did not write .config/newmac/theme.sh'
+            exit 1
+          }
+          rm -rf "$THEME_HOME"
+
+      - name: Clean up smoke test artifacts
+        run: |
+          set -euo pipefail
+          # theme.sh rewrites the palette selector in config/starship.toml — undo it.
+          git checkout -- config/starship.toml
+          rm -f newmac.conf shell-files.txt
+
+      - name: Docs drift check (scripts/docs.sh)
+        run: |
+          set -euo pipefail
+          bash scripts/docs.sh
+          if ! git diff --exit-code docs/CATALOG.md; then
+            echo '::error::docs/CATALOG.md is out of date with scripts/catalog.sh.'
+            echo 'Run "bash scripts/docs.sh" and commit the regenerated docs/CATALOG.md.'
+            exit 1
+          fi
+
+      - name: Line endings check (no CRLF in working tree)
+        run: |
+          set -euo pipefail
+          bad="$(git ls-files --eol | awk '$2 == "w/crlf" || $2 == "w/mixed"')"
+          if [ -n "$bad" ]; then
+            echo '::error::CRLF line endings found in the working tree (expected LF, see .gitattributes):'
+            printf '%s\n' "$bad"
+            exit 1
+          fi
+          echo 'All tracked files use LF in the working tree.'

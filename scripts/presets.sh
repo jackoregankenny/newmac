@@ -49,13 +49,13 @@ newmac_preset_ids() {
   esac
 }
 
-# Toggles: "ricing defaults power schedule" as 0/1, space-separated.
+# Toggles: "ricing defaults power schedule dock" as 0/1, space-separated.
 newmac_preset_toggles() {
   case "$1" in
-    minimal) echo "0 1 1 0" ;;
-    webdev)  echo "0 1 1 0" ;;
-    ai)      echo "1 1 1 0" ;;
-    rice)    echo "1 1 1 0" ;;
-    *)       echo "1 1 1 0" ;;
+    minimal) echo "0 1 1 0 1" ;;
+    webdev)  echo "0 1 1 0 1" ;;
+    ai)      echo "1 1 1 0 1" ;;
+    rice)    echo "1 1 1 0 1" ;;
+    *)       echo "1 1 1 0 1" ;;
   esac
 }

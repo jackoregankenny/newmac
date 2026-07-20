@@ -169,6 +169,7 @@ lm-studio|localai|cask|off|lm-studio|LM Studio|Local LLM GUI — download & chat
 
 # --- Maintenance & cleanup -------------------------------------
 mole|maintenance|brew|on|mole|Mole|Clean/uninstall/analyze/monitor from the terminal (run: mo)
+dockutil|maintenance|brew|on|dockutil|dockutil|Dock layout CLI — powers the Dock arranger
 mas|maintenance|brew|on|mas|mas|Mac App Store CLI — script App Store installs
 dust|maintenance|brew|on|dust|dust|Visual disk usage (better du)
 duf|maintenance|brew|on|duf|duf|Pretty disk free (better df)

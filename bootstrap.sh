@@ -93,6 +93,25 @@ if ! grep -q 'NEWMAC=' "$HOME/.zshrc.local" 2>/dev/null; then
   ok "Recorded repo location in ~/.zshrc.local"
 fi
 
+# --- 5b. Git identity & niceties -------------------------------
+if have git; then
+  git config --global init.defaultBranch main 2>/dev/null || true
+  if have delta && [[ -z "$(git config --global core.pager 2>/dev/null || true)" ]]; then
+    git config --global core.pager delta
+    git config --global interactive.diffFilter 'delta --color-only'
+    git config --global delta.navigate true
+    ok "git: delta wired up as pager."
+  fi
+  if [[ -z "$(git config --global user.email 2>/dev/null || true)" && -t 0 ]]; then
+    info "Git identity not set — enter it now (leave blank to skip)."
+    read -r -p "  git user.name:  " _gname || _gname=""
+    read -r -p "  git user.email: " _gmail || _gmail=""
+    [[ -n "$_gname" ]] && git config --global user.name "$_gname"
+    [[ -n "$_gmail" ]] && git config --global user.email "$_gmail"
+    [[ -n "$_gmail" ]] && ok "git identity saved."
+  fi
+fi
+
 # --- 6. fzf keybindings ----------------------------------------
 if have fzf; then
   "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc --no-bash --no-fish >/dev/null 2>&1 || true
@@ -110,6 +129,9 @@ if [[ "${NEWMAC_TOGGLE_POWER:-0}" == 1 ]]; then
 fi
 if [[ "${NEWMAC_TOGGLE_SCHEDULE:-0}" == 1 ]]; then
   bash "$SCRIPTS_DIR/schedule-updates.sh"
+fi
+if [[ "${NEWMAC_TOGGLE_DOCK:-0}" == 1 ]] && have dockutil; then
+  bash "$SCRIPTS_DIR/dock.sh" || warn "dock.sh reported issues."
 fi
 
 # --- done ------------------------------------------------------

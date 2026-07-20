@@ -181,6 +181,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 | | Tool | Install | Description |
 |---|---|---|---|
 | ✓ | **Mole** (`mole`) | `brew install mole` | Clean/uninstall/analyze/monitor from the terminal (run: mo) |
+| ✓ | **dockutil** (`dockutil`) | `brew install dockutil` | Dock layout CLI — powers the Dock arranger |
 | ✓ | **mas** (`mas`) | `brew install mas` | Mac App Store CLI — script App Store installs |
 | ✓ | **dust** (`dust`) | `brew install dust` | Visual disk usage (better du) |
 | ✓ | **duf** (`duf`) | `brew install duf` | Pretty disk free (better df) |

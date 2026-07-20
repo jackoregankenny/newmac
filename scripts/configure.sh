@@ -196,13 +196,15 @@ fi
 
 # --- Toggles ---------------------------------------------------
 if [[ "$PRESEL" == "preset" ]]; then
+  # shellcheck disable=SC2046  # intentional split of "1 1 1 0 1" into args
   set -- $(newmac_preset_toggles "$PRESET")
-  t_ricing="$1"; t_defaults="$2"; t_power="$3"; t_schedule="$4"
+  t_ricing="$1"; t_defaults="$2"; t_power="$3"; t_schedule="$4"; t_dock="${5:-1}"
 else
   t_ricing="${NEWMAC_TOGGLE_RICING:-1}"
   t_defaults="${NEWMAC_TOGGLE_MACOS_DEFAULTS:-1}"
   t_power="${NEWMAC_TOGGLE_POWER:-1}"
   t_schedule="${NEWMAC_TOGGLE_SCHEDULE:-0}"
+  t_dock="${NEWMAC_TOGGLE_DOCK:-1}"
 fi
 
 if [[ $USE_DEFAULTS -eq 0 ]]; then
@@ -214,6 +216,7 @@ if [[ $USE_DEFAULTS -eq 0 ]]; then
   if tui_yesno "Apply opinionated macOS UX defaults (keyboard, Finder, Dock, screenshots)?" "$([[ "$t_defaults" == 1 ]] && echo y || echo n)"; then t_defaults=1; else t_defaults=0; fi
   if tui_yesno "Apply battery/power tuning via pmset (needs sudo)?" "$([[ "$t_power" == 1 ]] && echo y || echo n)"; then t_power=1; else t_power=0; fi
   if tui_yesno "Schedule weekly auto-updates (LaunchAgent, Mondays 10:00)?" "$([[ "$t_schedule" == 1 ]] && echo y || echo n)"; then t_schedule=1; else t_schedule=0; fi
+  if tui_yesno "Arrange the Dock to match your selection (replaces the current Dock)?" "$([[ "$t_dock" == 1 ]] && echo y || echo n)"; then t_dock=1; else t_dock=0; fi
 else
   # Non-interactive with tiling deselected: never run ricing.
   case " $SELECTED " in
@@ -239,8 +242,8 @@ if [[ $USE_DEFAULTS -eq 0 ]]; then
     printf '  %s%-24s%s %s\n' "$c_bold" "$(newmac_category_title "$category") ($n)" "$c_reset" "$names"
   done
   printf '  %s%-24s%s %s\n' "$c_bold" "Theme" "$c_reset" "$THEME_SEL"
-  printf '  %s%-24s%s ricing=%s · macos-defaults=%s · power=%s · weekly-updates=%s\n' \
-    "$c_bold" "Toggles" "$c_reset" "$t_ricing" "$t_defaults" "$t_power" "$t_schedule"
+  printf '  %s%-24s%s ricing=%s · macos-defaults=%s · power=%s · weekly-updates=%s · dock=%s\n' \
+    "$c_bold" "Toggles" "$c_reset" "$t_ricing" "$t_defaults" "$t_power" "$t_schedule" "$t_dock"
   echo
   if ! tui_yesno "Save this selection?" y; then
     err "Aborted — nothing written."; exit 1
@@ -258,6 +261,7 @@ fi
   echo "NEWMAC_TOGGLE_MACOS_DEFAULTS=$t_defaults"
   echo "NEWMAC_TOGGLE_POWER=$t_power"
   echo "NEWMAC_TOGGLE_SCHEDULE=$t_schedule"
+  echo "NEWMAC_TOGGLE_DOCK=$t_dock"
 } > "$CONF"
 
 ok "Saved selections to newmac.conf${PRESET:+ (preset: $PRESET)}"
