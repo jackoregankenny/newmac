@@ -26,6 +26,22 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 | ✓ | **Zellij** (`zellij`) | `brew install zellij` | Modern multiplexer — sessions/splits/layouts |
 | ✓ | **tmux** (`tmux`) | `brew install tmux` | Classic multiplexer (SSH ubiquity) |
 
+## Terminal tools
+
+| | Tool | Install | Description |
+|---|---|---|---|
+|  | **Lazygit** (`lazygit`) | `brew install lazygit` | Terminal UI for git — staging, rebasing, cherry-picking made painless |
+|  | **Lazydocker** (`lazydocker`) | `brew install lazydocker` | Terminal UI for Docker and docker-compose |
+|  | **Atuin** (`atuin`) | `brew install atuin` | Magical shell history — searchable, synced, per-directory |
+|  | **Yazi** (`yazi`) | `brew install yazi` | Blazing-fast terminal file manager written in Rust |
+|  | **tldr** (`tldr`) | `brew install tlrc` | Simplified, community-driven man pages |
+|  | **direnv** (`direnv`) | `brew install direnv` | Load and unload environment variables per directory |
+|  | **HTTPie** (`httpie`) | `brew install httpie` | User-friendly HTTP client for the terminal (http) |
+|  | **Glow** (`glow`) | `brew install glow` | Render markdown on the command line |
+|  | **hyperfine** (`hyperfine`) | `brew install hyperfine` | Command-line benchmarking tool |
+|  | **mise** (`mise`) | `brew install mise` | Polyglot runtime manager (node/python/etc) — overlaps fnm/uv |
+|  | **k9s** (`k9s`) | `brew install k9s` | Kubernetes cluster management TUI |
+
 ## Shells (zsh is the default)
 
 | | Tool | Install | Description |
@@ -33,7 +49,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **fish** (`fish`) | `brew install fish` | Great defaults, but not POSIX — the newmac rice is zsh-wired |
 |  | **Nushell** (`nushell`) | `brew install nushell` | Structured-data shell — pipelines of tables, not text |
 
-## AI coding agents
+## Agents & ADEs
 
 | | Tool | Install | Description |
 |---|---|---|---|
@@ -50,12 +66,12 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Aider** (`aider`) | `uv tool install aider-chat` | Open-source pair programmer |
 |  | **Qwen Code** (`qwen`) | `bun i -g @qwen-code/qwen-code` | Alibaba Qwen coding CLI |
 |  | **Gemini CLI** (`gemini`) | `brew install gemini-cli` | Google (deprecated in brew — successor: antigravity-cli) |
+| ✓ | **Orca** (`orca`) | `brew install --cask stablyai/orca/orca` | ADE — fleet of parallel agents in worktrees, browser + editor built in |
 
 ## Agent workbenches
 
 | | Tool | Install | Description |
 |---|---|---|---|
-| ✓ | **Orca** (`orca`) | `brew install --cask stablyai/orca/orca` | ADE — fleet of parallel agents in worktrees, browser + editor built in |
 | ✓ | **cmux** (`cmux`) | `brew install --cask cmux` | Agent terminal for multi-agent work (libghostty) |
 |  | **Conductor** (`conductor`) | `brew install --cask conductor` | Parallel Claude/Codex/Cursor agents in worktrees (Melty Labs) |
 |  | **Nimbalyst** (`nimbalyst`) | `brew install --cask nimbalyst` | Visual workspace for Claude Code + Codex (was Crystal) |
@@ -66,6 +82,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |---|---|---|---|
 |  | **Ollama** (`ollama`) | `brew install ollama` | Run local LLMs from the terminal |
 |  | **LM Studio** (`lm-studio`) | `brew install --cask lm-studio` | Local LLM GUI — download & chat with open models |
+|  | **MacWhisper** (`macwhisper`) | `brew install --cask macwhisper` | Transcribe audio locally with Whisper |
 
 ## Menu bar
 
@@ -75,6 +92,8 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **barik** (`barik`) | `brew install --cask mocki-toki/formulae/barik` | Modern SwiftUI menu bar — TOML config, AeroSpace-aware |
 |  | **Ice** (`ice`) | `brew install --cask jordanbaird-ice` | Menu bar manager — hide/rearrange icons (Bartender alternative) |
 | ✓ | **Stats** (`stats`) | `brew install --cask stats` | Menu-bar system monitor |
+|  | **Maccy** (`maccy`) | `brew install --cask maccy` | Clipboard-history manager, open source and lightweight |
+|  | **MonitorControl** (`monitorcontrol`) | `brew install --cask monitorcontrol` | Brightness and volume for external displays via DDC |
 
 ## Tiling & window management
 
@@ -91,6 +110,8 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **DockDoor** (`dockdoor`) | `brew install --cask dockdoor` | Dock hover previews + another alt-tab flavour |
 | ✓ | **Karabiner** (`karabiner`) | `brew install --cask karabiner-elements` | Keyboard remap (Caps → ⌘ held / Esc tapped) |
 | ✓ | **Raycast** (`raycast`) | `brew install --cask raycast` | Launcher / window management |
+|  | **Alfred** (`alfred`) | `brew install --cask alfred` | Launcher and workflows (Raycast alternative) |
+|  | **Hyperkey** (`hyperkey`) | `brew install --cask hyperkey` | Turn Caps Lock into a Hyper key (simple Karabiner alternative) |
 
 ## Dev runtimes & containers
 
@@ -120,6 +141,10 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Postman** (`postman`) | `brew install --cask postman` | API client |
 |  | **UTM** (`utm`) | `brew install --cask utm` | Virtual machines on Apple Silicon |
 |  | **Xcode** (`xcode`) | App Store (`mas`, id 497799835) | Full IDE + simulators (App Store, huge) |
+|  | **Proxyman** (`proxyman`) | `brew install --cask proxyman` | Native HTTP/HTTPS debugging proxy |
+|  | **DBeaver** (`dbeaver`) | `brew install --cask dbeaver-community` | Universal database GUI (free community edition) |
+|  | **Insomnia** (`insomnia`) | `brew install --cask insomnia` | REST and GraphQL API client |
+|  | **Fork** (`fork`) | `brew install --cask fork` | Fast and friendly git GUI |
 
 ## Browsers
 
@@ -149,6 +174,10 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Keka** (`keka`) | `brew install --cask keka` | Archiver |
 |  | **Shottr** (`shottr`) | `brew install --cask shottr` | Screenshot annotation |
 |  | **Amphetamine** (`amphetamine`) | App Store (`mas`, id 937984704) | Keep the Mac awake (App Store) |
+|  | **Espanso** (`espanso`) | `brew install --cask espanso` | Cross-platform text expander |
+|  | **Homerow** (`homerow`) | `brew install --cask homerow` | Click anything with the keyboard (Vimium-style for macOS) |
+|  | **CleanShot X** (`cleanshot`) | `brew install --cask cleanshot` | Screenshot and screen recording with annotation and OCR |
+|  | **Wispr Flow** (`wispr-flow`) | `brew install --cask wispr-flow` | Voice dictation with AI auto-editing |
 
 ## Office & work
 
@@ -187,6 +216,8 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Mullvad** (`mullvad`) | `brew install --cask mullvad-vpn` | Privacy VPN (no account details) |
 |  | **Proton VPN** (`protonvpn`) | `brew install --cask protonvpn` | Privacy VPN |
 |  | **WireGuard tools** (`wireguard`) | `brew install wireguard-tools` | wg / wg-quick CLI |
+|  | **LuLu** (`lulu`) | `brew install --cask lulu` | Free outbound firewall from Objective-See |
+|  | **Little Snitch** (`little-snitch`) | `brew install --cask little-snitch` | Premium network firewall and connection monitor |
 
 ## Maintenance & cleanup
 
@@ -200,6 +231,8 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **Topgrade** (`topgrade`) | `brew install topgrade` | Upgrade everything in one command (overlaps update.sh) |
 |  | **Pearcleaner** (`pearcleaner`) | `brew install --cask pearcleaner` | Open-source app uninstaller (GUI) |
 |  | **OnyX** (`onyx`) | `brew install --cask onyx` | Veteran macOS maintenance & tweaks GUI |
+|  | **AppCleaner** (`appcleaner`) | `brew install --cask appcleaner` | Thoroughly uninstall apps and their leftover files |
+|  | **Clop** (`clop`) | `brew install --cask clop` | Automatically compress images, screenshots and video |
 
 ## Fonts
 
@@ -215,33 +248,39 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 
 ### Balanced (`--preset default`)
 
-The author's daily setup — agents, tiling desktop, the works
+The catalog defaults — every category at its sensible default
 
 _Uses the catalog defaults (✓ items above)._
 
-### Minimal (`--preset minimal`)
+### Jack's flavour (`--preset jack`)
 
-Lean: Ghostty + Zellij + Claude + 1Password, no rice, no extras
+AeroSpace rice · agents · Rio+cmux · Nord glass — my daily driver
 
-Ghostty, Zellij, Claude Code, 1Password, 1Password CLI, VS Code, Bun, fnm, uv, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
+Rio, cmux, Zellij, Lazygit, Atuin, direnv, Claude Code, Codex, Amp, opencode, Orca, Wispr Flow, AeroSpace, JankyBorders, AltTab, Raycast, SketchyBar, Stats, MonitorControl, Bun, fnm, uv, Go, Rust, docker CLI, docker-compose, Colima, VS Code, Dia, 1Password, 1Password CLI, coconutBattery, Cloudflare WARP, Tailscale, LuLu, spotify_player, Mole, mas, dust, duf, dockutil, JetBrains Mono NF, Symbols NF
 
-### Web dev (`--preset webdev`)
+### Basic (`--preset basic`)
 
-TypeScript/web: Bun, Node, containers, VS Code, Chrome, Figma
+Lean: Rio + Zellij + Claude + 1Password — no rice, no extras
 
-Ghostty, Rio, cmux, Orca, Zellij, tmux, Claude Code, Codex, opencode, Bun, fnm, uv, docker CLI, docker-compose, Colima, VS Code, Chrome, Figma, Dia, 1Password, 1Password CLI, Cloudflare WARP, Raycast, Stats, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
+Rio, Zellij, Claude Code, 1Password, 1Password CLI, VS Code, Bun, fnm, uv, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
 
 ### AI power user (`--preset ai`)
 
 Every coding agent + agent terminals + full tiling desktop
 
-Ghostty, Rio, cmux, Orca, Conductor, Nimbalyst, Zellij, tmux, Claude Code, Codex, Factory Droid, opencode, Amp, Kimi Code, Crush, Goose, Cursor CLI, Copilot CLI, Aider, Qwen Code, Bun, fnm, uv, Go, Rust, docker CLI, docker-compose, Colima, VS Code, Dia, 1Password, 1Password CLI, Cloudflare WARP, Raycast, Stats, coconutBattery, SketchyBar, AeroSpace, JankyBorders, AltTab, Karabiner, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
+Rio, cmux, Orca, Conductor, Nimbalyst, Zellij, tmux, Claude Code, Codex, Factory Droid, opencode, Amp, Kimi Code, Crush, Goose, Cursor CLI, Copilot CLI, Aider, Qwen Code, Bun, fnm, uv, Go, Rust, docker CLI, docker-compose, Colima, VS Code, Dia, 1Password, 1Password CLI, Cloudflare WARP, Raycast, Stats, coconutBattery, SketchyBar, AeroSpace, JankyBorders, AltTab, Karabiner, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
 
 ### Full rice (`--preset rice`)
 
 Linux-style desktop first: tiling, bar, borders, all the fonts
 
-Ghostty, Rio, Zellij, tmux, Claude Code, Bun, fnm, uv, SketchyBar, Stats, AeroSpace, JankyBorders, AltTab, DockDoor, Karabiner, Raycast, 1Password, 1Password CLI, VS Code, Dia, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF, Fira Code NF, Meslo LG NF, Monaspace
+Rio, Zellij, tmux, Claude Code, Bun, fnm, uv, SketchyBar, Stats, AeroSpace, JankyBorders, AltTab, DockDoor, Karabiner, Raycast, 1Password, 1Password CLI, VS Code, Dia, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF, Fira Code NF, Meslo LG NF, Monaspace
+
+### Web dev (`--preset webdev`)
+
+TypeScript/web: Bun, Node, containers, VS Code, Chrome, Figma
+
+Rio, cmux, Orca, Zellij, tmux, Claude Code, Codex, opencode, Bun, fnm, uv, docker CLI, docker-compose, Colima, VS Code, Chrome, Figma, Dia, 1Password, 1Password CLI, Cloudflare WARP, Raycast, Stats, Mole, mas, dust, duf, JetBrains Mono NF, Symbols NF
 
 ## Themes
 

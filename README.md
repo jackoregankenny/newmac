@@ -257,21 +257,30 @@ Workspaces: **1** Agents · **2** Browser · **3** Editor · **4** Comms · **5*
 | `⌥f` | fullscreen |
 | `⌥b` | previous workspace |
 | `⌥⇧space` | float / un-float window |
-| `⌥⇧/` | **hotkey cheat-sheet popup** |
+| `⌥⇧/` | **hotkey cheat-sheet popup** (covers AeroSpace **and** Zellij) |
 | `⌥⇧;` | service mode (`r` reset, `esc` reload) |
 | `⌥Tab` | AltTab window switcher |
 
+**Zellij** (terminal multiplexer) uses **Ctrl-prefixed modes** — AeroSpace owns the
+`⌥` keys globally: `Ctrl p` pane · `Ctrl t` tab · `Ctrl n` resize · `Ctrl s` scroll ·
+`Ctrl o` session (`d` detach) · `Ctrl g` lock · `Ctrl q` quit. The `⌥⇧/` sheet lists them.
+
 Manual one-time steps (macOS blocks scripting them): Accessibility permissions,
-AltTab shortcut → `⌥Tab` with "all spaces", Reduce Motion on.
+AltTab shortcut → `⌥Tab` with "all spaces", Reduce Motion on. Caps Lock → ⌘ is set in
+System Settings → Keyboard → Modifier Keys.
 
 ## Customising
 
-- **Add a tool to the catalog**: one line in `scripts/catalog.sh` — it appears in the
-  picker for everyone. PRs welcome.
-- **Add a preset**: a name + three case entries in `scripts/presets.sh` (title, id
-  list, toggles). Unknown ids are caught and warned about at configure time.
-- **CI keeps it honest**: every push runs syntax checks, ShellCheck, a picker/installer
-  smoke test, a docs-drift check (`scripts/docs.sh`), and an LF line-ending check.
+- **Add a tool to the catalog**: one `[[item]]` block in [`catalog.toml`](catalog.toml)
+  (the canonical source), then `cd ui && cargo run -- catalog gen-sh --out-dir ../scripts`
+  to regenerate `scripts/catalog.sh`. It appears in the picker for everyone. PRs welcome.
+- **Add a flavour/preset**: drop a `flavours/<id>.toml` file (id, title, desc, theme,
+  toggles, ids) and regenerate — it shows up on the picker's Presets screen and as
+  `--preset <id>`. See [CONTRIBUTING.md](CONTRIBUTING.md). Unknown ids are caught by
+  tests + CI.
+- **CI keeps it honest**: shell syntax + ShellCheck + smoke tests, a catalog/flavour
+  drift check (generated `.sh` must match the TOML), Rust fmt/clippy/tests, and LF
+  line-endings — every push.
 - **Change your selection**: `bash bootstrap.sh --reconfigure`, or edit `newmac.conf`.
 - **Prompt theme**: `config/starship.toml`. **Terminal look**: `config/ghostty/config`.
 - **Machine-specific shell tweaks**: `~/.zshrc.local` (auto-sourced, git-ignored —

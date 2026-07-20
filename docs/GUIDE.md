@@ -77,10 +77,14 @@ whole model one idea at a time and offers to open the panels it mentions. The ri
 step offers it automatically on first setup. Everything below is the same material as
 reference.
 
-The modifier is **⌥ (Option)**; Caps Lock became **⌘ held / Esc tapped**.
+The modifier is **⌥ (Option)**. Caps Lock acts as **⌘** — set it in System Settings →
+Keyboard → Modifier Keys (the optional **Karabiner** cask adds the dual-role
+⌘-held / Esc-tapped variant if you prefer that).
 
 **Press `⌥⇧/` any time for the hotkey cheat-sheet popup.** That's the one binding to
-memorise; it teaches the rest (`keys` in a terminal does the same).
+memorise; it teaches the rest (`keys` in a terminal does the same). The sheet covers
+both **AeroSpace** (window/workspace keys, below) and **Zellij** (terminal
+multiplexer, next).
 
 The mental model:
 
@@ -94,6 +98,15 @@ The mental model:
   for deep work; floating for meetings and quick panels — both are the intended use.
 - Something looks wrong? `⌥⇧;` then `r` resets the layout; `esc` reloads the config.
 - `⌥Tab` is the AltTab window switcher (all windows, all Spaces).
+
+**Zellij (terminal multiplexer)** uses **Ctrl-prefixed modes** — AeroSpace owns the
+`⌥` keys globally, so Zellij's default Alt shortcuts are shadowed; the Ctrl modes are
+what work:
+
+- `Ctrl p` **pane** (`n` new · `x` close · `f` fullscreen · `h/j/k/l` focus)
+- `Ctrl t` **tab** (`n` new · `x` close · `r` rename · `←/→` switch)
+- `Ctrl n` resize · `Ctrl s` scroll/`/`-search · `Ctrl o` session (`d` detach)
+- `Ctrl g` lock (toggle) · `Ctrl q` quit · `Enter`/`Esc` leaves a mode
 
 ## 5. Themes — deciding and switching
 
