@@ -13,7 +13,7 @@ schedule = false
 dock = true
 ids = [
   "rio", "cmux", "zellij",
-  "lazygit", "atuin",
+  "lazygit", "atuin", "direnv",
   "claude", "codex", "amp", "opencode", "orca", "wispr-flow",
   "aerospace", "borders", "alt-tab", "raycast", "sketchybar", "stats", "monitorcontrol",
   "bun", "fnm", "uv", "go", "rust", "docker", "docker-compose", "colima",

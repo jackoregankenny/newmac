@@ -110,6 +110,6 @@ fn order(mut flavours: Vec<Flavour>) -> Vec<Flavour> {
         "basic" => 1,
         _ => 2,
     };
-    flavours.sort_by(|a, b| (rank(&a.id), a.id.clone()).cmp(&(rank(&b.id), b.id.clone())));
+    flavours.sort_by_key(|f| (rank(&f.id), f.id.clone()));
     flavours
 }

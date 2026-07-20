@@ -50,7 +50,7 @@ impl Searcher {
             .collect();
         if !query.is_empty() {
             // Stable sort by score desc; ties keep catalog order.
-            out.sort_by(|a, b| b.1.cmp(&a.1));
+            out.sort_by_key(|&(_, score)| std::cmp::Reverse(score));
         }
         out
     }
