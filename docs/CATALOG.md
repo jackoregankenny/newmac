@@ -26,6 +26,13 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 | ✓ | **Zellij** (`zellij`) | `brew install zellij` | Modern multiplexer — sessions/splits/layouts |
 | ✓ | **tmux** (`tmux`) | `brew install tmux` | Classic multiplexer (SSH ubiquity) |
 
+## Shells (zsh is the default)
+
+| | Tool | Install | Description |
+|---|---|---|---|
+|  | **fish** (`fish`) | `brew install fish` | Great defaults, but not POSIX — the newmac rice is zsh-wired |
+|  | **Nushell** (`nushell`) | `brew install nushell` | Structured-data shell — pipelines of tables, not text |
+
 ## AI coding agents
 
 | | Tool | Install | Description |
@@ -163,6 +170,7 @@ starship, zoxide, fzf, eza, bat, ripgrep, fd, delta, zsh-autosuggestions, zsh-sy
 |  | **WhatsApp** (`whatsapp`) | `brew install --cask whatsapp` | Messaging |
 |  | **Telegram** (`telegram`) | `brew install --cask telegram` | Messaging |
 |  | **Spotify** (`spotify`) | `brew install --cask spotify` | Music |
+|  | **spotify_player** (`spotify-player`) | `brew install spotify_player` | TUI Spotify client — rice-friendly (Premium required) |
 |  | **IINA** (`iina`) | `brew install --cask iina` | Video player |
 |  | **VLC** (`vlc`) | `brew install --cask vlc` | Plays anything |
 

@@ -54,7 +54,7 @@ zellij|multiplexers|brew|on|zellij|Zellij|Modern multiplexer — sessions/splits
 tmux|multiplexers|brew|on|tmux|tmux|Classic multiplexer (SSH ubiquity)
 
 # --- Shells (zsh + plugins is the wired-up default) ------------
-fish|shells|brew|off|fish|fish|Great defaults, but not POSIX — newmac's rice is zsh-wired
+fish|shells|brew|off|fish|fish|Great defaults, but not POSIX — the newmac rice is zsh-wired
 nushell|shells|brew|off|nushell|Nushell|Structured-data shell — pipelines of tables, not text
 
 # --- AI coding agents ------------------------------------------
