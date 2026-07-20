@@ -55,7 +55,7 @@ jobs:
         run: cargo build --release
 
   catalog-in-sync:
-    name: catalog.sh matches catalog.toml
+    name: catalog.sh + presets.sh match the TOML
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -65,9 +65,13 @@ jobs:
           workspaces: ui
       - name: regenerate and diff
         run: |
-          cargo run --quiet -- catalog gen-sh --stdout > /tmp/catalog.gen.sh
-          if ! diff -u ../scripts/catalog.sh /tmp/catalog.gen.sh; then
-            echo "::error::scripts/catalog.sh is stale. Run: cd ui && cargo run -- catalog gen-sh --out ../scripts/catalog.sh"
+          cargo run --quiet -- catalog gen-sh --out-dir /tmp/gen
+          if ! diff -u ../scripts/catalog.sh /tmp/gen/catalog.sh; then
+            echo "::error::scripts/catalog.sh is stale. Run: cd ui && cargo run -- catalog gen-sh --out-dir ../scripts"
             exit 1
           fi
-          echo "scripts/catalog.sh is in sync with catalog.toml"
+          if ! diff -u ../scripts/presets.sh /tmp/gen/presets.sh; then
+            echo "::error::scripts/presets.sh is stale. Run: cd ui && cargo run -- catalog gen-sh --out-dir ../scripts"
+            exit 1
+          fi
+          echo "catalog.sh + presets.sh are in sync"

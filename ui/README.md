@@ -18,6 +18,11 @@ rewrite** (ROADMAP #11, phase 1). The install logic stays in bash.
 
 ## What it does
 
+- **Presets start screen** — the first thing you see: pick a flavour (Jack's
+  flavour, Basic, …), **Custom** (à la carte), or **Keep current**. It seeds the
+  selection and drops you on the Packages tab to tweak. `b` reopens it. Flavours
+  are collected from `flavours/*.toml` — a community flavour is a one-file PR
+  (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
 - **Fuzzy search / filter** (`/`) across all 130+ items — by name, id, or what
   a tool *does* (`password`, `vpn`, `diff`). (ROADMAP #3)
 - **Warning badges** — `paid`, `account`, `large`, `App Store` render inline and
@@ -59,22 +64,26 @@ rewrite** (ROADMAP #11, phase 1). The install logic stays in bash.
 ## Architecture
 
 ```
-ui/
-├── catalog.toml is at repo root — the CANONICAL catalog (single source of truth)
-├── crates/
-│   ├── newmac-core/     model, fuzzy search, conf I/O, Homebrew data, themes
-│   │   ├── catalog.toml        embedded via include_str! (repo root)
-│   │   ├── themes.toml         generated from ../../config/themes/*.sh
-│   │   └── brew_popular.json   bundled offline snapshot
-│   └── newmac-tui/      the ratatui binary `newmac-ui` (+ lib for tests)
+repo root
+├── catalog.toml         CANONICAL catalog (single source of truth)
+├── flavours/*.toml      one file per preset (collected into the Presets screen)
+└── ui/crates/
+    ├── newmac-core/     model, fuzzy search, conf I/O, Homebrew data, themes, flavours
+    │   ├── build.rs            collects ../../../flavours/*.toml → embedded blob
+    │   ├── themes.toml         generated from ../../config/themes/*.sh
+    │   └── brew_popular.json   bundled offline snapshot
+    └── newmac-tui/      the ratatui binary `newmac-ui` (+ lib for tests)
 ```
 
-`catalog.toml` at the repo root is canonical. The bash `scripts/catalog.sh` is
-**generated** from it and CI fails if the two drift:
+`catalog.toml` + `flavours/*.toml` are canonical. The bash `scripts/catalog.sh`
+and `scripts/presets.sh` are **generated** from them and CI fails if they drift:
 
 ```sh
-cargo run -- catalog gen-sh --out ../scripts/catalog.sh
+cargo run -- catalog gen-sh --out-dir ../scripts   # writes both
 ```
+
+At runtime the binary is passed `--catalog` / `--themes-dir` / `--flavours-dir`
+pointing at the clone, so a prebuilt binary reflects *this* checkout's data.
 
 ## Develop
 

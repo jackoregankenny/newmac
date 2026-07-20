@@ -1,0 +1,20 @@
+# Web dev — TypeScript/web stack with containers and design tools.
+id = "webdev"
+title = "Web dev"
+desc = "TypeScript/web: Bun, Node, containers, VS Code, Chrome, Figma"
+theme = "tokyonight"
+glass = false
+ricing = false
+macos_defaults = true
+power = true
+schedule = false
+dock = true
+ids = [
+  "rio", "cmux", "orca", "zellij", "tmux",
+  "claude", "codex", "opencode",
+  "bun", "fnm", "uv", "docker", "docker-compose", "colima",
+  "vscode", "chrome", "figma", "dia",
+  "1password", "1password-cli", "cloudflare-warp", "raycast", "stats",
+  "mole", "mas", "dust", "duf",
+  "font-jetbrains", "font-symbols",
+]

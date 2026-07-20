@@ -51,7 +51,8 @@ case "$cmd" in
       NEWMAC="$NEWMAC_DIR" "$ui" \
         --conf "$NEWMAC_DIR/newmac.conf" \
         --catalog "$NEWMAC_DIR/catalog.toml" \
-        --themes-dir "$NEWMAC_DIR/config/themes" "$@"
+        --themes-dir "$NEWMAC_DIR/config/themes" \
+        --flavours-dir "$NEWMAC_DIR/flavours" "$@"
     else
       bash "$SCRIPTS/configure.sh" "$@"
     fi ;;

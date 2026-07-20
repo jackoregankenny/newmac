@@ -22,9 +22,21 @@ fn main() {
 
     let catalog = Catalog::embedded();
     let sel = Selection::from_defaults(&catalog);
-    let mut app = App::new(catalog, sel, std::env::temp_dir().join("newmac.conf"));
+    let mut app = if which == "start" {
+        App::new_full(
+            catalog,
+            sel,
+            std::env::temp_dir().join("newmac.conf"),
+            newmac_core::theme::all(),
+            newmac_core::flavour::all(),
+            false,
+        )
+    } else {
+        App::new(catalog, sel, std::env::temp_dir().join("newmac.conf"))
+    };
 
     match which {
+        "start" => {}
         "browse" => app.on_key(Key::Char('2')),
         "theme" => app.on_key(Key::Char('3')),
         "options" => app.on_key(Key::Char('4')),

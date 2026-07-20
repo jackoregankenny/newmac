@@ -5,6 +5,7 @@
 //! terminal (see the tests at the bottom and the snapshot tests in `tests/`).
 
 use newmac_core::brew::{self, BrewKind, Package};
+use newmac_core::flavour::{self, Flavour};
 use newmac_core::search::{self, Searcher};
 use newmac_core::selection::Custom;
 use newmac_core::theme::{self, Theme};
@@ -12,6 +13,21 @@ use newmac_core::{Catalog, Selection};
 use ratatui::layout::Rect;
 use ratatui::widgets::ListState;
 use std::path::PathBuf;
+
+/// Which top-level screen is showing: the Presets gate, or the tabbed picker.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Screen {
+    Start,
+    Picker,
+}
+
+/// A row on the Presets start screen.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum StartEntry {
+    Flavour(usize), // index into `App.flavours`
+    Custom,
+    KeepCurrent,
+}
 
 /// A drawn list: its inner (clickable) area + the scroll state ratatui owns.
 /// [`crate::ui`] fills these in every frame so mouse clicks can hit-test.
@@ -36,6 +52,7 @@ impl Slot {
 pub struct UiState {
     pub tabs_rect: Rect,
     pub tab_spans: Vec<(u16, u16)>, // x0..x1 per Tab::ALL index
+    pub start: Slot,
     pub cat: Slot,
     pub items: Slot,
     pub brew: Slot,
@@ -137,6 +154,12 @@ pub struct App {
     pub should_quit: bool,
     pub saved: bool,
 
+    // Presets start screen
+    pub screen: Screen,
+    pub flavours: Vec<Flavour>,
+    pub had_conf: bool,
+    pub start_idx: usize,
+
     /// Recorded draw geometry, for mouse hit-testing.
     pub ui: UiState,
     /// Set on the Save screen; the event loop runs the install, then clears it.
@@ -169,23 +192,79 @@ pub struct App {
 pub type CatChoice = Option<String>;
 
 impl App {
-    /// Build with the embedded themes (used by tests and the default path).
+    /// Build straight into the Picker with embedded themes/flavours (tests).
     pub fn new(catalog: Catalog, sel: Selection, conf_path: PathBuf) -> Self {
-        Self::with_themes(catalog, sel, conf_path, theme::all())
+        Self::build(
+            catalog,
+            sel,
+            conf_path,
+            theme::all(),
+            flavour::all(),
+            false,
+            Screen::Picker,
+        )
     }
 
-    /// Build with an explicit theme list (the binary passes repo-loaded themes).
+    /// Build with an explicit theme list, into the Picker (back-compat helper).
     pub fn with_themes(
         catalog: Catalog,
         sel: Selection,
         conf_path: PathBuf,
         themes: Vec<Theme>,
     ) -> Self {
+        Self::build(
+            catalog,
+            sel,
+            conf_path,
+            themes,
+            flavour::all(),
+            false,
+            Screen::Picker,
+        )
+    }
+
+    /// The binary's entry: open on the Presets start screen.
+    pub fn new_full(
+        catalog: Catalog,
+        sel: Selection,
+        conf_path: PathBuf,
+        themes: Vec<Theme>,
+        flavours: Vec<Flavour>,
+        had_conf: bool,
+    ) -> Self {
+        Self::build(
+            catalog,
+            sel,
+            conf_path,
+            themes,
+            flavours,
+            had_conf,
+            Screen::Start,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn build(
+        catalog: Catalog,
+        sel: Selection,
+        conf_path: PathBuf,
+        themes: Vec<Theme>,
+        flavours: Vec<Flavour>,
+        had_conf: bool,
+        screen: Screen,
+    ) -> Self {
         let theme_idx = themes.iter().position(|t| t.id == sel.theme).unwrap_or(0);
         let repo_dir = std::env::var("NEWMAC")
             .ok()
             .map(PathBuf::from)
             .or_else(|| conf_path.parent().map(|p| p.to_path_buf()));
+        // On a fresh run highlight Jack's flavour (row 0); with a saved conf,
+        // default to "Keep current" (the last entry).
+        let start_idx = if had_conf {
+            flavours.len() + 1 // flavours… + Custom + KeepCurrent
+        } else {
+            0
+        };
         App {
             catalog,
             sel,
@@ -194,10 +273,14 @@ impl App {
             repo_dir,
             searcher: Searcher::new(),
             tab: Tab::Packages,
-            status: "Space/click toggles · / searches · mouse works · ? for help".into(),
+            status: "Pick a preset or Custom · ↑/↓ move · enter choose · ? help".into(),
             show_help: false,
             should_quit: false,
             saved: false,
+            screen,
+            flavours,
+            had_conf,
+            start_idx,
             ui: UiState::default(),
             install_requested: false,
             dryrun_requested: false,
@@ -214,6 +297,60 @@ impl App {
             prompt: None,
             theme_idx,
             option_idx: 0,
+        }
+    }
+
+    // ---- Presets start screen ------------------------------------------
+
+    /// The rows shown on the start screen, in order.
+    pub fn start_entries(&self) -> Vec<StartEntry> {
+        let mut v: Vec<StartEntry> = (0..self.flavours.len()).map(StartEntry::Flavour).collect();
+        v.push(StartEntry::Custom);
+        if self.had_conf {
+            v.push(StartEntry::KeepCurrent);
+        }
+        v
+    }
+
+    /// Apply the highlighted start entry: seed the selection and enter the picker.
+    fn apply_start(&mut self, idx: usize) {
+        let entries = self.start_entries();
+        let Some(entry) = entries.get(idx).cloned() else {
+            return;
+        };
+        match entry {
+            StartEntry::Flavour(i) => {
+                let f = self.flavours[i].clone();
+                self.sel = Selection::from_flavour(&self.catalog, &f);
+                self.status = format!("Seeded from {} — tweak any tab, then Save", f.title);
+            }
+            StartEntry::Custom => {
+                self.sel = Selection::from_defaults(&self.catalog);
+                self.status = "Custom — pick anything, then Save".into();
+            }
+            StartEntry::KeepCurrent => {
+                self.status = "Kept your current selection".into();
+            }
+        }
+        self.theme_idx = self
+            .themes
+            .iter()
+            .position(|t| t.id == self.sel.theme)
+            .unwrap_or(0);
+        self.screen = Screen::Picker;
+        self.tab = Tab::Packages;
+        self.saved = false;
+    }
+
+    fn on_start_key(&mut self, key: Key) {
+        let n = self.start_entries().len() as i64;
+        match key {
+            Key::Char('q') | Key::Esc => self.should_quit = true,
+            Key::Char('?') => self.show_help = true,
+            Key::Up | Key::Char('k') => self.start_idx = wrap(self.start_idx as i64 - 1, n),
+            Key::Down | Key::Char('j') => self.start_idx = wrap(self.start_idx as i64 + 1, n),
+            Key::Enter | Key::Char(' ') => self.apply_start(self.start_idx),
+            _ => {}
         }
     }
 
@@ -376,6 +513,10 @@ impl App {
             self.on_prompt_key(key);
             return;
         }
+        if self.screen == Screen::Start {
+            self.on_start_key(key);
+            return;
+        }
         // Search modes capture text first.
         if self.tab == Tab::Packages && self.searching && self.on_search_key(key) {
             return;
@@ -387,6 +528,7 @@ impl App {
         match key {
             Key::Char('q') | Key::Esc => self.should_quit = true,
             Key::Char('?') => self.show_help = true,
+            Key::Char('b') => self.screen = Screen::Start,
             Key::Tab | Key::Char(']') => self.set_tab(Tab::from_index(self.tab.index() + 1)),
             Key::BackTab | Key::Char('[') => {
                 let i = self.tab.index();
@@ -744,6 +886,26 @@ impl App {
         if self.prompt.is_some() {
             return;
         }
+        if self.screen == Screen::Start {
+            let n = self.start_entries().len() as i64;
+            match m {
+                Mouse::Scroll(down, _, _) => {
+                    let d = if down { 1 } else { -1 };
+                    self.start_idx = wrap(self.start_idx as i64 + d, n);
+                }
+                Mouse::Down(col, row) => {
+                    if let Some(idx) = self.ui.start.index_at(row) {
+                        if rect_contains(self.ui.start.rect, col, row)
+                            && idx < self.start_entries().len()
+                        {
+                            self.start_idx = idx;
+                            self.apply_start(idx);
+                        }
+                    }
+                }
+            }
+            return;
+        }
         match m {
             Mouse::Scroll(down, col, row) => self.mouse_scroll(down, col, row),
             Mouse::Down(col, row) => self.mouse_click(col, row),
@@ -848,6 +1010,10 @@ impl App {
             self.brew_idx = 0;
         } else if self.brew_idx >= n {
             self.brew_idx = n - 1;
+        }
+        let starts = self.start_entries().len();
+        if starts > 0 && self.start_idx >= starts {
+            self.start_idx = starts - 1;
         }
     }
 }

@@ -48,6 +48,8 @@ pub struct Custom {
 pub struct Selection {
     pub selected: BTreeSet<String>,
     pub theme: String,
+    /// Glassy terminal treatment (transparency + blur) — conf key `NEWMAC_GLASS`.
+    pub glass: bool,
     pub toggles: Toggles,
     pub extra_brew: Vec<String>,
     pub extra_cask: Vec<String>,
@@ -58,6 +60,7 @@ impl Default for Selection {
         Self {
             selected: BTreeSet::new(),
             theme: "tokyonight".to_string(),
+            glass: false,
             toggles: Toggles::default(),
             extra_brew: Vec::new(),
             extra_cask: Vec::new(),
@@ -118,6 +121,20 @@ impl Selection {
         s
     }
 
+    /// Seed a selection from a flavour (unknown ids are skipped).
+    pub fn from_flavour(catalog: &crate::Catalog, f: &crate::Flavour) -> Self {
+        let mut s = Self::default();
+        for id in &f.ids {
+            if catalog.get(id).is_some() {
+                s.selected.insert(id.clone());
+            }
+        }
+        s.theme = f.theme.clone();
+        s.glass = f.glass;
+        s.toggles = f.toggles();
+        s
+    }
+
     /// Parse an existing `newmac.conf`. Unknown keys are ignored so the file
     /// can gain fields without breaking older readers.
     pub fn parse_conf(text: &str) -> Self {
@@ -139,6 +156,7 @@ impl Selection {
                     s.selected = val.split_whitespace().map(str::to_string).collect();
                 }
                 "NEWMAC_THEME" => s.theme = val,
+                "NEWMAC_GLASS" => s.glass = as_bool(&val),
                 "NEWMAC_TOGGLE_RICING" => s.toggles.ricing = as_bool(&val),
                 "NEWMAC_TOGGLE_MACOS_DEFAULTS" => s.toggles.macos_defaults = as_bool(&val),
                 "NEWMAC_TOGGLE_POWER" => s.toggles.power = as_bool(&val),
@@ -167,6 +185,7 @@ impl Selection {
         let ids: Vec<&str> = self.selected.iter().map(String::as_str).collect();
         out.push_str(&format!("NEWMAC_SELECTED=\" {} \"\n", ids.join(" ")));
         out.push_str(&format!("NEWMAC_THEME={}\n", self.theme));
+        out.push_str(&format!("NEWMAC_GLASS={}\n", b(self.glass)));
         out.push_str(&format!(
             "NEWMAC_TOGGLE_RICING={}\n",
             b(self.toggles.ricing)

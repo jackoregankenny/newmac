@@ -30,7 +30,7 @@ title = "Shells (zsh is the default)"
 
 [[category]]
 id = "agents"
-title = "AI coding agents"
+title = "Agents & ADEs"
 
 [[category]]
 id = "workbench"
@@ -468,7 +468,7 @@ description = "Google (deprecated in brew — successor: antigravity-cli)"
 
 [[item]]
 id = "orca"
-category = "workbench"
+category = "agents"
 kind = "cask"
 default = true
 payload = "stablyai/orca/orca"

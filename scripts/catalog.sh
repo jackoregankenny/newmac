@@ -44,7 +44,7 @@ tmux|multiplexers|brew|on|tmux|tmux|Classic multiplexer (SSH ubiquity)
 fish|shells|brew|off|fish|fish|Great defaults, but not POSIX — the newmac rice is zsh-wired
 nushell|shells|brew|off|nushell|Nushell|Structured-data shell — pipelines of tables, not text
 
-# --- AI coding agents ----------------------------------------
+# --- Agents & ADEs -------------------------------------------
 claude|agents|curl|on|https://claude.ai/install.sh|Claude Code|Anthropic agentic CLI
 codex|agents|cask|on|codex|Codex|OpenAI Codex CLI
 droid|agents|curl|on|https://app.factory.ai/cli|Factory Droid|Factory agentic CLI
@@ -58,9 +58,9 @@ copilot|agents|npm|off|@github/copilot|Copilot CLI|GitHub Copilot coding agent
 aider|agents|uv|off|aider-chat|Aider|Open-source pair programmer
 qwen|agents|npm|off|@qwen-code/qwen-code|Qwen Code|Alibaba Qwen coding CLI
 gemini|agents|brew|off|gemini-cli|Gemini CLI|Google (deprecated in brew — successor: antigravity-cli)
+orca|agents|cask|on|stablyai/orca/orca|Orca|ADE — fleet of parallel agents in worktrees, browser + editor built in
 
 # --- Agent workbenches ---------------------------------------
-orca|workbench|cask|on|stablyai/orca/orca|Orca|ADE — fleet of parallel agents in worktrees, browser + editor built in
 cmux|workbench|cask|on|cmux|cmux|Agent terminal for multi-agent work (libghostty)
 conductor|workbench|cask|off|conductor|Conductor|Parallel Claude/Codex/Cursor agents in worktrees (Melty Labs)
 nimbalyst|workbench|cask|off|nimbalyst|Nimbalyst|Visual workspace for Claude Code + Codex (was Crystal)
@@ -189,7 +189,7 @@ newmac_category_title() {
     terminals)    echo "Terminals" ;;
     multiplexers)    echo "Multiplexers" ;;
     shells)    echo "Shells (zsh is the default)" ;;
-    agents)    echo "AI coding agents" ;;
+    agents)    echo "Agents & ADEs" ;;
     workbench)    echo "Agent workbenches" ;;
     localai)    echo "Local AI" ;;
     menubar)    echo "Menu bar" ;;

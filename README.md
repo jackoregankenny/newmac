@@ -75,11 +75,14 @@ identity (name/email + delta as pager) if it isn't configured yet.
 ### Optional: the Rust picker (nicer, searchable)
 
 A compiled [ratatui](https://ratatui.rs) picker upgrades the bash checkbox screen with
-**fuzzy search across every tool**, inline **warning badges** (`paid` / `account` /
-`large` / `App Store`), a **live theme preview**, and a **browse / add popular
-Homebrew** screen (works offline, or `r`efresh live). It writes the exact same
-`newmac.conf`, so it's a drop-in — and on a fresh Mac `bootstrap.sh` downloads a
-prebuilt binary, so it's the **first-run** experience with no cargo needed.
+a **Presets start screen** (pick a flavour like *Jack's flavour* / *Basic*, go
+*Custom*, or keep your current selection), **fuzzy search across every tool**, inline
+**warning badges** (`paid` / `account` / `large` / `App Store`), a **live theme
+preview**, **mouse support**, and a **browse / add popular Homebrew** screen (works
+offline, or `r`efresh live). It writes the exact same `newmac.conf`, so it's a
+drop-in — and on a fresh Mac `bootstrap.sh` downloads a prebuilt binary, so it's the
+**first-run** experience with no cargo needed. Flavours live in `flavours/*.toml` —
+adding your own is a one-file PR (see [CONTRIBUTING.md](CONTRIBUTING.md)).
 
 ```sh
 newmac ui            # download the prebuilt binary → ~/.local/bin/newmac-ui

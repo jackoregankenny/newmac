@@ -72,6 +72,7 @@ elif [[ "$MODE" == "--reconfigure" || ! -f "$REPO_DIR/newmac.conf" ]]; then
       --conf "$REPO_DIR/newmac.conf" \
       --catalog "$REPO_DIR/catalog.toml" \
       --themes-dir "$REPO_DIR/config/themes" \
+      --flavours-dir "$REPO_DIR/flavours" \
       || { err "Configuration aborted."; exit 1; }
   else
     bash "$SCRIPTS_DIR/configure.sh" || { err "Configuration aborted."; exit 1; }

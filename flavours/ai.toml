@@ -1,0 +1,22 @@
+# AI power user — every coding agent + agent terminals + full tiling desktop.
+id = "ai"
+title = "AI power user"
+desc = "Every coding agent + agent terminals + full tiling desktop"
+theme = "tokyonight"
+glass = false
+ricing = true
+macos_defaults = true
+power = true
+schedule = false
+dock = true
+ids = [
+  "rio", "cmux", "orca", "conductor", "nimbalyst", "zellij", "tmux",
+  "claude", "codex", "droid", "opencode", "amp", "kimi", "crush", "goose",
+  "cursor", "copilot", "aider", "qwen",
+  "bun", "fnm", "uv", "go", "rust", "docker", "docker-compose", "colima",
+  "vscode", "dia",
+  "1password", "1password-cli", "cloudflare-warp", "raycast", "stats", "coconutbattery",
+  "sketchybar", "aerospace", "borders", "alt-tab", "karabiner",
+  "mole", "mas", "dust", "duf",
+  "font-jetbrains", "font-symbols",
+]

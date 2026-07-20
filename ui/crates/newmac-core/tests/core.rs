@@ -4,7 +4,7 @@
 use newmac_core::brew::{self, BrewKind};
 use newmac_core::search::{haystack, Searcher};
 use newmac_core::selection::{Custom, Selection};
-use newmac_core::{theme, Catalog, Flag, Kind};
+use newmac_core::{flavour, theme, Catalog, Flag, Kind};
 
 #[test]
 fn embedded_catalog_parses_and_validates() {
@@ -221,6 +221,86 @@ fn themes_load_from_config_dir() {
     // Missing dir falls back to embedded.
     let fallback = theme::from_dir_or_embedded(Some(std::path::Path::new("nope")));
     assert_eq!(fallback.len(), 6);
+}
+
+#[test]
+fn orca_is_an_agent_now() {
+    let cat = Catalog::embedded();
+    assert_eq!(cat.get("orca").unwrap().category, "agents");
+    assert_eq!(cat.category_title("agents"), "Agents & ADEs");
+}
+
+#[test]
+fn flavours_parse_and_jack_is_first() {
+    let flavours = flavour::all();
+    assert!(flavours.len() >= 5, "jack/basic/webdev/ai/rice at least");
+    assert_eq!(
+        flavours[0].id, "jack",
+        "jack sorts first for the Presets page"
+    );
+
+    let jack = flavours.iter().find(|f| f.id == "jack").unwrap();
+    assert_eq!(jack.theme, "nord");
+    assert!(jack.glass);
+    assert!(jack.ricing);
+    for want in [
+        "rio",
+        "cmux",
+        "amp",
+        "orca",
+        "go",
+        "spotify-player",
+        "aerospace",
+    ] {
+        assert!(jack.ids.iter().any(|i| i == want), "jack missing {want}");
+    }
+    // Jack uses Rio, not Ghostty.
+    assert!(!jack.ids.iter().any(|i| i == "ghostty"));
+}
+
+#[test]
+fn every_flavour_id_exists_in_the_catalog() {
+    let cat = Catalog::embedded();
+    for f in flavour::all() {
+        let unknown = f.unknown_ids(&cat);
+        assert!(
+            unknown.is_empty(),
+            "flavour '{}' has unknown ids: {unknown:?}",
+            f.id
+        );
+    }
+}
+
+#[test]
+fn from_flavour_seeds_selection_theme_and_glass() {
+    let cat = Catalog::embedded();
+    let jack = flavour::all().into_iter().find(|f| f.id == "jack").unwrap();
+    let sel = Selection::from_flavour(&cat, &jack);
+    assert!(sel.is_selected("rio"));
+    assert!(sel.is_selected("aerospace"));
+    assert!(!sel.is_selected("ghostty"));
+    assert_eq!(sel.theme, "nord");
+    assert!(sel.glass);
+    assert!(sel.toggles.ricing);
+
+    // Glass round-trips through the conf.
+    let conf = sel.render_conf("t");
+    assert!(conf.contains("NEWMAC_GLASS=1"));
+    assert!(Selection::parse_conf(&conf).glass);
+}
+
+#[test]
+fn flavours_load_from_dir() {
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("..")
+        .join("..")
+        .join("..")
+        .join("flavours");
+    let from_dir = flavour::from_dir_or_embedded(Some(&dir));
+    assert!(from_dir.iter().any(|f| f.id == "jack"));
+    assert_eq!(from_dir[0].id, "jack");
+    // Missing dir falls back to embedded.
+    assert!(!flavour::from_dir_or_embedded(Some(std::path::Path::new("nope"))).is_empty());
 }
 
 #[test]

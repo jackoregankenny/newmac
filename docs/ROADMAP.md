@@ -17,9 +17,13 @@ newest idea and arguably reframes the whole project.)
 > **Distribution is wired**: `release.yml` builds a universal, ad-hoc-signed
 > macOS binary on tag and `bootstrap.sh`/`get-ui.sh` download it, so the Rust
 > picker is the first-run experience on a fresh Mac (pending the first
-> `git tag v*`). Still open on the bash side: **#1** real macOS install CI,
-> **#2** lockfile, **#5** *resumable/transactional* installs, **#7** `unrice`,
-> **#8** Neovim starter, **#10** deeper doctor.
+> `git tag v*`). The picker now opens on a **Presets screen** with collectible
+> community **flavours** (`flavours/*.toml`, one-file PRs) — "Jack's flavour"
+> ships as the default. Still open on the bash side: **#1** real macOS install
+> CI, **#2** lockfile, **#5** *resumable/transactional* installs, **#7**
+> `unrice`, **#8** Neovim starter, **#10** deeper doctor. Small follow-up: a
+> runtime **glass** toggle (Rio already ships glassy; `NEWMAC_GLASS` is recorded
+> but not yet applied per-conf).
 
 ## 1. Real macOS CI, not just syntax-on-Ubuntu
 

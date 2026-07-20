@@ -57,6 +57,12 @@ fn main() -> Result<()> {
                     args.get(i).context("--themes-dir needs a path")?.clone(),
                 ));
             }
+            "--flavours-dir" => {
+                i += 1;
+                opts.flavours_dir = Some(PathBuf::from(
+                    args.get(i).context("--flavours-dir needs a path")?.clone(),
+                ));
+            }
             "catalog" => return cmd_catalog(&args[i + 1..]),
             "brew" => return cmd_brew(&args[i + 1..]),
             other => anyhow::bail!("unknown argument '{other}' (try --help)"),
@@ -72,6 +78,7 @@ struct PickerOpts {
     conf: Option<PathBuf>,
     catalog: Option<PathBuf>,
     themes_dir: Option<PathBuf>,
+    flavours_dir: Option<PathBuf>,
 }
 
 fn print_help() {
@@ -83,9 +90,10 @@ fn print_help() {
          \x20 newmac-ui brew refresh        print the live popular-Homebrew list\n\
          \x20 newmac-ui --version | --help\n\n\
          OPTIONS:\n\
-         \x20 --conf <path>        conf to read/write (default: $NEWMAC/newmac.conf)\n\
-         \x20 --catalog <path>     read this catalog.toml instead of the built-in one\n\
-         \x20 --themes-dir <path>  read theme palettes from a config/themes dir\n",
+         \x20 --conf <path>         conf to read/write (default: $NEWMAC/newmac.conf)\n\
+         \x20 --catalog <path>      read this catalog.toml instead of the built-in one\n\
+         \x20 --themes-dir <path>   read theme palettes from a config/themes dir\n\
+         \x20 --flavours-dir <path> read presets from a flavours/ dir\n",
         env!("CARGO_PKG_VERSION")
     );
 }
@@ -98,26 +106,29 @@ fn default_conf_path() -> PathBuf {
     PathBuf::from("newmac.conf")
 }
 
-fn load_selection(catalog: &Catalog, conf_path: &PathBuf) -> Selection {
+/// Load the conf; returns `(selection, had_saved_selection)`. The flag drives
+/// whether the Start screen offers "Keep current selection".
+fn load_selection(catalog: &Catalog, conf_path: &std::path::Path) -> (Selection, bool) {
     match std::fs::read_to_string(conf_path) {
         Ok(text) => {
-            let mut s = Selection::parse_conf(&text);
-            // Fresh conf with no selection line → seed from catalog defaults.
+            let s = Selection::parse_conf(&text);
             if s.selected.is_empty() {
-                s = Selection::from_defaults(catalog);
+                (Selection::from_defaults(catalog), false)
+            } else {
+                (s, true)
             }
-            s
         }
-        Err(_) => Selection::from_defaults(catalog),
+        Err(_) => (Selection::from_defaults(catalog), false),
     }
 }
 
 fn run_picker(opts: PickerOpts) -> Result<()> {
     let catalog = Catalog::from_path_or_embedded(opts.catalog.as_deref());
     let themes = newmac_core::theme::from_dir_or_embedded(opts.themes_dir.as_deref());
+    let flavours = newmac_core::flavour::from_dir_or_embedded(opts.flavours_dir.as_deref());
     let conf_path = opts.conf.unwrap_or_else(default_conf_path);
-    let sel = load_selection(&catalog, &conf_path);
-    let mut app = App::with_themes(catalog, sel, conf_path, themes);
+    let (sel, had_conf) = load_selection(&catalog, &conf_path);
+    let mut app = App::new_full(catalog, sel, conf_path, themes, flavours, had_conf);
 
     let mut terminal = enter_tui();
     let res = event_loop(&mut terminal, &mut app);
@@ -263,29 +274,49 @@ fn cmd_catalog(args: &[String]) -> Result<()> {
     match args.first().map(String::as_str) {
         Some("gen-sh") => {
             let catalog = Catalog::embedded();
-            let body = gensh::render(&catalog);
-            // Default output: scripts/catalog.sh relative to $NEWMAC or cwd.
-            let out = if let Some(pos) = args.iter().position(|a| a == "--out") {
-                PathBuf::from(args.get(pos + 1).context("--out needs a path")?)
-            } else if args.iter().any(|a| a == "--stdout") {
-                print!("{body}");
+            let flavours = newmac_core::flavour::all();
+            let catalog_sh = gensh::render(&catalog);
+            let presets_sh = gensh::render_presets(&flavours);
+
+            // `--stdout [catalog|presets]` prints one to stdout (CI/debug).
+            if let Some(pos) = args.iter().position(|a| a == "--stdout") {
+                match args.get(pos + 1).map(String::as_str) {
+                    Some("presets") => print!("{presets_sh}"),
+                    _ => print!("{catalog_sh}"),
+                }
                 return Ok(());
+            }
+
+            // Otherwise write both files into the scripts dir.
+            let dir = if let Some(pos) = args.iter().position(|a| a == "--out-dir") {
+                PathBuf::from(args.get(pos + 1).context("--out-dir needs a path")?)
             } else {
-                catalog_sh_path()
+                scripts_dir()
             };
-            std::fs::write(&out, &body).with_context(|| format!("writing {}", out.display()))?;
-            eprintln!("Wrote {} ({} items)", out.display(), catalog.items.len());
+            std::fs::create_dir_all(&dir).ok();
+            std::fs::write(dir.join("catalog.sh"), &catalog_sh)
+                .with_context(|| format!("writing {}/catalog.sh", dir.display()))?;
+            std::fs::write(dir.join("presets.sh"), &presets_sh)
+                .with_context(|| format!("writing {}/presets.sh", dir.display()))?;
+            eprintln!(
+                "Wrote {}/catalog.sh ({} items) + presets.sh ({} flavours)",
+                dir.display(),
+                catalog.items.len(),
+                flavours.len()
+            );
             Ok(())
         }
-        _ => anyhow::bail!("usage: newmac-ui catalog gen-sh [--out <path> | --stdout]"),
+        _ => {
+            anyhow::bail!("usage: newmac-ui catalog gen-sh [--out-dir <dir> | --stdout [presets]]")
+        }
     }
 }
 
-fn catalog_sh_path() -> PathBuf {
+fn scripts_dir() -> PathBuf {
     if let Ok(dir) = std::env::var("NEWMAC") {
-        return PathBuf::from(dir).join("scripts/catalog.sh");
+        return PathBuf::from(dir).join("scripts");
     }
-    PathBuf::from("scripts/catalog.sh")
+    PathBuf::from("scripts")
 }
 
 fn cmd_brew(args: &[String]) -> Result<()> {

@@ -150,6 +150,11 @@ done
 # --- Theme -----------------------------------------------------
 THEMES_DIR="$REPO_DIR/config/themes"
 THEME_SEL="${NEWMAC_THEME:-tokyonight}"
+# A preset can pin the theme (e.g. Jack's flavour -> nord).
+if [[ -n "$PRESET" ]]; then
+  _preset_theme="$(newmac_preset_theme "$PRESET" 2>/dev/null || echo "")"
+  [[ -n "$_preset_theme" ]] && THEME_SEL="$_preset_theme"
+fi
 if [[ -d "$THEMES_DIR" ]]; then
   # tokyonight first, then the rest alphabetically
   THEME_LIST="tokyonight"
@@ -181,12 +186,14 @@ if [[ "$PRESEL" == "preset" ]]; then
   # shellcheck disable=SC2046  # intentional split of "1 1 1 0 1" into args
   set -- $(newmac_preset_toggles "$PRESET")
   t_ricing="$1"; t_defaults="$2"; t_power="$3"; t_schedule="$4"; t_dock="${5:-1}"
+  glass="$(newmac_preset_glass "$PRESET" 2>/dev/null || echo 0)"
 else
   t_ricing="${NEWMAC_TOGGLE_RICING:-1}"
   t_defaults="${NEWMAC_TOGGLE_MACOS_DEFAULTS:-1}"
   t_power="${NEWMAC_TOGGLE_POWER:-1}"
   t_schedule="${NEWMAC_TOGGLE_SCHEDULE:-0}"
   t_dock="${NEWMAC_TOGGLE_DOCK:-1}"
+  glass="${NEWMAC_GLASS:-0}"
 fi
 
 if [[ $USE_DEFAULTS -eq 0 ]]; then
@@ -239,6 +246,7 @@ fi
   echo "# Edit by hand or re-run: bash scripts/configure.sh"
   echo "NEWMAC_SELECTED=\"$SELECTED \""
   echo "NEWMAC_THEME=$THEME_SEL"
+  echo "NEWMAC_GLASS=${glass:-0}"
   echo "NEWMAC_TOGGLE_RICING=$t_ricing"
   echo "NEWMAC_TOGGLE_MACOS_DEFAULTS=$t_defaults"
   echo "NEWMAC_TOGGLE_POWER=$t_power"

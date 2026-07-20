@@ -3,7 +3,7 @@
 //! hit-testing (in `app.rs`) can map a click to a row. Kept separate from state
 //! so snapshot tests can render any App to a `TestBackend`.
 
-use crate::app::{App, InstallOutcome, Pane, Tab};
+use crate::app::{App, InstallOutcome, Pane, Screen, StartEntry, Tab};
 use newmac_core::theme::{Rgb, Theme};
 use ratatui::prelude::*;
 use ratatui::widgets::{Block, Borders, Clear, List, ListItem, Paragraph, Wrap};
@@ -24,6 +24,17 @@ pub fn draw(f: &mut Frame, app: &mut App) {
     ])
     .split(f.area());
 
+    if app.screen == Screen::Start {
+        header_bar(f, chunks[0], &theme, " newmac — pick a preset ");
+        start_screen(f, app, chunks[1], &theme);
+        let hint = "↑/↓ move · enter choose · ? help · q quit";
+        status_line(f, chunks[2], &theme, &app.status, hint);
+        if app.show_help {
+            help_overlay(f, accent);
+        }
+        return;
+    }
+
     tab_bar(f, app, chunks[0], &theme);
 
     match app.tab {
@@ -34,28 +45,8 @@ pub fn draw(f: &mut Frame, app: &mut App) {
         Tab::Save => save_tab(f, app, chunks[1], &theme),
     }
 
-    // Status line + right-aligned hint.
-    let hint = "q quit · ? help · click/scroll · ^S save";
-    f.render_widget(
-        Paragraph::new(Line::from(Span::styled(
-            format!(" {}", app.status),
-            Style::new().fg(c(theme.subtext)),
-        ))),
-        chunks[2],
-    );
-    let hint_w = hint.len() as u16 + 1;
-    if chunks[2].width > hint_w {
-        let area = Rect {
-            x: chunks[2].x + chunks[2].width - hint_w,
-            y: chunks[2].y,
-            width: hint_w,
-            height: 1,
-        };
-        f.render_widget(
-            Paragraph::new(Span::styled(hint, Style::new().fg(Color::DarkGray))),
-            area,
-        );
-    }
+    let hint = "q quit · ? help · b presets · ^S save";
+    status_line(f, chunks[2], &theme, &app.status, hint);
 
     if let Some(prompt) = app.prompt.clone() {
         prompt_overlay(f, &prompt, accent);
@@ -63,6 +54,90 @@ pub fn draw(f: &mut Frame, app: &mut App) {
     if app.show_help {
         help_overlay(f, accent);
     }
+}
+
+/// The bottom status line: message on the left, dim hint on the right.
+fn status_line(f: &mut Frame, area: Rect, t: &Theme, status: &str, hint: &str) {
+    f.render_widget(
+        Paragraph::new(Line::from(Span::styled(
+            format!(" {status}"),
+            Style::new().fg(c(t.subtext)),
+        ))),
+        area,
+    );
+    let hint_w = hint.len() as u16 + 1;
+    if area.width > hint_w {
+        let a = Rect {
+            x: area.x + area.width - hint_w,
+            y: area.y,
+            width: hint_w,
+            height: 1,
+        };
+        f.render_widget(
+            Paragraph::new(Span::styled(hint, Style::new().fg(Color::DarkGray))),
+            a,
+        );
+    }
+}
+
+/// A plain bordered header (used by the start screen; the picker uses `tab_bar`).
+fn header_bar(f: &mut Frame, area: Rect, t: &Theme, title: &str) {
+    let block = Block::default()
+        .borders(Borders::ALL)
+        .border_style(Style::new().fg(Color::DarkGray))
+        .title(Span::styled(
+            title.to_string(),
+            Style::new().fg(c(t.accent)).bold(),
+        ));
+    f.render_widget(block, area);
+}
+
+/// The "Presets" gate: pick a flavour, Custom, or Keep current.
+fn start_screen(f: &mut Frame, app: &mut App, area: Rect, t: &Theme) {
+    let accent = c(t.accent);
+    let entries = app.start_entries();
+    let rows: Vec<ListItem> = entries
+        .iter()
+        .map(|e| {
+            let (mark, title, desc) = match e {
+                StartEntry::Flavour(i) => {
+                    let fl = &app.flavours[*i];
+                    let star = if fl.id == "jack" { "★" } else { "◆" };
+                    (star, fl.title.clone(), fl.desc.clone())
+                }
+                StartEntry::Custom => (
+                    "＋",
+                    "Custom — à la carte".to_string(),
+                    "start from defaults, pick everything yourself".to_string(),
+                ),
+                StartEntry::KeepCurrent => (
+                    "↩",
+                    "Keep current".to_string(),
+                    "reuse what's in your newmac.conf".to_string(),
+                ),
+            };
+            ListItem::new(Line::from(vec![
+                Span::styled(format!(" {mark} "), Style::new().fg(accent)),
+                Span::styled(format!("{title:<16}"), Style::new().fg(c(t.text)).bold()),
+                Span::styled(format!("  {desc}"), Style::new().fg(c(t.subtext))),
+            ]))
+        })
+        .collect();
+
+    let block = Block::default()
+        .borders(Borders::ALL)
+        .border_style(Style::new().fg(accent))
+        .title(Span::styled(" Presets ", Style::new().fg(accent)))
+        .title_bottom(Span::styled(
+            " enter to choose · you can tweak everything after · add your own: flavours/<id>.toml ",
+            Style::new().fg(Color::DarkGray),
+        ));
+    app.ui.start.rect = block.inner(area);
+    app.ui.start.state.select(Some(app.start_idx));
+    let list = List::new(rows)
+        .block(block)
+        .highlight_style(Style::new().bg(c(t.surface)));
+    f.render_stateful_widget(list, area, &mut app.ui.start.state);
 }
 
 fn tab_bar(f: &mut Frame, app: &mut App, area: Rect, t: &Theme) {

@@ -1,0 +1,18 @@
+# Basic — a lean, sensible setup. No rice, no extras.
+id = "basic"
+title = "Basic"
+desc = "Lean: Rio + Zellij + Claude + 1Password — no rice, no extras"
+theme = "tokyonight"
+glass = false
+ricing = false
+macos_defaults = true
+power = true
+schedule = false
+dock = true
+ids = [
+  "rio", "zellij", "claude",
+  "1password", "1password-cli", "vscode",
+  "bun", "fnm", "uv",
+  "mole", "mas", "dust", "duf",
+  "font-jetbrains", "font-symbols",
+]

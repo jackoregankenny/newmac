@@ -94,6 +94,27 @@ fn click_a_theme_applies_it() {
 }
 
 #[test]
+fn click_a_preset_on_the_start_screen_selects_it() {
+    let catalog = Catalog::embedded();
+    let sel = Selection::from_defaults(&catalog);
+    let mut app = App::new_full(
+        catalog,
+        sel,
+        std::env::temp_dir().join("newmac.conf"),
+        newmac_core::theme::all(),
+        newmac_core::flavour::all(),
+        false,
+    );
+    render(&mut app);
+    let r = app.ui.start.rect;
+    // Click the first row — Jack's flavour.
+    app.on_mouse(Mouse::Down(r.x + 2, r.y));
+    assert_eq!(app.screen, newmac_tui::app::Screen::Picker);
+    assert!(app.sel.is_selected("rio"));
+    assert_eq!(app.sel.theme, "nord");
+}
+
+#[test]
 fn click_a_popular_package_adds_it() {
     let mut app = fresh();
     app.on_key(Key::Char('2')); // Browse

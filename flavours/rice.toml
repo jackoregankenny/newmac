@@ -1,0 +1,19 @@
+# Full rice — Linux-style tiling desktop first, all the fonts.
+id = "rice"
+title = "Full rice"
+desc = "Linux-style desktop first: tiling, bar, borders, all the fonts"
+theme = "tokyonight"
+glass = false
+ricing = true
+macos_defaults = true
+power = true
+schedule = false
+dock = true
+ids = [
+  "rio", "zellij", "tmux", "claude",
+  "bun", "fnm", "uv",
+  "sketchybar", "stats", "aerospace", "borders", "alt-tab", "dockdoor", "karabiner", "raycast",
+  "1password", "1password-cli", "vscode", "dia",
+  "mole", "mas", "dust", "duf",
+  "font-jetbrains", "font-symbols", "font-fira", "font-meslo", "font-monaspace",
+]

@@ -3,13 +3,25 @@
 //! the `expect`-driven TUI tests the roadmap asks for (#9) — deterministic and
 //! CI-friendly. (Mouse coverage lives in `mouse.rs`, which needs a render.)
 
-use newmac_core::{Catalog, Selection};
-use newmac_tui::app::{App, Key, Pane, Tab};
+use newmac_core::{flavour, theme, Catalog, Selection};
+use newmac_tui::app::{App, Key, Pane, Screen, StartEntry, Tab};
 
 fn app_with_conf(dir: &std::path::Path) -> App {
     let catalog = Catalog::embedded();
     let sel = Selection::from_defaults(&catalog);
     App::new(catalog, sel, dir.join("newmac.conf"))
+}
+
+fn app_start(dir: &std::path::Path, had_conf: bool, sel: Selection) -> App {
+    let catalog = Catalog::embedded();
+    App::new_full(
+        catalog,
+        sel,
+        dir.join("newmac.conf"),
+        theme::all(),
+        flavour::all(),
+        had_conf,
+    )
 }
 
 fn feed(app: &mut App, keys: &[Key]) {
@@ -166,6 +178,72 @@ fn save_screen_install_keys_save_then_request() {
     app.install_requested = false;
     app.on_key(Key::Char('d')); // dry-run
     assert!(app.dryrun_requested);
+}
+
+#[test]
+fn start_screen_seeds_jack_and_enters_picker() {
+    let tmp = std::env::temp_dir();
+    let catalog = Catalog::embedded();
+    let mut app = app_start(&tmp, false, Selection::from_defaults(&catalog));
+    assert_eq!(app.screen, Screen::Start);
+    assert_eq!(
+        app.start_idx, 0,
+        "Jack's flavour highlighted on a fresh run"
+    );
+
+    app.on_key(Key::Enter); // choose Jack's flavour
+    assert_eq!(app.screen, Screen::Picker);
+    assert_eq!(app.tab, Tab::Packages);
+    assert!(app.sel.is_selected("rio"));
+    assert!(app.sel.is_selected("aerospace"));
+    assert!(!app.sel.is_selected("ghostty"));
+    assert_eq!(app.sel.theme, "nord");
+    assert!(app.sel.glass);
+    assert_eq!(app.themes[app.theme_idx].id, "nord");
+}
+
+#[test]
+fn start_custom_lands_on_defaults() {
+    let tmp = std::env::temp_dir();
+    let catalog = Catalog::embedded();
+    let mut app = app_start(&tmp, false, Selection::from_defaults(&catalog));
+    let custom_idx = app.flavours.len(); // Custom sits right after the flavours
+    assert_eq!(app.start_entries()[custom_idx], StartEntry::Custom);
+    app.start_idx = custom_idx;
+    app.on_key(Key::Enter);
+    assert_eq!(app.screen, Screen::Picker);
+    // Custom == catalog defaults, so a default-on item like ghostty is selected.
+    assert!(app.sel.is_selected("ghostty"));
+    assert!(!app.sel.glass);
+}
+
+#[test]
+fn keep_current_preserves_loaded_selection() {
+    let tmp = std::env::temp_dir();
+    let mut sel = Selection::default();
+    sel.selected.insert("vlc".to_string());
+    let mut app = app_start(&tmp, true, sel);
+    let entries = app.start_entries();
+    assert_eq!(entries.last(), Some(&StartEntry::KeepCurrent));
+    assert_eq!(
+        app.start_idx,
+        entries.len() - 1,
+        "Keep current is default with a conf"
+    );
+    app.on_key(Key::Enter);
+    assert_eq!(app.screen, Screen::Picker);
+    assert!(app.sel.is_selected("vlc"));
+}
+
+#[test]
+fn b_returns_to_the_presets_screen() {
+    let tmp = std::env::temp_dir();
+    let catalog = Catalog::embedded();
+    let mut app = app_start(&tmp, false, Selection::from_defaults(&catalog));
+    app.on_key(Key::Enter); // into the picker
+    assert_eq!(app.screen, Screen::Picker);
+    app.on_key(Key::Char('b'));
+    assert_eq!(app.screen, Screen::Start);
 }
 
 #[test]

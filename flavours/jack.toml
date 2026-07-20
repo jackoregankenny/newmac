@@ -1,0 +1,25 @@
+# Jack's flavour — the author's daily driver.
+# One flavour per file; drop a new one here and open a PR to add your own
+# (see CONTRIBUTING.md). Collected into the picker's "Presets" screen.
+id = "jack"
+title = "Jack's flavour"
+desc = "AeroSpace rice · agents · Rio+cmux · Nord glass — my daily driver"
+theme = "nord"
+glass = true
+ricing = true
+macos_defaults = true
+power = true
+schedule = false
+dock = true
+ids = [
+  "rio", "cmux", "zellij",
+  "claude", "codex", "amp", "opencode", "orca",
+  "aerospace", "borders", "alt-tab", "karabiner", "raycast", "sketchybar", "stats",
+  "bun", "fnm", "uv", "go", "rust", "docker", "docker-compose", "colima",
+  "vscode", "dia",
+  "1password", "1password-cli", "coconutbattery",
+  "cloudflare-warp", "tailscale",
+  "spotify-player",
+  "mole", "mas", "dust", "duf", "dockutil",
+  "font-jetbrains", "font-symbols",
+]

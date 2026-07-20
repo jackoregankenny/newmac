@@ -14,9 +14,11 @@
 
 pub mod brew;
 pub mod catalog;
+pub mod flavour;
 pub mod search;
 pub mod selection;
 pub mod theme;
 
 pub use catalog::{Catalog, Category, Flag, Item, Kind};
+pub use flavour::Flavour;
 pub use selection::{Selection, Toggles};

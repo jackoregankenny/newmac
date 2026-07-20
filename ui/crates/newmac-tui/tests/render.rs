@@ -31,6 +31,24 @@ fn fresh() -> App {
 }
 
 #[test]
+fn start_screen_lists_presets() {
+    let catalog = Catalog::embedded();
+    let sel = Selection::from_defaults(&catalog);
+    let mut app = App::new_full(
+        catalog,
+        sel,
+        std::env::temp_dir().join("newmac.conf"),
+        newmac_core::theme::all(),
+        newmac_core::flavour::all(),
+        false,
+    );
+    let s = screen(&mut app, 100, 30);
+    assert!(s.contains("Presets"), "title:\n{s}");
+    assert!(s.contains("Jack's flavour"));
+    assert!(s.contains("Custom"));
+}
+
+#[test]
 fn packages_tab_shows_chrome_and_categories() {
     let mut app = fresh();
     let s = screen(&mut app, 120, 40);

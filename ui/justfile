@@ -28,14 +28,16 @@ lint:
 fmt:
     cargo fmt --all
 
-# Regenerate scripts/catalog.sh from catalog.toml (run after editing the catalog)
+# Regenerate scripts/{catalog,presets}.sh from catalog.toml + flavours/
 gen-sh:
-    cargo run --release -- catalog gen-sh --out ../scripts/catalog.sh
+    cargo run --release -- catalog gen-sh --out-dir ../scripts
 
-# Fail if scripts/catalog.sh is stale vs catalog.toml (used in CI)
+# Fail if the generated scripts are stale vs catalog.toml / flavours (CI)
 check-catalog:
-    cargo run --release -- catalog gen-sh --stdout > /tmp/catalog.check.sh
-    diff -u ../scripts/catalog.sh /tmp/catalog.check.sh && echo "catalog.sh is up to date"
+    cargo run --release -- catalog gen-sh --out-dir /tmp/newmac-gen
+    diff -u ../scripts/catalog.sh /tmp/newmac-gen/catalog.sh
+    diff -u ../scripts/presets.sh /tmp/newmac-gen/presets.sh
+    @echo "catalog.sh + presets.sh are up to date"
 
 # Print the live popular-Homebrew list (needs network)
 brew-refresh:
