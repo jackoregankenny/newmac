@@ -25,6 +25,10 @@ id = "multiplexers"
 title = "Multiplexers"
 
 [[category]]
+id = "cli"
+title = "Terminal tools"
+
+[[category]]
 id = "shells"
 title = "Shells (zsh is the default)"
 
@@ -1328,3 +1332,270 @@ payload = "font-monaspace"
 name = "Monaspace"
 description = "GitHub superfamily"
 
+
+# --- Added from community "Mac essentials" research (2026-07) -----
+# All default off; pick in the picker. The starred ones also seed Jack's flavour.
+
+# Terminal tools (CLI/TUI)
+[[item]]
+id = "lazygit"
+category = "cli"
+kind = "brew"
+default = false
+payload = "lazygit"
+name = "Lazygit"
+description = "Terminal UI for git — staging, rebasing, cherry-picking made painless"
+
+[[item]]
+id = "lazydocker"
+category = "cli"
+kind = "brew"
+default = false
+payload = "lazydocker"
+name = "Lazydocker"
+description = "Terminal UI for Docker and docker-compose"
+
+[[item]]
+id = "atuin"
+category = "cli"
+kind = "brew"
+default = false
+payload = "atuin"
+name = "Atuin"
+description = "Magical shell history — searchable, synced, per-directory"
+
+[[item]]
+id = "yazi"
+category = "cli"
+kind = "brew"
+default = false
+payload = "yazi"
+name = "Yazi"
+description = "Blazing-fast terminal file manager written in Rust"
+
+[[item]]
+id = "tldr"
+category = "cli"
+kind = "brew"
+default = false
+payload = "tlrc"
+name = "tldr"
+description = "Simplified, community-driven man pages"
+
+[[item]]
+id = "direnv"
+category = "cli"
+kind = "brew"
+default = false
+payload = "direnv"
+name = "direnv"
+description = "Load and unload environment variables per directory"
+
+[[item]]
+id = "httpie"
+category = "cli"
+kind = "brew"
+default = false
+payload = "httpie"
+name = "HTTPie"
+description = "User-friendly HTTP client for the terminal (http)"
+
+[[item]]
+id = "glow"
+category = "cli"
+kind = "brew"
+default = false
+payload = "glow"
+name = "Glow"
+description = "Render markdown on the command line"
+
+[[item]]
+id = "hyperfine"
+category = "cli"
+kind = "brew"
+default = false
+payload = "hyperfine"
+name = "hyperfine"
+description = "Command-line benchmarking tool"
+
+[[item]]
+id = "mise"
+category = "cli"
+kind = "brew"
+default = false
+payload = "mise"
+name = "mise"
+description = "Polyglot runtime manager (node/python/etc) — overlaps fnm/uv"
+
+[[item]]
+id = "k9s"
+category = "cli"
+kind = "brew"
+default = false
+payload = "k9s"
+name = "k9s"
+description = "Kubernetes cluster management TUI"
+
+# Menu bar / display
+[[item]]
+id = "maccy"
+category = "menubar"
+kind = "cask"
+default = false
+payload = "maccy"
+name = "Maccy"
+description = "Clipboard-history manager, open source and lightweight"
+
+[[item]]
+id = "monitorcontrol"
+category = "menubar"
+kind = "cask"
+default = false
+payload = "monitorcontrol"
+name = "MonitorControl"
+description = "Brightness and volume for external displays via DDC"
+
+# Productivity utilities
+[[item]]
+id = "espanso"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "espanso"
+name = "Espanso"
+description = "Cross-platform text expander"
+
+[[item]]
+id = "homerow"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "homerow"
+name = "Homerow"
+description = "Click anything with the keyboard (Vimium-style for macOS)"
+
+[[item]]
+id = "cleanshot"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "cleanshot"
+name = "CleanShot X"
+description = "Screenshot and screen recording with annotation and OCR"
+flags = ["paid"]
+
+[[item]]
+id = "wispr-flow"
+category = "productivity"
+kind = "cask"
+default = false
+payload = "wispr-flow"
+name = "Wispr Flow"
+description = "Voice dictation with AI auto-editing"
+flags = ["account"]
+
+# Maintenance / cleanup
+[[item]]
+id = "appcleaner"
+category = "maintenance"
+kind = "cask"
+default = false
+payload = "appcleaner"
+name = "AppCleaner"
+description = "Thoroughly uninstall apps and their leftover files"
+
+[[item]]
+id = "clop"
+category = "maintenance"
+kind = "cask"
+default = false
+payload = "clop"
+name = "Clop"
+description = "Automatically compress images, screenshots and video"
+
+# Network / security
+[[item]]
+id = "lulu"
+category = "network"
+kind = "cask"
+default = false
+payload = "lulu"
+name = "LuLu"
+description = "Free outbound firewall from Objective-See"
+
+[[item]]
+id = "little-snitch"
+category = "network"
+kind = "cask"
+default = false
+payload = "little-snitch"
+name = "Little Snitch"
+description = "Premium network firewall and connection monitor"
+flags = ["paid"]
+
+# Local AI
+[[item]]
+id = "macwhisper"
+category = "localai"
+kind = "cask"
+default = false
+payload = "macwhisper"
+name = "MacWhisper"
+description = "Transcribe audio locally with Whisper"
+
+# Dev apps
+[[item]]
+id = "proxyman"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "proxyman"
+name = "Proxyman"
+description = "Native HTTP/HTTPS debugging proxy"
+
+[[item]]
+id = "dbeaver"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "dbeaver-community"
+name = "DBeaver"
+description = "Universal database GUI (free community edition)"
+
+[[item]]
+id = "insomnia"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "insomnia"
+name = "Insomnia"
+description = "REST and GraphQL API client"
+
+[[item]]
+id = "fork"
+category = "devgui"
+kind = "cask"
+default = false
+payload = "fork"
+name = "Fork"
+description = "Fast and friendly git GUI"
+flags = ["paid"]
+
+# Launcher / keyboard (live with the window-management tools)
+[[item]]
+id = "alfred"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "alfred"
+name = "Alfred"
+description = "Launcher and workflows (Raycast alternative)"
+
+[[item]]
+id = "hyperkey"
+category = "tiling"
+kind = "cask"
+default = false
+payload = "hyperkey"
+name = "Hyperkey"
+description = "Turn Caps Lock into a Hyper key (simple Karabiner alternative)"

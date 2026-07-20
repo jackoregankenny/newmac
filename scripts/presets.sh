@@ -35,7 +35,7 @@ newmac_preset_desc() {
 
 newmac_preset_ids() {
   case "$1" in
-    jack) echo "rio cmux zellij claude codex amp opencode orca aerospace borders alt-tab karabiner raycast sketchybar stats bun fnm uv go rust docker docker-compose colima vscode dia 1password 1password-cli coconutbattery cloudflare-warp tailscale spotify-player mole mas dust duf dockutil font-jetbrains font-symbols" ;;
+    jack) echo "rio cmux zellij lazygit atuin claude codex amp opencode orca wispr-flow aerospace borders alt-tab raycast sketchybar stats maccy monitorcontrol bun fnm uv go rust docker docker-compose colima vscode dia 1password 1password-cli coconutbattery cloudflare-warp tailscale lulu spotify-player mole mas dust duf dockutil font-jetbrains font-symbols" ;;
     basic) echo "rio zellij claude 1password 1password-cli vscode bun fnm uv mole mas dust duf font-jetbrains font-symbols" ;;
     ai) echo "rio cmux orca conductor nimbalyst zellij tmux claude codex droid opencode amp kimi crush goose cursor copilot aider qwen bun fnm uv go rust docker docker-compose colima vscode dia 1password 1password-cli cloudflare-warp raycast stats coconutbattery sketchybar aerospace borders alt-tab karabiner mole mas dust duf font-jetbrains font-symbols" ;;
     rice) echo "rio zellij tmux claude bun fnm uv sketchybar stats aerospace borders alt-tab dockdoor karabiner raycast 1password 1password-cli vscode dia mole mas dust duf font-jetbrains font-symbols font-fira font-meslo font-monaspace" ;;

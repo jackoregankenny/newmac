@@ -40,6 +40,19 @@ iterm2|terminals|cask|off|iterm2|iTerm2|The classic macOS terminal
 zellij|multiplexers|brew|on|zellij|Zellij|Modern multiplexer — sessions/splits/layouts
 tmux|multiplexers|brew|on|tmux|tmux|Classic multiplexer (SSH ubiquity)
 
+# --- Terminal tools ------------------------------------------
+lazygit|cli|brew|off|lazygit|Lazygit|Terminal UI for git — staging, rebasing, cherry-picking made painless
+lazydocker|cli|brew|off|lazydocker|Lazydocker|Terminal UI for Docker and docker-compose
+atuin|cli|brew|off|atuin|Atuin|Magical shell history — searchable, synced, per-directory
+yazi|cli|brew|off|yazi|Yazi|Blazing-fast terminal file manager written in Rust
+tldr|cli|brew|off|tlrc|tldr|Simplified, community-driven man pages
+direnv|cli|brew|off|direnv|direnv|Load and unload environment variables per directory
+httpie|cli|brew|off|httpie|HTTPie|User-friendly HTTP client for the terminal (http)
+glow|cli|brew|off|glow|Glow|Render markdown on the command line
+hyperfine|cli|brew|off|hyperfine|hyperfine|Command-line benchmarking tool
+mise|cli|brew|off|mise|mise|Polyglot runtime manager (node/python/etc) — overlaps fnm/uv
+k9s|cli|brew|off|k9s|k9s|Kubernetes cluster management TUI
+
 # --- Shells (zsh is the default) -----------------------------
 fish|shells|brew|off|fish|fish|Great defaults, but not POSIX — the newmac rice is zsh-wired
 nushell|shells|brew|off|nushell|Nushell|Structured-data shell — pipelines of tables, not text
@@ -68,12 +81,15 @@ nimbalyst|workbench|cask|off|nimbalyst|Nimbalyst|Visual workspace for Claude Cod
 # --- Local AI ------------------------------------------------
 ollama|localai|brew|off|ollama|Ollama|Run local LLMs from the terminal
 lm-studio|localai|cask|off|lm-studio|LM Studio|Local LLM GUI — download & chat with open models
+macwhisper|localai|cask|off|macwhisper|MacWhisper|Transcribe audio locally with Whisper
 
 # --- Menu bar ------------------------------------------------
 sketchybar|menubar|brew|on|FelixKratz/formulae/sketchybar|SketchyBar|Scriptable status bar (configured by this repo)
 barik|menubar|cask|off|mocki-toki/formulae/barik|barik|Modern SwiftUI menu bar — TOML config, AeroSpace-aware
 ice|menubar|cask|off|jordanbaird-ice|Ice|Menu bar manager — hide/rearrange icons (Bartender alternative)
 stats|menubar|cask|on|stats|Stats|Menu-bar system monitor
+maccy|menubar|cask|off|maccy|Maccy|Clipboard-history manager, open source and lightweight
+monitorcontrol|menubar|cask|off|monitorcontrol|MonitorControl|Brightness and volume for external displays via DDC
 
 # --- Tiling & window management ------------------------------
 aerospace|tiling|cask|on|nikitabobko/tap/aerospace|AeroSpace|i3-like tiling WM — no SIP disable (the unixporn favourite)
@@ -87,6 +103,8 @@ alt-tab|tiling|cask|on|alt-tab|AltTab|Windows-style window-level alt-tab
 dockdoor|tiling|cask|off|dockdoor|DockDoor|Dock hover previews + another alt-tab flavour
 karabiner|tiling|cask|on|karabiner-elements|Karabiner|Keyboard remap (Caps → ⌘ held / Esc tapped)
 raycast|tiling|cask|on|raycast|Raycast|Launcher / window management
+alfred|tiling|cask|off|alfred|Alfred|Launcher and workflows (Raycast alternative)
+hyperkey|tiling|cask|off|hyperkey|Hyperkey|Turn Caps Lock into a Hyper key (simple Karabiner alternative)
 
 # --- Dev runtimes & containers -------------------------------
 bun|runtimes|brew|on|oven-sh/bun/bun|Bun|JS/TS runtime + package manager
@@ -110,6 +128,10 @@ bruno|devgui|cask|off|bruno|Bruno|Open-source API client
 postman|devgui|cask|off|postman|Postman|API client
 utm|devgui|cask|off|utm|UTM|Virtual machines on Apple Silicon
 xcode|devgui|mas|off|497799835:Xcode|Xcode|Full IDE + simulators (App Store, huge)
+proxyman|devgui|cask|off|proxyman|Proxyman|Native HTTP/HTTPS debugging proxy
+dbeaver|devgui|cask|off|dbeaver-community|DBeaver|Universal database GUI (free community edition)
+insomnia|devgui|cask|off|insomnia|Insomnia|REST and GraphQL API client
+fork|devgui|cask|off|fork|Fork|Fast and friendly git GUI
 
 # --- Browsers ------------------------------------------------
 dia|browsers|cask|on|thebrowsercompany-dia|Dia|The Browser Company
@@ -133,6 +155,10 @@ todoist|productivity|cask|off|todoist|Todoist|Tasks
 keka|productivity|cask|off|keka|Keka|Archiver
 shottr|productivity|cask|off|shottr|Shottr|Screenshot annotation
 amphetamine|productivity|mas|off|937984704:Amphetamine|Amphetamine|Keep the Mac awake (App Store)
+espanso|productivity|cask|off|espanso|Espanso|Cross-platform text expander
+homerow|productivity|cask|off|homerow|Homerow|Click anything with the keyboard (Vimium-style for macOS)
+cleanshot|productivity|cask|off|cleanshot|CleanShot X|Screenshot and screen recording with annotation and OCR
+wispr-flow|productivity|cask|off|wispr-flow|Wispr Flow|Voice dictation with AI auto-editing
 
 # --- Office & work -------------------------------------------
 teams|work|cask|on|microsoft-teams|Microsoft Teams|Work chat & calls
@@ -162,6 +188,8 @@ tailscale|network|cask|on|tailscale-app|Tailscale|Zero-config WireGuard mesh —
 mullvad|network|cask|off|mullvad-vpn|Mullvad|Privacy VPN (no account details)
 protonvpn|network|cask|off|protonvpn|Proton VPN|Privacy VPN
 wireguard|network|brew|off|wireguard-tools|WireGuard tools|wg / wg-quick CLI
+lulu|network|cask|off|lulu|LuLu|Free outbound firewall from Objective-See
+little-snitch|network|cask|off|little-snitch|Little Snitch|Premium network firewall and connection monitor
 
 # --- Maintenance & cleanup -----------------------------------
 mole|maintenance|brew|on|mole|Mole|Clean/uninstall/analyze/monitor from the terminal (run: mo)
@@ -172,6 +200,8 @@ duf|maintenance|brew|on|duf|duf|Pretty disk free (better df)
 topgrade|maintenance|brew|off|topgrade|Topgrade|Upgrade everything in one command (overlaps update.sh)
 pearcleaner|maintenance|cask|off|pearcleaner|Pearcleaner|Open-source app uninstaller (GUI)
 onyx|maintenance|cask|off|onyx|OnyX|Veteran macOS maintenance & tweaks GUI
+appcleaner|maintenance|cask|off|appcleaner|AppCleaner|Thoroughly uninstall apps and their leftover files
+clop|maintenance|cask|off|clop|Clop|Automatically compress images, screenshots and video
 
 # --- Fonts ---------------------------------------------------
 font-jetbrains|fonts|cask|on|font-jetbrains-mono-nerd-font|JetBrains Mono NF|Default terminal font
@@ -183,11 +213,12 @@ font-monaspace|fonts|cask|off|font-monaspace|Monaspace|GitHub superfamily
 '
 
 # Category ids (display order) + human titles.
-NEWMAC_CATEGORIES="terminals multiplexers shells agents workbench localai menubar tiling runtimes devgui browsers productivity work comms network maintenance fonts"
+NEWMAC_CATEGORIES="terminals multiplexers cli shells agents workbench localai menubar tiling runtimes devgui browsers productivity work comms network maintenance fonts"
 newmac_category_title() {
   case "$1" in
     terminals)    echo "Terminals" ;;
     multiplexers)    echo "Multiplexers" ;;
+    cli)    echo "Terminal tools" ;;
     shells)    echo "Shells (zsh is the default)" ;;
     agents)    echo "Agents & ADEs" ;;
     workbench)    echo "Agent workbenches" ;;

@@ -13,12 +13,13 @@ schedule = false
 dock = true
 ids = [
   "rio", "cmux", "zellij",
-  "claude", "codex", "amp", "opencode", "orca",
-  "aerospace", "borders", "alt-tab", "karabiner", "raycast", "sketchybar", "stats",
+  "lazygit", "atuin",
+  "claude", "codex", "amp", "opencode", "orca", "wispr-flow",
+  "aerospace", "borders", "alt-tab", "raycast", "sketchybar", "stats", "maccy", "monitorcontrol",
   "bun", "fnm", "uv", "go", "rust", "docker", "docker-compose", "colima",
   "vscode", "dia",
   "1password", "1password-cli", "coconutbattery",
-  "cloudflare-warp", "tailscale",
+  "cloudflare-warp", "tailscale", "lulu",
   "spotify-player",
   "mole", "mas", "dust", "duf", "dockutil",
   "font-jetbrains", "font-symbols",
