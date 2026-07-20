@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="150" viewBox="0 0 720 150">
+  <rect width="720" height="150" rx="14" fill="#1a1b26"/>
+  <text x="48" y="72" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="44" font-weight="bold" fill="#c0caf5">newmac</text>
+  <text x="48" y="104" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" fill="#a9b1d6">your Mac, your way — pick a stack, fine-tune, install</text>
+  <circle cx="48" cy="126" r="6" fill="#bb9af7"/>
+  <circle cx="70" cy="126" r="6" fill="#7aa2f7"/>
+  <circle cx="92" cy="126" r="6" fill="#f7768e"/>
+  <circle cx="114" cy="126" r="6" fill="#9ece6a"/>
+  <circle cx="136" cy="126" r="6" fill="#e0af68"/>
+  <circle cx="158" cy="126" r="6" fill="#8ba4b0"/>
+</svg>

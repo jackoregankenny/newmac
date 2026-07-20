@@ -104,3 +104,58 @@ _install_hint() {  # kind + payload -> human install string
 } > "$OUT"
 
 ok "Wrote ${OUT#"$REPO_DIR"/}"
+
+# ============================================================
+#  SVG assets — generated from the theme files so the README
+#  visuals can never drift from the real palettes.
+# ============================================================
+ASSETS="$REPO_DIR/docs/assets"
+mkdir -p "$ASSETS"
+
+# --- banner.svg (Tokyo Night, the default look) ----------------
+{
+  printf '<svg xmlns="http://www.w3.org/2000/svg" width="720" height="150" viewBox="0 0 720 150">\n'
+  printf '  <rect width="720" height="150" rx="14" fill="#1a1b26"/>\n'
+  printf '  <text x="48" y="72" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="44" font-weight="bold" fill="#c0caf5">newmac</text>\n'
+  printf '  <text x="48" y="104" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" fill="#a9b1d6">your Mac, your way — pick a stack, fine-tune, install</text>\n'
+  x=48
+  for c in bb9af7 7aa2f7 f7768e 9ece6a e0af68 8ba4b0; do
+    printf '  <circle cx="%d" cy="126" r="6" fill="#%s"/>\n' "$x" "$c"
+    x=$((x + 22))
+  done
+  printf '</svg>\n'
+} > "$ASSETS/banner.svg"
+ok "Wrote docs/assets/banner.svg"
+
+# --- themes.svg (one row per theme, real palettes) -------------
+THEME_COUNT=0
+for f in "$REPO_DIR/config/themes"/*.sh; do
+  [[ -f "$f" ]] && THEME_COUNT=$((THEME_COUNT + 1))
+done
+{
+  printf '<svg xmlns="http://www.w3.org/2000/svg" width="720" height="%d" viewBox="0 0 720 %d">\n' \
+    "$((THEME_COUNT * 48 + 12))" "$((THEME_COUNT * 48 + 12))"
+  y=6
+  for f in "$REPO_DIR/config/themes"/*.sh; do
+    [[ -f "$f" ]] || continue
+    (
+      source "$f"
+      tid="$(basename "$f" .sh)"
+      rx=8; srx=4
+      if [[ "${T_RADIUS:-6}" == 0 ]]; then rx=0; srx=0; fi
+      printf '  <text x="8" y="%d" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" fill="#8b8b8b">%s</text>\n' \
+        "$((y + 27))" "$tid"
+      printf '  <rect x="150" y="%d" width="292" height="40" rx="%d" fill="#%s"/>\n' "$y" "$rx" "$T_BASE"
+      sx=162
+      for c in "$T_SURFACE" "$T_ACCENT" "$T_ACCENT2" "$T_RED" "$T_GREEN" "$T_YELLOW" "$T_BLUE" "$T_TEXT"; do
+        printf '  <rect x="%d" y="%d" width="26" height="24" rx="%d" fill="#%s"/>\n' "$sx" "$((y + 8))" "$srx" "$c"
+        sx=$((sx + 34))
+      done
+      printf '  <text x="458" y="%d" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#8b8b8b">%s</text>\n' \
+        "$((y + 27))" "$THEME_TITLE"
+    )
+    y=$((y + 48))
+  done
+  printf '</svg>\n'
+} > "$ASSETS/themes.svg"
+ok "Wrote docs/assets/themes.svg"

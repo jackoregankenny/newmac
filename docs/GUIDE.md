@@ -119,7 +119,13 @@ newmac install         # install anything newly selected
 newmac theme <id>      # switch theme
 newmac dock            # re-arrange the Dock to match the selection
 newmac keys            # hotkey cheat-sheet in the terminal
+newmac doctor          # check the PATH + that every tool resolves in a fresh shell
+newmac doctor --fix    # repair the PATH automatically (idempotent)
 ```
+
+`doctor` probes the PATH **a brand-new terminal would get** (via a login zsh), not
+the current one — so it catches the classic "works in this tab, broken in the next"
+problem. Bootstrap runs `doctor --fix` automatically at the end of every run.
 
 Weekly auto-update (if you enabled the toggle) runs Mondays 10:00 and logs to
 `~/Library/Logs/newmac-update.log`.
@@ -165,3 +171,4 @@ Testing the tool itself? The loop is: `bash bootstrap.sh` → poke around →
 | Bar/borders didn't restyle | `bash scripts/theme.sh <id>` again — it reloads both; check `brew services list`. |
 | Keybindings dead after login | AeroSpace probably lacks Accessibility permission (§3). |
 | `newmac` command not found | `exec zsh`, or check `~/.local/bin` is on PATH; bootstrap re-creates the launcher. |
+| A tool installed but the shell cannot find it | `newmac doctor` — it names the missing PATH line; `newmac doctor --fix` adds it. |

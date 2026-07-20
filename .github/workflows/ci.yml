@@ -98,9 +98,9 @@ jobs:
         run: |
           set -euo pipefail
           bash scripts/docs.sh
-          if ! git diff --exit-code docs/CATALOG.md; then
-            echo '::error::docs/CATALOG.md is out of date with scripts/catalog.sh.'
-            echo 'Run "bash scripts/docs.sh" and commit the regenerated docs/CATALOG.md.'
+          if ! git diff --exit-code docs/; then
+            echo '::error::docs/ is out of date (catalog index or generated SVG assets).'
+            echo 'Run "bash scripts/docs.sh" and commit the regenerated files in docs/.'
             exit 1
           fi
 

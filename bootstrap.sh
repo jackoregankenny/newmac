@@ -145,6 +145,11 @@ if [[ "${NEWMAC_TOGGLE_DOCK:-0}" == 1 ]] && have dockutil; then
   bash "$SCRIPTS_DIR/dock.sh" || warn "dock.sh reported issues."
 fi
 
+# --- 8. PATH health check --------------------------------------
+# Verify a fresh shell will actually find everything we installed,
+# and repair the PATH automatically if not.
+bash "$SCRIPTS_DIR/doctor.sh" --fix || warn "doctor found problems — run 'newmac doctor' in a new terminal."
+
 # --- done ------------------------------------------------------
 printf "\n%s========================================%s\n" "$c_green" "$c_reset"
 ok "Bootstrap complete."

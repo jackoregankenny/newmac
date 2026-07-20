@@ -32,7 +32,7 @@ have()  { command -v "$1" >/dev/null 2>&1; }
 # claude/droid/amp/kimi etc. land in ~/.local/bin; rust in ~/.cargo/bin; bun in ~/.bun/bin
 newmac_load_paths() {
   [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
-  export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.bun/bin:$PATH"
+  export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.bun/bin:$HOME/go/bin:$PATH"
   [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 }
 newmac_load_paths

@@ -8,7 +8,7 @@ BREW_PREFIX="$(brew --prefix 2>/dev/null || echo /opt/homebrew)"
 
 # --- PATH -------------------------------------------------------------------
 # ~/.local/bin holds curl-installed agents (claude, droid); cargo + bun too
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.bun/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.bun/bin:$HOME/go/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export NEWMAC="${NEWMAC:-$HOME/newmac}"   # where you cloned this repo
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"

@@ -1,3 +1,7 @@
+<p align="center"><img src="docs/assets/banner.svg" alt="newmac" width="720"></p>
+
+<p align="center"><a href="https://github.com/jackoregankenny/newmac/actions/workflows/ci.yml"><img src="https://github.com/jackoregankenny/newmac/actions/workflows/ci.yml/badge.svg" alt="CI"></a></p>
+
 # newmac — a fresh Apple Silicon Mac, your way
 
 A reproducible, Homebrew-driven Mac setup with an **interactive picker**: run one
@@ -95,8 +99,11 @@ install command, every preset and theme — is auto-generated in
 
 ## Themes
 
-The whole rice — terminal, bar, borders, prompt — is themed from one palette. Pick in
-the TUI (last step) or switch any time:
+<p><img src="docs/assets/themes.svg" alt="theme palettes" width="720"></p>
+
+The whole rice — terminal, bar, borders, prompt — is themed from one palette
+(kanagawa is the sharp-cornered one, as the swatches show). Preview with
+`newmac theme` (live swatches in the terminal), pick in the TUI, or switch any time:
 
 ```sh
 bash scripts/theme.sh rosepine     # tokyonight (default) · rosepine · nord · gruvbox · catppuccin
