@@ -32,10 +32,13 @@ source "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 
 # --- Tools ------------------------------------------------------------------
+# Each is guarded, so lines are harmless if the tool isn't installed.
 command -v starship >/dev/null && eval "$(starship init zsh)"
-command -v zoxide   >/dev/null && eval "$(zoxide init zsh)"      # `z <dir>` smart cd
+command -v zoxide   >/dev/null && eval "$(zoxide init zsh)"      # `z <dir>` smart cd, `zi` fuzzy
 command -v fnm      >/dev/null && eval "$(fnm env --use-on-cd)"
 command -v fzf      >/dev/null && source <(fzf --zsh) 2>/dev/null
+command -v atuin    >/dev/null && eval "$(atuin init zsh)"       # magical shell history (Ctrl-R)
+command -v direnv   >/dev/null && eval "$(direnv hook zsh)"      # per-directory env vars
 
 # --- fzf defaults -----------------------------------------------------------
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
