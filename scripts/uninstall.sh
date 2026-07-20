@@ -289,6 +289,19 @@ if [[ $DRY -eq 0 && -n "$REMOVED" && -f "$CONF" ]]; then
   ok "newmac.conf updated — dropped:$REMOVED"
 fi
 
+# --- Prune the install manifest (what `newmac list` shows) ------
+MANIFEST="$HOME/.config/newmac/installed.list"
+if [[ $DRY -eq 0 && -n "$REMOVED" && -f "$MANIFEST" ]]; then
+  TMPMAN="${MANIFEST}.tmp.$$"
+  while IFS= read -r line; do
+    case " $REMOVED " in
+      *" $line "*) ;;
+      *) printf '%s\n' "$line" ;;
+    esac
+  done < "$MANIFEST" > "$TMPMAN"
+  mv "$TMPMAN" "$MANIFEST"
+fi
+
 if [[ $DRY -eq 1 ]]; then
   info "Dry run — nothing was changed."
 else

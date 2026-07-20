@@ -93,6 +93,17 @@ if ! grep -q 'NEWMAC=' "$HOME/.zshrc.local" 2>/dev/null; then
   ok "Recorded repo location in ~/.zshrc.local"
 fi
 
+# Install the `newmac` command (repo path baked in, so it works
+# from any shell even before ~/.zshrc.local is sourced).
+mkdir -p "$HOME/.local/bin"
+cat > "$HOME/.local/bin/newmac" <<LAUNCHER
+#!/usr/bin/env bash
+export NEWMAC="\${NEWMAC:-$REPO_DIR}"
+exec bash "$REPO_DIR/bin/newmac" "\$@"
+LAUNCHER
+chmod +x "$HOME/.local/bin/newmac"
+ok "Installed the 'newmac' command (try: newmac help)."
+
 # --- 5b. Git identity & niceties -------------------------------
 if have git; then
   git config --global init.defaultBranch main 2>/dev/null || true

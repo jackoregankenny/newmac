@@ -19,7 +19,7 @@ jobs:
       - name: Collect shell files
         run: |
           set -euo pipefail
-          { git ls-files '*.sh'; echo 'config/sketchybar/sketchybarrc'; } > shell-files.txt
+          { git ls-files '*.sh'; echo 'config/sketchybar/sketchybarrc'; echo 'bin/newmac'; } > shell-files.txt
           echo "Checking $(wc -l < shell-files.txt) shell files:"
           cat shell-files.txt
 

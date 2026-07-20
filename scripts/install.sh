@@ -37,6 +37,21 @@ _wanted() {  # catalog index selected? (core is always wanted)
   newmac_selected "${CAT_ID[$1]}"
 }
 
+# --- Install manifest: track what newmac itself installs --------
+# Anything missing before this run that exists after it gets recorded,
+# so `newmac list` / `newmac nuke` only ever touch what we added.
+MANIFEST="$HOME/.config/newmac/installed.list"
+PRE_MISSING=""
+if [[ $DRY -eq 0 ]]; then
+  i=0
+  while [[ $i -lt ${#CAT_ID[@]} ]]; do
+    if _wanted "$i" && ! newmac_is_installed "${CAT_KIND[$i]}" "${CAT_PAYLOAD[$i]}" "${CAT_ID[$i]}"; then
+      PRE_MISSING="$PRE_MISSING ${CAT_ID[$i]}"
+    fi
+    i=$((i+1))
+  done
+fi
+
 # --- 1. Generate the Brewfile ----------------------------------
 BREWFILE="${TMPDIR:-/tmp}/newmac.Brewfile.$$"
 TAPS=""
@@ -185,5 +200,24 @@ while [[ $i -lt ${#CAT_ID[@]} ]]; do
   fi
   i=$((i+1))
 done
+
+# --- Record what this run actually installed -------------------
+if [[ -n "$PRE_MISSING" ]]; then
+  mkdir -p "$(dirname "$MANIFEST")"
+  touch "$MANIFEST"
+  i=0
+  while [[ $i -lt ${#CAT_ID[@]} ]]; do
+    id="${CAT_ID[$i]}"
+    case " $PRE_MISSING " in
+      *" $id "*)
+        if newmac_is_installed "${CAT_KIND[$i]}" "${CAT_PAYLOAD[$i]}" "$id" \
+           && ! grep -qx "$id" "$MANIFEST" 2>/dev/null; then
+          echo "$id" >> "$MANIFEST"
+        fi ;;
+    esac
+    i=$((i+1))
+  done
+  ok "Manifest updated: $(grep -c . "$MANIFEST" 2>/dev/null || echo 0) items tracked (newmac list)."
+fi
 
 ok "Install pass complete."

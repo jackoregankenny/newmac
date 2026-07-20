@@ -11,8 +11,7 @@ proper ⌥-Tab window switching, Caps→⌘/Esc, battery tuning.
 
 ## Quick start (on the fresh Mac)
 
-One line, nothing pre-installed (winutil-style; needs the repo to be public, or
-`gh auth login` first while it's private):
+One line, nothing pre-installed (winutil-style):
 
 ```sh
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/jackoregankenny/newmac/main/get.sh)"
@@ -120,16 +119,28 @@ sketchybar/borders live.
 - **`scripts/install.sh`** — generates a Brewfile from your selection, runs
   `brew bundle`, then handles rustup / npm / uv / vendor installers. Idempotent.
 
-## Keep it up to date
+## The `newmac` command
+
+Bootstrap installs a `newmac` utility on your PATH — everything is a subcommand
+after that:
 
 ```sh
-bash update.sh                    # brew + casks + rust + bun + node + agents
-bash scripts/schedule-updates.sh  # weekly LaunchAgent (Mondays 10:00), logs to ~/Library/Logs
-bash scripts/status.sh            # green ●/red ○ for every tool + versions  (alias: status)
-bash scripts/uninstall.sh <id>    # remove a tool the same way it was installed
-bash scripts/uninstall.sh --unselected   # prune everything you deselected in the picker
-bash scripts/dock.sh              # re-arrange the Dock to match your selection (dockutil)
+newmac status          # every tool + version (green ●/red ○)
+newmac configure       # reopen the picker, change selections
+newmac install         # install anything newly selected
+newmac update          # brew + casks + rust + bun + node + agents
+newmac list            # everything newmac itself installed (tracked in a manifest)
+newmac remove <id>…    # uninstall tools the same way they were installed
+newmac remove --unselected   # prune everything you deselected in the picker
+newmac nuke            # bulk-uninstall EVERYTHING newmac installed (great for testing)
+newmac theme rosepine  # switch the whole rice's colour theme
+newmac dock            # re-arrange the Dock to match your selection
+newmac keys            # hotkey cheat-sheet
 ```
+
+The manifest only records what newmac *actually installed* (anything already on
+the machine before a run is never claimed), so `newmac nuke` is safe to use on a
+machine that wasn't fresh — and `--dry-run` works on the destructive subcommands.
 
 `update.sh` also re-runs `install.sh`, so **newly selected tools get installed on the
 next update** — edit `newmac.conf` (or `bootstrap.sh --reconfigure`) and update.

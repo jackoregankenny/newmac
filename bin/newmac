@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+# ============================================================
+#  newmac — the command. Installed to ~/.local/bin by bootstrap.
+#
+#    newmac                 status summary + help
+#    newmac configure       open the picker (edit selections)
+#    newmac install         install everything selected
+#    newmac update          update everything
+#    newmac status          every tool + version
+#    newmac list            everything newmac itself installed
+#    newmac remove <id>…    uninstall specific tools
+#    newmac remove --unselected   prune deselected tools
+#    newmac nuke            bulk-uninstall EVERYTHING newmac installed
+#    newmac theme <id>      switch colour theme
+#    newmac dock            re-arrange the Dock to match selection
+#    newmac keys            hotkey cheat-sheet
+#    newmac docs            regenerate docs/CATALOG.md
+#  Most subcommands accept --dry-run.
+# ============================================================
+set -uo pipefail
+
+NEWMAC_DIR="${NEWMAC:-$HOME/newmac}"
+if [[ ! -f "$NEWMAC_DIR/bootstrap.sh" ]]; then
+  echo "xx  newmac repo not found at $NEWMAC_DIR — set \$NEWMAC to your clone." >&2
+  exit 1
+fi
+SCRIPTS="$NEWMAC_DIR/scripts"
+MANIFEST="$HOME/.config/newmac/installed.list"
+
+usage() {
+  sed -n '3,19p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,2\}//'
+}
+
+cmd="${1:-help}"
+[[ $# -gt 0 ]] && shift
+
+case "$cmd" in
+  configure|reconfigure) bash "$SCRIPTS/configure.sh" "$@" ;;
+  install)               bash "$SCRIPTS/install.sh" "$@" ;;
+  bootstrap)             bash "$NEWMAC_DIR/bootstrap.sh" "$@" ;;
+  update)                bash "$NEWMAC_DIR/update.sh" ;;
+  status)                bash "$SCRIPTS/status.sh" ;;
+  theme)                 bash "$SCRIPTS/theme.sh" "$@" ;;
+  keys)                  bash "$SCRIPTS/keys.sh" "$@" ;;
+  dock)                  bash "$SCRIPTS/dock.sh" "$@" ;;
+  remove|uninstall)      bash "$SCRIPTS/uninstall.sh" "$@" ;;
+  docs)                  bash "$SCRIPTS/docs.sh" ;;
+
+  list)
+    source "$SCRIPTS/lib.sh"
+    source "$SCRIPTS/catalog.sh"
+    if [[ ! -s "$MANIFEST" ]]; then
+      info "Nothing tracked yet — the manifest fills in as install runs add tools."
+      exit 0
+    fi
+    head1 "Installed by newmac ($(grep -c . "$MANIFEST") items)"
+    while IFS= read -r id; do
+      [[ -z "$id" ]] && continue
+      i=0
+      while [[ $i -lt ${#CAT_ID[@]} ]]; do
+        if [[ "${CAT_ID[$i]}" == "$id" ]]; then
+          printf '  %s%-16s%s %-10s %s%s%s\n' "$c_bold" "$id" "$c_reset" \
+            "(${CAT_KIND[$i]})" "$c_dim" "${CAT_NAME[$i]} — ${CAT_DESC[$i]}" "$c_reset"
+          break
+        fi
+        i=$((i+1))
+      done
+    done < "$MANIFEST"
+    printf '\n%sBulk-remove everything above:  newmac nuke%s\n' "$c_dim" "$c_reset"
+    ;;
+
+  nuke)
+    source "$SCRIPTS/lib.sh"
+    if [[ ! -s "$MANIFEST" ]]; then
+      info "Manifest is empty — nothing that newmac installed is left to remove."
+      exit 0
+    fi
+    ids=""
+    while IFS= read -r id; do
+      [[ -n "$id" ]] && ids="$ids $id"
+    done < "$MANIFEST"
+    n=$(grep -c . "$MANIFEST")
+    case " $* " in
+      *" --dry-run "*)
+        # shellcheck disable=SC2086
+        bash "$SCRIPTS/uninstall.sh" --dry-run $ids
+        exit $? ;;
+    esac
+    warn "This removes all $n tools newmac installed on this machine."
+    if ask "Proceed with bulk uninstall?"; then
+      # shellcheck disable=SC2086
+      bash "$SCRIPTS/uninstall.sh" $ids
+    else
+      info "Aborted — nothing removed."
+    fi
+    ;;
+
+  help|--help|-h)
+    usage ;;
+
+  *)
+    if [[ "$cmd" != "help" ]]; then
+      echo "xx  unknown command: $cmd" >&2; echo
+    fi
+    usage
+    exit 1 ;;
+esac

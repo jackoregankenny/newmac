@@ -56,6 +56,19 @@ newmac_copy() {  # newmac_copy <src> <dest>
   rm -f "$dest"; cp "$src" "$dest"; ok "Copied $dest"
 }
 
+# Is a catalog item present on this machine? (light check by kind)
+newmac_is_installed() {  # newmac_is_installed <kind> <payload> <id>
+  case "$1" in
+    brew)   have brew && brew list --formula --versions "${2##*/}" >/dev/null 2>&1 ;;
+    cask)   have brew && brew list --cask --versions "${2##*/}" >/dev/null 2>&1 ;;
+    npm|uv|curl)
+      case "$3" in cursor) have cursor-agent ;; *) have "$3" ;; esac ;;
+    rustup) have rustup ;;
+    mas)    [[ -d "/Applications/${2#*:}.app" ]] ;;
+    *)      return 1 ;;
+  esac
+}
+
 # --- Selection helpers (newmac.conf) ---------------------------
 # newmac.conf defines NEWMAC_SELECTED=" id1 id2 … " plus toggle vars.
 newmac_selected() {  # newmac_selected <id>  -> 0 if selected
