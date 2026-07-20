@@ -53,6 +53,10 @@ iterm2|terminals|cask|off|iterm2|iTerm2|The classic macOS terminal
 zellij|multiplexers|brew|on|zellij|Zellij|Modern multiplexer — sessions/splits/layouts
 tmux|multiplexers|brew|on|tmux|tmux|Classic multiplexer (SSH ubiquity)
 
+# --- Shells (zsh + plugins is the wired-up default) ------------
+fish|shells|brew|off|fish|fish|Great defaults, but not POSIX — newmac's rice is zsh-wired
+nushell|shells|brew|off|nushell|Nushell|Structured-data shell — pipelines of tables, not text
+
 # --- AI coding agents ------------------------------------------
 claude|agents|curl|on|https://claude.ai/install.sh|Claude Code|Anthropic agentic CLI
 codex|agents|cask|on|codex|Codex|OpenAI Codex CLI
@@ -143,6 +147,7 @@ zoom|comms|cask|off|zoom|Zoom|Video calls
 whatsapp|comms|cask|off|whatsapp|WhatsApp|Messaging
 telegram|comms|cask|off|telegram|Telegram|Messaging
 spotify|comms|cask|off|spotify|Spotify|Music
+spotify-player|comms|brew|off|spotify_player|spotify_player|TUI Spotify client — rice-friendly (Premium required)
 iina|comms|cask|off|iina|IINA|Video player
 vlc|comms|cask|off|vlc|VLC|Plays anything
 
@@ -187,11 +192,12 @@ font-monaspace|fonts|cask|off|font-monaspace|Monaspace|GitHub superfamily
 
 # Category ids (display order) + human titles — parallel "arrays"
 # kept as simple space/newline lists for bash 3.2.
-NEWMAC_CATEGORIES="terminals multiplexers agents workbench localai menubar tiling runtimes devgui browsers productivity work comms network maintenance fonts"
+NEWMAC_CATEGORIES="terminals multiplexers shells agents workbench localai menubar tiling runtimes devgui browsers productivity work comms network maintenance fonts"
 newmac_category_title() {
   case "$1" in
     terminals)    echo "Terminals" ;;
     multiplexers) echo "Multiplexers" ;;
+    shells)       echo "Shells (zsh is the default)" ;;
     agents)       echo "AI coding agents" ;;
     workbench)    echo "Agent workbenches" ;;
     localai)      echo "Local AI" ;;
